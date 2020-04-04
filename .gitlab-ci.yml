@@ -1,0 +1,11 @@
+stages:
+  - build
+
+before_script:
+  - echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" --username "$CI_REGISTRY_USER" --password-stdin
+
+docker-ci-builder:
+  stage: build
+  script:
+    - docker build -f docker-ci-builder/Dockerfile docker-ci-builder -t $CI_REGISTRY_IMAGE/ci-builder
+    - docker push $CI_REGISTRY_IMAGE/ci-builder
