@@ -3,6 +3,8 @@ stages:
 
 docker-ci-builder:
   stage: build
+  only:
+    - master
   script:
     - apk add --no-cache docker-cli
     - docker build -f docker-ci-builder/Dockerfile docker-ci-builder -t $CI_REGISTRY_IMAGE/ci-builder
