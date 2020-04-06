@@ -1,0 +1,33 @@
+stages:
+  - environment
+  - build
+  - check
+
+before_script:
+  - echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" --username "$CI_REGISTRY_USER" --password-stdin
+
+build-image:
+  stage: environment
+  image: registry.gitlab.routine.co/routine/logistic/ci-builder
+  script:
+    - |
+      make -f $(readlink .gitlab-ci.yml | dirname)/Makefile ci/image    \
+      REGISTRY=$CI_REGISTRY                                             \
+      NAMESPACE=$CI_PROJECT_NAMESPACE                                   \
+      PROJECT=$CI_PROJECT_NAME
+    - docker push $CI_REGISTRY_IMAGE/ci
+
+build:
+  stage: build
+  image: $CI_REGISTRY_IMAGE/ci
+  script:
+    - make -f $(readlink .gitlab-ci.yml | dirname)/Makefile build
+  artifacts:
+    paths:
+      - _build/
+
+check:
+  stage: check
+  image: $CI_REGISTRY_IMAGE/ci
+  script:
+    - make -f $(readlink .gitlab-ci.yml | dirname)/Makefile check
