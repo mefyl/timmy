@@ -13,4 +13,4 @@ dependencies/list:
 	@dune external-lib-deps @@default 2>1 | sed -n 's/- //p' | grep -v '\.'
 
 ci/image:
-	docker build -f ci/Dockerfile . -t $(CI_TAG) --build-arg DEPENCENCIES="$$(cat .opam-deps)"
+	docker build -f "$(dir $(MAKEFILE_LIST))Dockerfile" . -t $(CI_TAG) --build-arg DEPENCENCIES="$$(cat .opam-deps)"
