@@ -11,7 +11,7 @@ build-image:
   image: registry.gitlab.routine.co/routine/logistic/ci-builder
   script:
     - |
-      make -f $(readlink .gitlab-ci.yml | dirname)/Makefile ci/image    \
+      make -f .logistic/ci/Makefile ci/image    \
       REGISTRY=$CI_REGISTRY                                             \
       NAMESPACE=$CI_PROJECT_NAMESPACE                                   \
       PROJECT=$CI_PROJECT_NAME
@@ -21,7 +21,7 @@ build:
   stage: build
   image: $CI_REGISTRY_IMAGE/ci
   script:
-    - make -f $(readlink .gitlab-ci.yml | dirname)/Makefile build
+    - make -f .logistic/ci/Makefile build
   artifacts:
     paths:
       - _build/
