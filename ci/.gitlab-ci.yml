@@ -30,4 +30,4 @@ check:
   stage: check
   image: $CI_REGISTRY_IMAGE/ci
   script:
-    - make -f $(readlink .gitlab-ci.yml | dirname)/Makefile check
+    - make -f .logistic/ci/Makefile check
