@@ -13,4 +13,4 @@ dependencies/list:
 	@dune external-lib-deps @@default 2>1 | sed -n 's/- //p' | grep -v '\.'
 
 ci/image:
-	docker build -f "$(dir $(MAKEFILE_LIST))Dockerfile" . -t $(CI_TAG) --build-arg DEPENDENCIES="$$(cat .opam-deps)"
+	docker build -f "$(dir $(MAKEFILE_LIST))Dockerfile" . -t $(CI_TAG):$(OCAML_VERSION) --build-arg OCAML_VERSION=$(OCAML_VERSION) --build-arg DEPENDENCIES="$$(cat .opam-deps)"
