@@ -7,5 +7,5 @@ RUN opam config set jobs $(nproc)
 RUN chmod a+x /root
 ENV ENV="/etc/profile"
 ENV PATH="/root/.opam/$OCAML_VERSION/bin:$PATH"
-ARG DEPENDENCIES
-RUN opam install --yes $DEPENDENCIES
+ADD *.opam /root
+RUN opam install --yes --deps-only /root
