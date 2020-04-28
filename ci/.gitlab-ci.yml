@@ -2,9 +2,16 @@ stages:
   - environment
   - build
   - check
+  - package
 
 before_script:
   - echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" --username "$CI_REGISTRY_USER" --password-stdin
+
+variables:
+  REGISTRY: "$CI_REGISTRY"
+  NAMESPACE: "$CI_PROJECT_NAMESPACE"
+  PROJECT: "$CI_PROJECT_NAME"
+  BRANCH: "$CI_COMMIT_REF_NAME"
 
 .ocaml-build-image:
   stage: environment
@@ -12,9 +19,6 @@ before_script:
   script:
     - |
       make -f .logistic/ci/Makefile ci/image                            \
-      REGISTRY=$CI_REGISTRY                                             \
-      NAMESPACE=$CI_PROJECT_NAMESPACE                                   \
-      PROJECT=$CI_PROJECT_NAME                                          \
       OCAML_VERSION=$OCAML_VERSION                                      \
       PACKAGES=$PACKAGES
     - docker push "$CI_REGISTRY_IMAGE/ci:$OCAML_VERSION"
@@ -37,5 +41,21 @@ before_script:
   image: $CI_REGISTRY_IMAGE/ci:$OCAML_VERSION
   script:
     - make -f .logistic/ci/Makefile check
+  artifacts:
+    paths:
+      - _build/
+  variables:
+    OCAML_VERSION: "4.10.0"
+
+.ocaml-package:
+  stage: package
+  image: $CI_REGISTRY_IMAGE/ci:$OCAML_VERSION
+  script:
+    - make -f .logistic/ci/Makefile package
+  after_script:
+    - make -f .logistic/ci/Makefile package/clean
+  artifacts:
+    reports:
+      metrics: metrics.txt
   variables:
     OCAML_VERSION: "4.10.0"

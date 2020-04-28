@@ -17,3 +17,10 @@ check:4.10:
     - build:4.10
   needs:
     - build:4.10
+
+package:4.10:
+  extends: .ocaml-package
+  dependencies:
+    - check:4.10
+  needs:
+    - check:4.10
