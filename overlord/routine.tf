@@ -26,6 +26,7 @@ resource "digitalocean_droplet" "droplets" {
   image  = "ubuntu-18-04-x64"
   count  = var.replicas
   name   = "${var.name}-${count.index}"
+  monitoring = true
   region = var.region
   size   = "s-1vcpu-3gb"
   ssh_keys   = [27014658] # mefyl
@@ -42,6 +43,8 @@ packages:
   - ca-certificates
   - docker-ce
   - docker-ce-cli
+  - nginx
+  - nginx-extra
   - salt-minion
 salt_minion:
   conf:
