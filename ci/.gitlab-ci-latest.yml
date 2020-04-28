@@ -1,26 +1,26 @@
 include:
   - local: '/.logistic/ci/.gitlab-ci.yml'
 
-build-image:4.10:
+build-image:
   extends: .ocaml-build-image
 
-build:4.10:
+build:
   extends: .ocaml-build
   dependencies:
-    - build-image:4.10
+    - build-image
   needs:
-    - build-image:4.10
+    - build-image
 
-check:4.10:
+check:
   extends: .ocaml-check
   dependencies:
-    - build:4.10
+    - build
   needs:
-    - build:4.10
+    - build
 
-package:4.10:
+package:
   extends: .ocaml-package
   dependencies:
-    - check:4.10
+    - check
   needs:
-    - check:4.10
+    - check
