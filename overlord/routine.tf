@@ -16,12 +16,11 @@ variable "replicas" {
   default = 3
 }
 
-# VPC not available to us yet
-# resource "digitalocean_vpc" "vpc" {
-#   name     = var.name
-#   region   = var.region
-#   ip_range = "10.10.10.0/24"
-# }
+resource "digitalocean_vpc" "vpc" {
+  name     = var.name
+  region   = var.region
+  ip_range = "10.10.10.0/24"
+}
 
 resource "digitalocean_droplet" "droplets" {
   image  = "ubuntu-18-04-x64"
@@ -30,7 +29,7 @@ resource "digitalocean_droplet" "droplets" {
   region = var.region
   size   = "s-1vcpu-3gb"
   ssh_keys   = [27014658] # mefyl
-  # vpc_uuid = digitalocean_vpc.vpc.id
+  vpc_uuid = digitalocean_vpc.vpc.id
   user_data  = <<EOF
 #cloud-config
 apt:
@@ -81,7 +80,8 @@ resource "digitalocean_certificate" "api" {
 resource "digitalocean_loadbalancer" "api" {
   name   = var.name
   region = var.region
-  # vpc_uuid = digitalocean_vpc.vpc.id
+  vpc_uuid = digitalocean_vpc.vpc.id
+  redirect_http_to_https = true
 
   forwarding_rule {
     entry_port     = 443
@@ -109,13 +109,13 @@ resource "digitalocean_record" "api" {
 }
 
 resource "digitalocean_project" "project" {
-  name        = var.name
+  name        = title(var.name)
   description = "Continuous delivery"
   purpose     = "Web Application"
   resources   = concat(
     digitalocean_droplet.droplets[*].urn,
     [
-      digitalocean_loadbalancer.api.urn,
-      # digitalocean_vpc.vpc.urn
+      digitalocean_loadbalancer.api.urn
+      #, digitalocean_vpc.vpc.urn
     ])
 }
