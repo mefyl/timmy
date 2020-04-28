@@ -13,8 +13,8 @@ package:
 	sed '1aADD _install/ /usr/' Dockerfile > Dockerfile.package
 	docker build -f "Dockerfile.package" . -t "$(TAG):$$(git describe --always)"
 	docker push "$(TAG):$$(git describe --always)"
-	docker tag "$(TAG):$$(git describe --always)" "$(TAG):$$BRANCH"
-	docker push "$(TAG):$$BRANCH"
+	docker tag "$(TAG):$$(git describe --always)" "$(TAG):$$SLUG"
+	docker push "$(TAG):$$SLUG"
 	echo "docker-image \"$(TAG):$$(git describe --always)\"" > metrics.txt
 
 package/clean:
