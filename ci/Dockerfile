@@ -9,3 +9,5 @@ ENV ENV="/etc/profile"
 ENV PATH="/root/.opam/$OCAML_VERSION/bin:$PATH"
 ADD *.opam /root
 RUN opam install --yes --deps-only /root
+ARG PACKAGES
+RUN test -n "$PACKAGES" && apk add --no-cache "$PACKAGES"
