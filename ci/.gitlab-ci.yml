@@ -15,7 +15,8 @@ before_script:
       REGISTRY=$CI_REGISTRY                                             \
       NAMESPACE=$CI_PROJECT_NAMESPACE                                   \
       PROJECT=$CI_PROJECT_NAME                                          \
-      OCAML_VERSION=$OCAML_VERSION
+      OCAML_VERSION=$OCAML_VERSION                                      \
+      PACKAGES=$PACKAGES
     - docker push "$CI_REGISTRY_IMAGE/ci:$OCAML_VERSION"
   variables:
     OCAML_VERSION: "4.10.0"
