@@ -14,7 +14,14 @@ variables:
   BRANCH: "$CI_COMMIT_REF_NAME"
   SLUG: "$CI_COMMIT_REF_SLUG"
 
+.docker:
+  image: registry.gitlab.routine.co/routine/logistic/ci-builder
+
+.ocaml:
+  image: $CI_REGISTRY_IMAGE/ci:$OCAML_VERSION
+
 .ocaml-build-image:
+  extends: .docker
   stage: environment
   image: registry.gitlab.routine.co/routine/logistic/ci-builder
   script:
@@ -27,8 +34,8 @@ variables:
     OCAML_VERSION: "4.10.0"
 
 .ocaml-build:
+  extends: .ocaml
   stage: build
-  image: $CI_REGISTRY_IMAGE/ci:$OCAML_VERSION
   script:
     - make -f .logistic/ci/Makefile build
   artifacts:
@@ -38,8 +45,8 @@ variables:
     OCAML_VERSION: "4.10.0"
 
 .ocaml-check:
+  extends: .ocaml
   stage: check
-  image: $CI_REGISTRY_IMAGE/ci:$OCAML_VERSION
   script:
     - make -f .logistic/ci/Makefile check
   artifacts:
@@ -49,8 +56,8 @@ variables:
     OCAML_VERSION: "4.10.0"
 
 .ocaml-package:
+  extends: .ocaml
   stage: package
-  image: $CI_REGISTRY_IMAGE/ci:$OCAML_VERSION
   script:
     - make -f .logistic/ci/Makefile package
   after_script:
