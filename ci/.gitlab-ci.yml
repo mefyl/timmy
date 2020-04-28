@@ -12,6 +12,7 @@ variables:
   NAMESPACE: "$CI_PROJECT_NAMESPACE"
   PROJECT: "$CI_PROJECT_NAME"
   BRANCH: "$CI_COMMIT_REF_NAME"
+  SLUG: "$CI_COMMIT_REF_SLUG"
 
 .ocaml-build-image:
   stage: environment
