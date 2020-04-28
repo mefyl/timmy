@@ -11,4 +11,4 @@ ENV PATH="/root/.opam/$OCAML_VERSION/bin:$PATH"
 ADD *.opam */*.opam */*/*.opam /root/
 RUN opam install --yes --deps-only /root
 ARG PACKAGES
-RUN test -n "$PACKAGES" && apk add --no-cache "$PACKAGES"
+RUN if test -n "$PACKAGES"; then apk add --no-cache "$PACKAGES"; fi
