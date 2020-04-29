@@ -2,12 +2,15 @@ TAG := $(REGISTRY)/$(NAMESPACE)/$(PROJECT)
 CI_TAG := $(TAG)/ci
 
 build:
+	dune subst
 	dune build
 
 check:
+	dune subst
 	dune runtest
 
 package:
+	dune subst
 	dune install --prefix=_install
 	if ! test -e Dockerfile; then echo "FROM alpine" > Dockerfile; fi
 	sed '1aADD _install/ /usr/' Dockerfile > Dockerfile.package
