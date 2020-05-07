@@ -10,5 +10,5 @@ ENV PATH="/root/.opam/$OCAML_VERSION/bin:$PATH"
 # No recursive lookup available
 ADD *.opam */*.opam */*/*.opam /root/
 ARG PACKAGES
-RUN if test -n "$PACKAGES"; then apk add --no-cache "$PACKAGES"; fi
+RUN if test -n "$PACKAGES"; then apk add --no-cache $PACKAGES; fi
 RUN opam install --yes --deps-only --with-test /root
