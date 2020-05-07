@@ -24,4 +24,4 @@ package/clean:
 	docker rmi "$(TAG):$$(git describe --always)"
 
 ci/image:
-	docker build -f "$(dir $(MAKEFILE_LIST))Dockerfile.ci" . -t $(CI_TAG):$(OCAML_VERSION) --build-arg OCAML_VERSION=$(OCAML_VERSION) --build-arg PACKAGES=$(PACKAGES)
+	docker build -f "$(dir $(MAKEFILE_LIST))Dockerfile.ci" . -t $(CI_TAG):$(OCAML_VERSION) --build-arg OCAML_VERSION=$(OCAML_VERSION) --build-arg PACKAGES="$(PACKAGES)"
