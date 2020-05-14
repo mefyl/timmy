@@ -12,3 +12,4 @@ ADD *.opam */*.opam */*/*.opam /root/
 ARG PACKAGES
 RUN if test -n "$PACKAGES"; then apk add --no-cache $PACKAGES; fi
 RUN opam install --yes --deps-only --with-test /root
+ENTRYPOINT ["/bin/ash", "-l", "-c"]
