@@ -1,6 +1,6 @@
 FROM alpine AS opam-base
 
-RUN apk add --no-cache coreutils docker-cli gcc git m4 make musl-dev opam
+RUN apk add --no-cache coreutils docker-cli gcc git m4 make musl-dev opam perl pkgconfig
 ARG OCAML_VERSION
 RUN opam init  --compiler="$OCAML_VERSION" --disable-sandboxing --dot-profile=/etc/profile.d/opam.sh --shell-setup --verbose --yes
 RUN opam config set jobs $(nproc)
