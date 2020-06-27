@@ -7,6 +7,8 @@ RUN opam config set jobs $(nproc)
 RUN chmod a+x /root
 ENV ENV="/etc/profile"
 ENV PATH="/root/.opam/$OCAML_VERSION/bin:$PATH"
+# Jsoo misses this one, AFAICT it's a bug
+ENV LD_LIBRARY_PATH="/root/.opam/4.10.0/lib/stublibs/dllbase_internalhash_types_stubs.so"
 # No recursive lookup available
 ADD *.opam */*.opam */*/*.opam /root/
 ARG PACKAGES
