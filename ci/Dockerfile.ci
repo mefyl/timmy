@@ -10,8 +10,10 @@ ENV PATH="/root/.opam/$OCAML_VERSION/bin:$PATH"
 # Jsoo misses this one, AFAICT it's a bug
 ENV LD_LIBRARY_PATH="/root/.opam/4.10.0/lib/stublibs/dllbase_internalhash_types_stubs.so"
 # No recursive lookup available
-ADD *.opam */*.opam */*/*.opam /root/
+ADD package*.json *.opam */*.opam */*/*.opam /root/
 ARG PACKAGES
 RUN if test -n "$PACKAGES"; then apk add --no-cache $PACKAGES; fi
 RUN opam install --yes --deps-only --with-test /root
+RUN if test -e /root/package-lock.json; then cd /root && npm install; fi
+ENV NODE_PATH=/root/node_modules
 ENTRYPOINT ["/bin/ash", "-l", "-c"]
