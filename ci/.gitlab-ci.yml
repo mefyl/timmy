@@ -6,7 +6,7 @@ stages:
   - deploy
 
 before_script:
-  - echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" --username "$CI_REGISTRY_USER" --password-stdin
+  - which docker && echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" --username "$CI_REGISTRY_USER" --password-stdin
 
 variables:
   REGISTRY: "$CI_REGISTRY"
