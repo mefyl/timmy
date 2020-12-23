@@ -1,2 +1,0 @@
-subjectAltName = DNS:0.api.bleeding.routine.co,IP:10.10.10.20,IP:127.0.0.1
-extendedKeyUsage = serverAuth
