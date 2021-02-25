@@ -35,7 +35,7 @@ variables:
     paths:
       - ~/.opam/download-cache
   variables:
-    OCAML_VERSION: "4.10.0"
+    OCAML_VERSION: "4.12.0"
 
 .ocaml-build:
   extends: .ocaml
@@ -46,7 +46,7 @@ variables:
     paths:
       - _build/
   variables:
-    OCAML_VERSION: "4.10.0"
+    OCAML_VERSION: "4.12.0"
 
 .ocaml-check:
   extends: .ocaml
@@ -57,7 +57,7 @@ variables:
     paths:
       - _build/
   variables:
-    OCAML_VERSION: "4.10.0"
+    OCAML_VERSION: "4.12.0"
 
 .ocaml-package:
   extends: .ocaml
@@ -70,4 +70,28 @@ variables:
     reports:
       metrics: metrics.txt
   variables:
-    OCAML_VERSION: "4.10.0"
+    OCAML_VERSION: "4.12.0"
+
+build-image:
+  extends: .ocaml-build-image
+
+build:
+  extends: .ocaml-build
+  dependencies:
+    - build-image
+  needs:
+    - build-image
+
+check:
+  extends: .ocaml-check
+  dependencies:
+    - build
+  needs:
+    - build
+
+package:
+  extends: .ocaml-package
+  dependencies:
+    - check
+  needs:
+    - check
