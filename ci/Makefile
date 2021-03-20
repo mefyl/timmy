@@ -1,9 +1,12 @@
 TAG := $(REGISTRY)/$(NAMESPACE)/$(PROJECT)
 CI_TAG := $(TAG)/ci
 
-build:
+build: lint
 	dune subst
 	dune build
+
+lint:
+	dune build @fmt
 
 check:
 	dune subst
