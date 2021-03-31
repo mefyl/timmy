@@ -28,9 +28,11 @@ package/clean:
 
 ci/image:
 	if test -e Dockerfile.ci; then cat Dockerfile.ci >> "$(dir $(MAKEFILE_LIST))Dockerfile.ci"; fi
-	if docker pull "$(CI_TAG):$(OCAML_VERSION)"; then \
-		docker build -f "$(dir $(MAKEFILE_LIST))Dockerfile.ci" . --tag "$(CI_TAG):$(OCAML_VERSION)" --cache-from "$(CI_TAG):$(OCAML_VERSION)" --build-arg OCAML_VERSION=$(OCAML_VERSION) --build-arg PACKAGES="$(PACKAGES)"; else \
-		docker build -f "$(dir $(MAKEFILE_LIST))Dockerfile.ci" . --tag "$(CI_TAG):$(OCAML_VERSION)" --build-arg OCAML_VERSION=$(OCAML_VERSION) --build-arg PACKAGES="$(PACKAGES)"; fi
+	if test -z "$FROM_SCRATCH"; then \
+		if docker pull "$(CI_TAG):$(OCAML_VERSION)"; then \
+			docker build -f "$(dir $(MAKEFILE_LIST))Dockerfile.ci" . --tag "$(CI_TAG):$(OCAML_VERSION)" --cache-from "$(CI_TAG):$(OCAML_VERSION)" --build-arg OCAML_VERSION=$(OCAML_VERSION) --build-arg PACKAGES="$(PACKAGES)"; else \
+			docker build -f "$(dir $(MAKEFILE_LIST))Dockerfile.ci" . --tag "$(CI_TAG):$(OCAML_VERSION)" --build-arg OCAML_VERSION=$(OCAML_VERSION) --build-arg PACKAGES="$(PACKAGES)"; fi; else \
+		docker build -f "$(dir $(MAKEFILE_LIST))Dockerfile.ci" . --no-cache --tag "$(CI_TAG):$(OCAML_VERSION)" --build-arg OCAML_VERSION=$(OCAML_VERSION) --build-arg PACKAGES="$(PACKAGES)"; fi
 
 image/%:
 	if test -e Dockerfile.$*; then cat Dockerfile.$* >> "$(dir $(MAKEFILE_LIST))Dockerfile.$*"; fi
