@@ -12,7 +12,7 @@ certify/server/%: ca/%/key.pem
 
 certify/client/%: ca/%/key.pem
 	openssl req -subj "/CN=$(*)" -sha256 -new -key ca/$(*)/key.pem -out ca/$(*)/client.csr
-	echo "extendedKeyUsage = clientAuth" >> ca/$(*)/extfile.cnf
+	echo "extendedKeyUsage = clientAuth" > ca/$(*)/extfile.cnf
 	openssl x509 -req -days 365 -sha256 -in ca/$(*)/client.csr -CA ca/ca.pem -CAkey ca/ca-key.pem -CAcreateserial -out ca/$(*)/cert.pem -extfile ca/$(*)/extfile.cnf
 
 env/%: env/%/terraform env/%/swarm env/%/certification
