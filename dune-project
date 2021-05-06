@@ -19,6 +19,7 @@
  (synopsis "Time library")
  (depends
   acid
+  (alcotest :with-test)
   fmt
   js_of_ocaml
   js_of_ocaml-ppx
