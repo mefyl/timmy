@@ -1,0 +1,2 @@
+include:
+  - local: '/.logistic/ci/.gitlab-ci.yml'
