@@ -1,0 +1,11 @@
+server {
+        listen 10.10.10.0:8080 default_server;
+
+        location = /health {
+                proxy_pass                      https://0.0.0.0:2376/services;
+                proxy_ssl_certificate           /etc/nginx/cert.pem;
+                proxy_ssl_certificate_key       /etc/nginx/key.pem;
+                subs_filter_types               application/json;
+                subs_filter "{.*}" "" rg;
+        }
+}
