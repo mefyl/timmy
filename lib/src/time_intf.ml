@@ -26,4 +26,6 @@ module type Interface = sig
   include module type of O
 
   val pp : Formatter.t -> t -> unit
+
+  val to_string : t -> string
 end

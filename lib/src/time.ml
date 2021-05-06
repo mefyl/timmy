@@ -26,4 +26,6 @@ let to_ptime t = t
 
 let pp = Ptime.pp
 
+let to_string = Fmt.to_to_string pp
+
 module O = Infix
