@@ -1,0 +1,11 @@
+(rule
+ (target timmy.%{version:timmy}.opam)
+ (deps
+  (:opam timmy.opam))
+ (action
+  (with-stdout-to
+   %{target}
+   (progn
+    (cat %{opam})
+    (echo
+     "url {\n  src: \"git://git@gitlab.routine.co:routine/timmy#%{version:timmy}\"\n}\n")))))
