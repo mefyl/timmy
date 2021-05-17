@@ -13,6 +13,8 @@ module type Interface = sig
 
   val of_ptime : Ptime.t -> t
 
+  val of_string : string -> (t, string) Result.t
+
   val to_ptime : t -> Ptime.t
 
   val compare : t -> t -> int

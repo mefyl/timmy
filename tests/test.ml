@@ -5,21 +5,35 @@ let ptime =
 
 let test_ptime = Alcotest.testable Ptime.pp Ptime.equal
 
+let time = Alcotest.testable Timmy.Time.pp Timmy.Time.( = )
+
 module Time = struct
-  let time = Timmy.Time.of_ptime ptime
+  let birthday = Timmy.Time.of_ptime ptime
 
   let ptime () =
-    Alcotest.check test_ptime "to_ptime" ptime (Timmy.Time.to_ptime time)
+    Alcotest.check test_ptime "to_ptime" ptime (Timmy.Time.to_ptime birthday)
+
+  let string () =
+    let check = Alcotest.(check (result time string)) in
+    let () =
+      check "conversion from valid string works" (Result.Ok birthday)
+        (Timmy.Time.of_string "1985-12-29T17:35:42.000+00:00")
+    and () =
+      check "parse errors are detected"
+        (Result.Error "invalid date: expected a character in: '-'")
+        (Timmy.Time.of_string "1985-12+29T17:35:42.000+00:00")
+    in
+    ()
 
   let pp () =
     let () =
       Alcotest.(
         check string "to_string" "1985-12-29 17:35:42 +00:00"
-          (Timmy.Time.to_string time))
+          (Timmy.Time.to_string birthday))
     and () =
       Alcotest.(
         check string "to_string" "1985-12-29 17:35:42 +00:00"
-          (Fmt.str "%a" Timmy.Time.pp time))
+          (Fmt.str "%a" Timmy.Time.pp birthday))
     in
     ()
 end
@@ -60,6 +74,7 @@ let () =
       [
         ( "time",
           [
+            test_case "string conversions" `Quick Time.string;
             test_case "ptime" `Quick Time.ptime;
             test_case "pretty-print" `Quick Time.pp;
           ] );

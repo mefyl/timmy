@@ -22,6 +22,12 @@ include Infix
 
 let of_ptime t = t
 
+let of_string s =
+  match Ptime.of_rfc3339 ~strict:true s with
+  | Result.Ok (time, _, _) -> Result.Ok time
+  | Result.Error (`RFC3339 (_, e)) ->
+    Result.fail Fmt.(str "invalid date: %a" Ptime.pp_rfc3339_error e)
+
 let to_ptime t = t
 
 let pp = Ptime.pp
