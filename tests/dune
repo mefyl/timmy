@@ -1,3 +1,5 @@
 (test
  (name test)
- (libraries acid alcotest ptime timmy))
+ (libraries acid alcotest ptime timmy)
+ (preprocess
+  (pps ppx_here)))
