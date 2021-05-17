@@ -35,10 +35,7 @@ module T = struct
 
   let schema =
     let open Schematic.Schema in
-    {
-      id = Some "date";
-      descriptor = Map (of_tuple_exn ~here:[%here], to_tuple, Date);
-    }
+    { id = Some "date"; descriptor = Map (of_tuple, to_tuple, Date) }
 
   let to_sexp { year; month; day } = to_sexp_tuple (year, month, day)
 
