@@ -17,6 +17,8 @@ module type Interface = sig
 
   val to_sexp : t -> Sexp.t
 
+  val of_string : string -> (t, string) Result.t
+
   val of_tuple : int * int * int -> (t, string) Result.t
 
   val of_tuple_exn : here:Source_code_position.t -> int * int * int -> t

@@ -22,10 +22,24 @@ module T = struct
         Sexp.Atom (Int.to_string d);
       ]
 
+  let int_of_string msg s =
+    try Result.return @@ Int.of_string s with
+    | _ -> Result.failf "invalid %s: %s" msg s
+
   let of_tuple ((year, month, day) as date) =
     match Ptime.of_date date with
     | Some _ -> Result.Ok { year; month; day }
     | None -> Result.Error (Fmt.str "invalid date: %a" pp { year; month; day })
+
+  let of_string s =
+    match String.split ~on:'-' s with
+    | [ y; m; d ] ->
+      let open Let.Syntax2 (Result) in
+      let* y = int_of_string "year" y
+      and* m = int_of_string "month" m
+      and* d = int_of_string "day" d in
+      of_tuple (y, m, d)
+    | _ -> Result.fail Fmt.(str "invalid date: %s" s)
 
   let of_tuple_exn ~here date =
     match of_tuple date with

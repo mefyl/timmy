@@ -5,8 +5,6 @@ let ptime =
 
 let test_ptime = Alcotest.testable Ptime.pp Ptime.equal
 
-let test_time = Alcotest.testable Timmy.Time.pp Timmy.Time.( = )
-
 module Time = struct
   let time = Timmy.Time.of_ptime ptime
 
@@ -26,6 +24,36 @@ module Time = struct
     ()
 end
 
+let date = Alcotest.testable Timmy.Date.pp Timmy.Date.( = )
+
+module Date = struct
+  let birthday = Timmy.Date.of_tuple_exn ~here:[%here] (1985, 12, 29)
+
+  let string () =
+    let check = Alcotest.(check (result date string)) in
+    let () =
+      check "conversion from valid string works" (Result.Ok birthday)
+        (Timmy.Date.of_string "1985-12-29")
+    and () =
+      check "parse errors are detected" (Result.Error "invalid date: 1985-12")
+        (Timmy.Date.of_string "1985-12")
+    and () =
+      check "non-integer is rejected" (Result.Error "invalid year: 198S")
+        (Timmy.Date.of_string "198S-12-29")
+    and () =
+      check "non-integer is rejected" (Result.Error "invalid month: 1+2")
+        (Timmy.Date.of_string "1985-1+2-29")
+    and () =
+      check "non-integer is rejected" (Result.Error "invalid day: 2a")
+        (Timmy.Date.of_string "1985-12-2a")
+    and () =
+      check "invalid calendar date is rejected"
+        (Result.Error "invalid date: 1985-11-31")
+        (Timmy.Date.of_string "1985-11-31")
+    in
+    ()
+end
+
 let () =
   Alcotest.(
     run "Timmy"
@@ -35,4 +63,5 @@ let () =
             test_case "ptime" `Quick Time.ptime;
             test_case "pretty-print" `Quick Time.pp;
           ] );
+        ("date", [ test_case "string conversions" `Quick Date.string ]);
       ])
