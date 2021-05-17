@@ -26,5 +26,7 @@
   js_of_ocaml
   js_of_ocaml-ppx
   ptime
-  schematic
-  schematic-jsoo))
+  (schematic
+   (= 0.4.0))
+  (schematic-jsoo
+   (= 0.4.0))))
