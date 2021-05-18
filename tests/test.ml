@@ -68,6 +68,48 @@ module Date = struct
     ()
 end
 
+module Weekday = struct
+  let int () =
+    let () =
+      Alcotest.(
+        check int "Monday is converted correctly" 0 (Timmy.Weekday.to_int `Mon))
+    and () =
+      Alcotest.(
+        check int "Tuesday is converted correctly" 1 (Timmy.Weekday.to_int `Tue))
+    and () =
+      Alcotest.(
+        check int "Wednesday is converted correctly" 2
+          (Timmy.Weekday.to_int `Wed))
+    and () =
+      Alcotest.(
+        check int "Thursday is converted correctly" 3
+          (Timmy.Weekday.to_int `Thu))
+    and () =
+      Alcotest.(
+        check int "Friday is converted correctly" 4 (Timmy.Weekday.to_int `Fri))
+    and () =
+      Alcotest.(
+        check int "Saturday is converted correctly" 5
+          (Timmy.Weekday.to_int `Sat))
+    and () =
+      Alcotest.(
+        check int "Sunday is converted correctly" 6 (Timmy.Weekday.to_int `Sun))
+    and () =
+      Alcotest.(
+        check int "conversions with a base in the future works" 3
+          (Timmy.Weekday.to_int ~base:`Sat `Tue))
+    and () =
+      Alcotest.(
+        check int "conversions with a base the same day works" 0
+          (Timmy.Weekday.to_int ~base:`Sun `Sun))
+    and () =
+      Alcotest.(
+        check int "conversions with a base in the past works" 1
+          (Timmy.Weekday.to_int ~base:`Sat `Sun))
+    in
+    ()
+end
+
 let () =
   Alcotest.(
     run "Timmy"
@@ -79,4 +121,5 @@ let () =
             test_case "pretty-print" `Quick Time.pp;
           ] );
         ("date", [ test_case "string conversions" `Quick Date.string ]);
+        ("weekday", [ test_case "int conversions" `Quick Weekday.int ]);
       ])
