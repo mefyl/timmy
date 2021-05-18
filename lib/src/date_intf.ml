@@ -13,6 +13,8 @@ module type Interface = sig
 
   val make : year:int -> month:int -> day:int -> (t, string) Result.t
 
+  val add_days : t -> int -> t
+
   val to_tuple : t -> int * int * int
 
   val to_sexp : t -> Sexp.t

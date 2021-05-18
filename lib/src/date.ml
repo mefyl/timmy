@@ -61,7 +61,7 @@ end
 include T
 
 (* Shamelessly stolen from ptime *)
-let _jd_to_date jd =
+let jd_to_date jd =
   let a = jd + 32044 in
   let b = ((4 * a) + 3) / 146097 in
   let c = a - (146097 * b / 4) in
@@ -71,10 +71,10 @@ let _jd_to_date jd =
   let day = e - (((153 * m) + 2) / 5) + 1 in
   let month = m + 3 - (12 * (m / 10)) in
   let year = (100 * b) + d - 4800 + (m / 10) in
-  (year, month, day)
+  { year; month; day }
 
 (* Shamelessly stolen from ptime *)
-let jd_of_date (year, month, day) =
+let jd_of_date { year; month; day } =
   let a = (14 - month) / 12 in
   let y = year + 4800 - a in
   let m = month + (12 * a) - 3 in
@@ -82,13 +82,14 @@ let jd_of_date (year, month, day) =
   + (((153 * m) + 2) / 5)
   + (365 * y) + (y / 4) - (y / 100) + (y / 400) - 32045
 
+let add_days date days = jd_to_date @@ (jd_of_date date + days)
+
 module O = struct
   include Base.Comparable.Make (T)
 
   let ( - ) l r =
     Option.value_exn ~here:[%here]
-      (Ptime.Span.of_d_ps
-         (jd_of_date (to_tuple l) - jd_of_date (to_tuple r), 0L))
+      (Ptime.Span.of_d_ps (jd_of_date l - jd_of_date r, 0L))
     |> Span.of_ptime
 end
 
