@@ -66,6 +66,24 @@ module Date = struct
         (Timmy.Date.of_string "1985-11-31")
     in
     ()
+
+  let arithmetics () =
+    let check name exp eff =
+      Alcotest.(check date) name (Timmy.Date.of_tuple_exn ~here:[%here] exp) eff
+    in
+    let () =
+      check "adding days works" (1985, 12, 30) @@ Timmy.Date.add_days birthday 1
+    and () =
+      check "substracting days works" (1985, 12, 28)
+      @@ Timmy.Date.add_days birthday (-1)
+    and () =
+      check "adding days works accross years boundaries" (1986, 1, 1)
+      @@ Timmy.Date.add_days birthday 3
+    and () =
+      check "substracting days works accross month boundaries" (1985, 11, 29)
+      @@ Timmy.Date.add_days birthday (-30)
+    in
+    ()
 end
 
 module Weekday = struct
@@ -120,6 +138,10 @@ let () =
             test_case "ptime" `Quick Time.ptime;
             test_case "pretty-print" `Quick Time.pp;
           ] );
-        ("date", [ test_case "string conversions" `Quick Date.string ]);
+        ( "date",
+          [
+            test_case "string conversions" `Quick Date.string;
+            test_case "arithmetics" `Quick Date.arithmetics;
+          ] );
         ("weekday", [ test_case "int conversions" `Quick Weekday.int ]);
       ])
