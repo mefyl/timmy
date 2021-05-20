@@ -17,7 +17,7 @@ module type Interface = sig
 
   val to_ptime : t -> Ptime.t
 
-  val compare : t -> t -> int
+  include Base.Comparable.S with type t := t
 
   module O : sig
     include Comparable.Infix with type t := t
