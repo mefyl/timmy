@@ -48,8 +48,7 @@ module T = struct
     | Result.Ok d -> d
 
   let schema =
-    let open Schematic.Schema in
-    { id = Some "date"; descriptor = Map (of_tuple, to_tuple, Date) }
+    Schematic.Schema.(make ~id:"date" (Map (of_tuple, to_tuple, Date)))
 
   let to_sexp { year; month; day } = to_sexp_tuple (year, month, day)
 
