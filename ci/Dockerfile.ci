@@ -1,8 +1,4 @@
-FROM alpine:3.12.7 AS opam-base
-# Ocaml is broken in alpine 3.13:
-# | ERROR: unable to select packages:
-# |   so:libbfd-2.35.1.so (no such package):
-# |     required by: ocaml-4.08.1-r5[so:libbfd-2.35.1.so]
+FROM alpine:3.13.5 AS opam-base
 
 RUN apk add --no-cache coreutils docker-cli gcc git m4 make musl-dev opam perl pkgconfig openssh
 ARG OCAML_VERSION
