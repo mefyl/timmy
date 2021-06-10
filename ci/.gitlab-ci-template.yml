@@ -29,14 +29,8 @@ variables:
   stage: environment
   image: registry.gitlab.routine.co/routine/logistic/ci-builder
   script:
-    - |
-      make -f .logistic/ci/Makefile ci/image                            \
-      OCAML_VERSION=$OCAML_VERSION                                      \
-      PACKAGES="$PACKAGES"
+    - make -f .logistic/ci/Makefile ci/image
     - docker push "$IMAGE_CI:$OCAML_VERSION"
-  cache:
-    paths:
-      - ~/.opam/download-cache
   variables:
     OCAML_VERSION: "4.12.0"
 
