@@ -27,11 +27,20 @@ ci/image:
 	if test -e Dockerfile.ci; then cat Dockerfile.ci >> "$(dir $(MAKEFILE_LIST))Dockerfile.ci"; fi
 	if test -z "$$FROM_SCRATCH"; then \
 		if docker pull "$(IMAGE_CI):$(OCAML_VERSION)"; then \
-			echo "using remote $(CI_COMMIT_REF_NAME) cache"; docker build -f "$(dir $(MAKEFILE_LIST))Dockerfile.ci" . --tag "$(IMAGE_CI):$(OCAML_VERSION)" --cache-from "$(IMAGE_CI):$(OCAML_VERSION)" --build-arg OCAML_VERSION=$(OCAML_VERSION) --build-arg PACKAGES="$(PACKAGES)"; \
+			echo "using remote $(CI_COMMIT_REF_NAME) cache";  \
+	                CACHE='--cache-from "$(IMAGE_CI):$(OCAML_VERSION)"' ; \
 		elif docker pull "$(IMAGE_CI_MASTER):$(OCAML_VERSION)"; then \
-			echo "using remote master cache"; docker build -f "$(dir $(MAKEFILE_LIST))Dockerfile.ci" . --tag "$(IMAGE_CI):$(OCAML_VERSION)" --cache-from "$(IMAGE_CI_MASTER):$(OCAML_VERSION)" --build-arg OCAML_VERSION=$(OCAML_VERSION) --build-arg PACKAGES="$(PACKAGES)"; else \
-			echo "using local cache"; docker build -f "$(dir $(MAKEFILE_LIST))Dockerfile.ci" . --tag "$(IMAGE_CI):$(OCAML_VERSION)" --build-arg OCAML_VERSION=$(OCAML_VERSION) --build-arg PACKAGES="$(PACKAGES)"; fi; else \
-		echo "building from scratch"; docker build -f "$(dir $(MAKEFILE_LIST))Dockerfile.ci" . --no-cache --tag "$(IMAGE_CI):$(OCAML_VERSION)" --build-arg OCAML_VERSION=$(OCAML_VERSION) --build-arg PACKAGES="$(PACKAGES)"; fi
+			echo "using remote master cache"; \
+			CACHE='--cache-from "$(IMAGE_CI_MASTER):$(OCAML_VERSION)"'; \
+		else \
+			echo "using local cache"; \
+			CACHE=''; \
+	        fi; \
+	else \
+		echo "building from scratch"; \
+		CACHE='--no-cache'; \
+	fi; \
+	docker build -f "$(dir $(MAKEFILE_LIST))Dockerfile.ci" . --tag "$(IMAGE_CI):$(OCAML_VERSION)" --build-arg OCAML_VERSION=$(OCAML_VERSION) --build-arg PACKAGES="$(PACKAGES)" --build-arg AWS_SECRET_ACCESS_KEY="$(AWS_SECRET_ACCESS_KEY)" $$CACHE
 
 image/%:
 	if test -e Dockerfile.$*; then cat Dockerfile.$* >> "$(dir $(MAKEFILE_LIST))Dockerfile.$*"; fi
