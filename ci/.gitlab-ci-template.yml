@@ -14,6 +14,9 @@ variables:
   IMAGE_CI_MASTER: "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/ci/master"
   IMAGE: "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME"
   SLUG: "$CI_COMMIT_REF_SLUG"
+  FROM_SCRATCH:
+    value: ""
+    description: "Rebuild Docker images from scratch if not empty"
 
 .docker:
   image: registry.gitlab.routine.co/routine/logistic/ci-builder
