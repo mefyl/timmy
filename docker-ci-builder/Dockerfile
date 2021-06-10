@@ -1,3 +1,3 @@
 FROM alpine
 
-RUN apk add --no-cache docker-cli git make
+RUN apk add --no-cache curl docker-cli git make
