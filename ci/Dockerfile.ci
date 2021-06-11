@@ -2,7 +2,7 @@ FROM alpine:3.13.5 AS opam-base
 
 RUN apk add --no-cache coreutils docker-cli gcc git m4 make musl-dev opam perl pkgconfig openssh rclone
 ARG OCAML_VERSION
-RUN opam init  --compiler="$OCAML_VERSION" --disable-sandboxing --dot-profile=/etc/profile.d/opam.sh --shell-setup --verbose --yes
+RUN opam init  --compiler="$OCAML_VERSION" --disable-sandboxing --dot-profile=/etc/profile.d/opam.sh --shell-setup --verbose --yes && opam clean -a -c -s --logs -r && rm -rf /root/.opam/4.12.0/bin/*.byte
 RUN opam config set jobs $(nproc)
 RUN chmod a+x /root
 # ENV DUNE_CACHE=enabled
