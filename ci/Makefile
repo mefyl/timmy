@@ -1,3 +1,6 @@
+OCAML_VERSION ?= $(shell ocamlc --version)
+IMAGE_CI ?= front/ci
+
 build: lint
 	dune subst
 	dune build
