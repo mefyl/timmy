@@ -13,6 +13,8 @@ module type Interface = sig
 
   val of_ptime : Ptime.t -> t
 
+  val of_rfc3339 : string -> (t, string) Result.t
+
   val of_string : string -> (t, string) Result.t
 
   val to_ptime : t -> Ptime.t
@@ -30,4 +32,6 @@ module type Interface = sig
   val pp : Formatter.t -> t -> unit
 
   val to_string : t -> string
+
+  val to_rfc3339 : t -> string
 end

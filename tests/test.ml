@@ -17,11 +17,11 @@ module Time = struct
     let check = Alcotest.(check (result time string)) in
     let () =
       check "conversion from valid string works" (Result.Ok birthday)
-        (Timmy.Time.of_string "1985-12-29T17:35:42.000+00:00")
+        (Timmy.Time.of_rfc3339 "1985-12-29T17:35:42.000+00:00")
     and () =
       check "parse errors are detected"
         (Result.Error "invalid date: expected a character in: '-'")
-        (Timmy.Time.of_string "1985-12+29T17:35:42.000+00:00")
+        (Timmy.Time.of_rfc3339 "1985-12+29T17:35:42.000+00:00")
     in
     ()
 
