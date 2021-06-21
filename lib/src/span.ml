@@ -10,7 +10,13 @@ module T = struct
 end
 
 include T
-module O = Comparable.Make (T)
+
+module O = struct
+  include Comparable.Make (T)
+
+  let ( ~- ) = Ptime.Span.neg
+end
+
 include O
 
 let seconds s = Ptime.Span.of_int_s s
