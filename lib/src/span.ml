@@ -19,6 +19,8 @@ end
 
 include O
 
+let days s = Option.value_exn ~here:[%here] (Ptime.Span.of_d_ps (s, 0L))
+
 let seconds s = Ptime.Span.of_int_s s
 
 let to_days s = Ptime.Span.to_d_ps s |> fst
