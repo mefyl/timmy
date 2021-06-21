@@ -24,6 +24,8 @@ module type Interface = sig
   module O : sig
     include Comparable.Infix with type t := t
 
+    val ( + ) : t -> Span.t -> t
+
     val ( - ) : t -> t -> Span.t
   end
 
