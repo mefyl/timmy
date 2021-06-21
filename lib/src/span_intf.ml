@@ -9,7 +9,11 @@ module type Interface = sig
 
   val to_seconds : t -> int
 
-  module O : Comparable.Infix with type t := t
+  module O : sig
+    include Comparable.Infix with type t := t
+
+    val ( ~- ) : t -> t
+  end
 
   include Comparable.S with type t := t
 
