@@ -83,6 +83,21 @@ let jd_of_date { year; month; day } =
 
 let add_days date days = jd_to_date @@ (jd_of_date date + days)
 
+(* Shamelessly stolen from ptime, which does not intend on exposing it publicly *)
+let max_month_day =
+  (* max day number in a given year's month. *)
+  let is_leap_year y =
+    Int.rem y 4 = 0 && (Int.rem y 100 <> 0 || Int.rem y 400 = 0)
+  in
+  let mlen =
+    [| 31; 28 (* or not *); 31; 30; 31; 30; 31; 31; 30; 31; 30; 31 |]
+  in
+  fun y m ->
+    if m = 2 && is_leap_year y then
+      29
+    else
+      mlen.(m - 1)
+
 module O = struct
   include Base.Comparable.Make (T)
 
@@ -91,8 +106,6 @@ module O = struct
       (Ptime.Span.of_d_ps (jd_of_date l - jd_of_date r, 0L))
     |> Span.of_ptime
 end
-
-include O
 
 (* let tz_offset_s =
  *   let minutes =
@@ -106,6 +119,32 @@ include O
  *        (Ptime.of_date_time (to_tuple d, ((0, 0, 0), tz_offset_s))) *)
 
 let make ~year ~month ~day = of_tuple (year, month, day)
+
+let make_overflow ?(day_truncate = false) ~year ~month ~day () =
+  let open Base.Int in
+  let adjust_month year month =
+    (year + ((month - 1) /% 12), ((month - 1) % 12) + 1)
+  in
+  let year, month = adjust_month year month in
+  if day_truncate then
+    { year; month; day = max 1 @@ min day (max_month_day year month) }
+  else
+    let rec adjust year month day =
+      if day <= 0 then
+        let year, month = adjust_month year (month - 1) in
+        let offset = max_month_day year month in
+        adjust year month (day + offset)
+      else
+        let max = max_month_day year month in
+        if day <= max then
+          { year; month; day }
+        else
+          let year, month = adjust_month year (month + 1) in
+          adjust year month (day - max)
+    in
+    adjust year month day
+
+include O
 
 let of_time ~timezone t =
   of_tuple_exn ~here:[%here]
