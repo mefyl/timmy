@@ -17,6 +17,8 @@ let seconds s = Ptime.Span.of_int_s s
 
 let to_days s = Ptime.Span.to_d_ps s |> fst
 
+let to_seconds s = Option.value_exn ~here:[%here] (Ptime.Span.to_int_s s)
+
 let of_ptime s = s
 
 let to_ptime s = s
