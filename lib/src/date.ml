@@ -107,17 +107,6 @@ module O = struct
     |> Span.of_ptime
 end
 
-(* let tz_offset_s =
- *   let minutes =
- *     (new%js Js_of_ocaml.Js.date_now)##getTimezoneOffset |> Float.of_int
- *   in
- *   -60 * Float.to_int minutes
- *
- * let to_js d =
- *   Schematic_jsoo.Jsoo.js_of_ptime
- *   @@ Option.value_exn ~here:[%here]
- *        (Ptime.of_date_time (to_tuple d, ((0, 0, 0), tz_offset_s))) *)
-
 let make ~year ~month ~day = of_tuple (year, month, day)
 
 let make_overflow ?(day_truncate = false) ~year ~month ~day () =
