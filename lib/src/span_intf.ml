@@ -7,6 +7,8 @@ module type Interface = sig
 
   val to_days : t -> int
 
+  val to_seconds : t -> int
+
   module O : Comparable.Infix with type t := t
 
   include Comparable.S with type t := t
