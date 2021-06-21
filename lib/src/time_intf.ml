@@ -34,4 +34,6 @@ module type Interface = sig
   val to_string : t -> string
 
   val to_rfc3339 : t -> string
+
+  val epoch : t
 end

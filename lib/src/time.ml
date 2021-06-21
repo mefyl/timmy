@@ -38,4 +38,6 @@ let to_string = Fmt.to_to_string pp
 
 let to_rfc3339 t = Ptime.to_rfc3339 t
 
+let epoch = Ptime.epoch
+
 module O = Infix
