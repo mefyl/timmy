@@ -67,6 +67,42 @@ module Date = struct
     in
     ()
 
+  let overflow () =
+    let check name exp eff =
+      Alcotest.(check date) name (Timmy.Date.of_tuple_exn ~here:[%here] exp) eff
+    in
+    let () =
+      check "valid date is untouched" (1985, 12, 29)
+      @@ Timmy.Date.make_overflow ~year:1985 ~month:12 ~day:29 ()
+    and () =
+      check "months overflow" (1986, 01, 29)
+      @@ Timmy.Date.make_overflow ~year:1985 ~month:13 ~day:29 ()
+    and () =
+      check "months underflow" (1984, 12, 29)
+      @@ Timmy.Date.make_overflow ~year:1985 ~month:0 ~day:29 ()
+    and () =
+      check "days overflow" (1985, 3, 1)
+      @@ Timmy.Date.make_overflow ~year:1985 ~month:2 ~day:29 ()
+    and () =
+      check "days underflow" (1985, 2, 28)
+      @@ Timmy.Date.make_overflow ~year:1985 ~month:3 ~day:0 ()
+    and () =
+      check "days trucate down" (1985, 2, 28)
+      @@ Timmy.Date.make_overflow ~day_truncate:true ~year:1985 ~month:2 ~day:29
+           ()
+    and () =
+      check "days truncate up" (1985, 3, 1)
+      @@ Timmy.Date.make_overflow ~day_truncate:true ~year:1985 ~month:3 ~day:0
+           ()
+    and () =
+      check "days overflow across months and years" (1986, 1, 1)
+      @@ Timmy.Date.make_overflow ~year:1985 ~month:11 ~day:62 ()
+    and () =
+      check "days underflow across months and years" (1984, 12, 31)
+      @@ Timmy.Date.make_overflow ~year:1985 ~month:3 ~day:(-59) ()
+    in
+    ()
+
   let arithmetics () =
     let check name exp eff =
       Alcotest.(check date) name (Timmy.Date.of_tuple_exn ~here:[%here] exp) eff
@@ -142,6 +178,7 @@ let () =
           [
             test_case "string conversions" `Quick Date.string;
             test_case "arithmetics" `Quick Date.arithmetics;
+            test_case "overflow" `Quick Date.overflow;
           ] );
         ("weekday", [ test_case "int conversions" `Quick Weekday.int ]);
       ])
