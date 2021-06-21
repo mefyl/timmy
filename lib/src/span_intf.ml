@@ -3,6 +3,8 @@ open Base
 module type Interface = sig
   type t
 
+  val days : int -> t
+
   val seconds : int -> t
 
   val to_days : t -> int
