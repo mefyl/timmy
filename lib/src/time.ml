@@ -14,6 +14,9 @@ end
 module Infix = struct
   include Comparable.Make (T)
 
+  let ( + ) t span =
+    Option.value_exn ~here:[%here] (Ptime.add_span t @@ Span.to_ptime span)
+
   let ( - ) l r = Ptime.diff l r |> Span.of_ptime
 end
 

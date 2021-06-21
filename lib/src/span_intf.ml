@@ -12,4 +12,6 @@ module type Interface = sig
   include Comparable.S with type t := t
 
   val of_ptime : Ptime.Span.t -> t
+
+  val to_ptime : t -> Ptime.Span.t
 end
