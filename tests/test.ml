@@ -67,10 +67,10 @@ module Date = struct
     in
     ()
 
+  let check name exp eff =
+    Alcotest.(check date) name (Timmy.Date.of_tuple_exn ~here:[%here] exp) eff
+
   let overflow () =
-    let check name exp eff =
-      Alcotest.(check date) name (Timmy.Date.of_tuple_exn ~here:[%here] exp) eff
-    in
     let () =
       check "valid date is untouched" (1985, 12, 29)
       @@ Timmy.Date.make_overflow ~year:1985 ~month:12 ~day:29 ()
@@ -104,9 +104,6 @@ module Date = struct
     ()
 
   let arithmetics () =
-    let check name exp eff =
-      Alcotest.(check date) name (Timmy.Date.of_tuple_exn ~here:[%here] exp) eff
-    in
     let () =
       check "adding days works" (1985, 12, 30) @@ Timmy.Date.add_days birthday 1
     and () =
@@ -118,6 +115,24 @@ module Date = struct
     and () =
       check "substracting days works accross month boundaries" (1985, 11, 29)
       @@ Timmy.Date.add_days birthday (-30)
+    in
+    ()
+
+  let of_time () =
+    let birthday = Timmy.Time.of_ptime ptime in
+    let () =
+      check "from time" (1985, 12, 29)
+      @@ Timmy.Date.of_time ~timezone:Timmy.Timezone.utc birthday
+    and () =
+      check "from time with timezone" (1985, 12, 29)
+      @@ Timmy.Date.of_time
+           ~timezone:(Timmy.Timezone.of_gmt_offset_seconds @@ (60 * 60 * 2))
+           birthday
+    and () =
+      check "from time with timezone across day" (1985, 12, 30)
+      @@ Timmy.Date.of_time
+           ~timezone:(Timmy.Timezone.of_gmt_offset_seconds @@ (60 * 60 * 7))
+           birthday
     in
     ()
 end
@@ -178,6 +193,7 @@ let () =
           [
             test_case "string conversions" `Quick Date.string;
             test_case "arithmetics" `Quick Date.arithmetics;
+            test_case "time conversion" `Quick Date.of_time;
             test_case "overflow" `Quick Date.overflow;
           ] );
         ("weekday", [ test_case "int conversions" `Quick Weekday.int ]);
