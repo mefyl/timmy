@@ -9,31 +9,27 @@ before_script:
   - which docker && echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" --username "$CI_REGISTRY_USER" --password-stdin
 
 variables:
-  REGISTRY: "$CI_REGISTRY"
-  NAMESPACE: "$CI_PROJECT_NAMESPACE"
-  PROJECT: "$CI_PROJECT_NAME"
   BRANCH: "$CI_COMMIT_REF_NAME"
+  IMAGE_CI: "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/ci/$CI_COMMIT_REF_SLUG"
+  IMAGE_CI_MASTER: "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/ci/master"
+  IMAGE: "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME"
   SLUG: "$CI_COMMIT_REF_SLUG"
+  FROM_SCRATCH:
+    value: ""
+    description: "Rebuild Docker images from scratch if not empty"
 
 .docker:
   image: registry.gitlab.routine.co/routine/logistic/ci-builder
 
 .ocaml:
-  image: $CI_REGISTRY_IMAGE/ci:$OCAML_VERSION
+  image: $IMAGE_CI:$OCAML_VERSION
 
 .ocaml-build-image:
   extends: .docker
   stage: environment
-  image: registry.gitlab.routine.co/routine/logistic/ci-builder
   script:
-    - |
-      make -f .logistic/ci/Makefile ci/image                            \
-      OCAML_VERSION=$OCAML_VERSION                                      \
-      PACKAGES="$PACKAGES"
-    - docker push "$CI_REGISTRY_IMAGE/ci:$OCAML_VERSION"
-  cache:
-    paths:
-      - ~/.opam/download-cache
+    - make -f .logistic/ci/Makefile ci/image
+    - docker push "$IMAGE_CI:$OCAML_VERSION"
   variables:
     OCAML_VERSION: "4.12.0"
 
@@ -69,5 +65,15 @@ variables:
   artifacts:
     reports:
       metrics: metrics.txt
+  variables:
+    OCAML_VERSION: "4.12.0"
+
+.ocaml-opam:
+  extends: .ocaml
+  stage: package
+  script:
+    - make -f .logistic/ci/Makefile opam
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /[0-9]+\.[0-9]+\.[0-9]+/'
   variables:
     OCAML_VERSION: "4.12.0"

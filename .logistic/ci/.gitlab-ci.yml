@@ -24,3 +24,10 @@ package:
     - check
   needs:
     - check
+
+opam:
+  extends: .ocaml-opam
+  dependencies:
+    - check
+  needs:
+    - check
