@@ -7,6 +7,8 @@ let test_ptime = Alcotest.testable Ptime.pp Ptime.equal
 
 let time = Alcotest.testable Timmy.Time.pp Timmy.Time.( = )
 
+let daytime = Alcotest.testable Timmy.Daytime.pp Timmy.Daytime.( = )
+
 module Time = struct
   let birthday = Timmy.Time.of_ptime ptime
 
@@ -179,6 +181,34 @@ module Weekday = struct
     ()
 end
 
+module Daytime = struct
+  let birthday = Timmy.Time.of_ptime ptime
+
+  let check name (hours, minutes, seconds) eff =
+    Alcotest.(check daytime)
+      name
+      (Option.value_exn ~here:[%here]
+         (Result.to_option @@ Timmy.Daytime.make ~hours ~minutes ~seconds))
+      eff
+
+  let of_time () =
+    let () =
+      check "conversion from time" (17, 35, 42)
+      @@ Timmy.Daytime.of_time ~timezone:Timmy.Timezone.utc birthday
+    and () =
+      check "conversion from time with timezone" (19, 35, 42)
+      @@ Timmy.Daytime.of_time
+           ~timezone:(Timmy.Timezone.of_gmt_offset_seconds @@ (60 * 60 * 2))
+           birthday
+    and () =
+      check "conversion from time with timezone across day" (00, 35, 42)
+      @@ Timmy.Daytime.of_time
+           ~timezone:(Timmy.Timezone.of_gmt_offset_seconds @@ (60 * 60 * 7))
+           birthday
+    in
+    ()
+end
+
 let () =
   Alcotest.(
     run "Timmy"
@@ -196,5 +226,6 @@ let () =
             test_case "time conversion" `Quick Date.of_time;
             test_case "overflow" `Quick Date.overflow;
           ] );
+        ("daytime", [ test_case "time conversion" `Quick Daytime.of_time ]);
         ("weekday", [ test_case "int conversions" `Quick Weekday.int ]);
       ])
