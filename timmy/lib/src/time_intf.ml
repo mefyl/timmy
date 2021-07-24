@@ -3,11 +3,7 @@ open Base
 module type Interface = sig
   type t
 
-  type js = Js_of_ocaml.Js.date Js_of_ocaml.Js.t
-
-  (* val of_js : js -> (t, [> Schematic_jsoo.Jsoo.decode_error ]) Result.t
-   *
-   * val of_js_exn : js -> t *)
+  include module type of Type
 
   val schema : t Schematic.schema
 
