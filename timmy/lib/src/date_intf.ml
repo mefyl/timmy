@@ -7,9 +7,9 @@ module type Interface = sig
     year : int;
   }
 
-  val schema : t Schematic.schema
+  include module type of Type
 
-  type js = Js_of_ocaml.Js.date Js_of_ocaml.Js.t
+  val schema : t Schematic.schema
 
   val make : year:int -> month:int -> day:int -> (t, string) Result.t
 
@@ -27,8 +27,6 @@ module type Interface = sig
   val of_tuple : int * int * int -> (t, string) Result.t
 
   val of_tuple_exn : here:Source_code_position.t -> int * int * int -> t
-
-  (* val to_js : t -> Js_of_ocaml.Js.date Js_of_ocaml.Js.t *)
 
   val of_time : timezone:Timezone.t -> Time.t -> t
 

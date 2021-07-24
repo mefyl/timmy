@@ -8,8 +8,6 @@ module T = struct
     year : int;
   }
 
-  type js = Js_of_ocaml.Js.date Js_of_ocaml.Js.t
-
   let pp fmt { day; month; year } = Fmt.pf fmt "%04i-%02i-%02i" year month day
 
   let to_tuple { day; month; year } = (year, month, day)
@@ -57,6 +55,7 @@ module T = struct
   let sexp_of_t = to_sexp
 end
 
+include Type
 include T
 
 (* Shamelessly stolen from ptime *)

@@ -23,10 +23,7 @@
   acid
   (alcotest :with-test)
   fmt
-  js_of_ocaml
-  js_of_ocaml-ppx
   ptime
   (schematic
-   (= 0.6.0))
-  (schematic-jsoo
-   (= 0.6.0))))
+   (= 0.6.0)))
+ (depopts js_of_ocaml))
