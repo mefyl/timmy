@@ -18,6 +18,8 @@ val make : hours:int -> minutes:int -> seconds:int -> (t, string) Result.t
 
 val to_tuple : t -> int * int * int
 
+val to_time : timezone:Timezone.t -> Date.t -> t -> Time.t
+
 val of_tuple : int * int * int -> (t, string) Result.t
 
 val of_tuple_exn : here:Source_code_position.t -> int * int * int -> t
