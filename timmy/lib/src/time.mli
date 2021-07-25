@@ -30,6 +30,6 @@ val pp : Formatter.t -> t -> unit
 
 val to_string : t -> string
 
-val to_rfc3339 : t -> string
+val to_rfc3339 : ?timezone:Timezone.t -> t -> string
 
 val epoch : t

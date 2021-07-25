@@ -9,21 +9,41 @@ let time = Alcotest.testable Timmy.Time.pp Timmy.Time.( = )
 
 let daytime = Alcotest.testable Timmy.Daytime.pp Timmy.Daytime.( = )
 
+let gmt_plus_2 = Timmy.Timezone.of_gmt_offset_seconds @@ (60 * 60 * 2)
+
+let gmt_plus_7 = Timmy.Timezone.of_gmt_offset_seconds @@ (60 * 60 * 7)
+
 module Time = struct
   let birthday = Timmy.Time.of_ptime ptime
 
   let ptime () =
     Alcotest.check test_ptime "to_ptime" ptime (Timmy.Time.to_ptime birthday)
 
-  let string () =
-    let check = Alcotest.(check (result time string)) in
+  let rfc3339 () =
     let () =
-      check "conversion from valid string works" (Result.Ok birthday)
-        (Timmy.Time.of_rfc3339 "1985-12-29T17:35:42.000+00:00")
+      let check = Alcotest.(check (result time string)) in
+      let () =
+        check "conversion from RFC3339 works" (Result.Ok birthday)
+          (Timmy.Time.of_rfc3339 "1985-12-29T17:35:42.000+00:00")
+      and () =
+        check "conversion from RFC3339 with timezone works" (Result.Ok birthday)
+          (Timmy.Time.of_rfc3339 "1985-12-29T19:35:42.000+02:00")
+      and () =
+        check "parse errors are detected"
+          (Result.Error "invalid date: expected a character in: '-'")
+          (Timmy.Time.of_rfc3339 "1985-12+29T17:35:42.000+00:00")
+      in
+      ()
     and () =
-      check "parse errors are detected"
-        (Result.Error "invalid date: expected a character in: '-'")
-        (Timmy.Time.of_rfc3339 "1985-12+29T17:35:42.000+00:00")
+      let check = Alcotest.(check string) in
+      let () =
+        check "conversion to RFC3339 works" "1985-12-29T17:35:42-00:00"
+          (Timmy.Time.to_rfc3339 birthday)
+      and () =
+        check "conversion to RFC3339 works" "1985-12-29T19:35:42+02:00"
+          (Timmy.Time.to_rfc3339 ~timezone:gmt_plus_2 birthday)
+      in
+      ()
     in
     ()
 
@@ -127,14 +147,10 @@ module Date = struct
       @@ Timmy.Date.of_time ~timezone:Timmy.Timezone.utc birthday
     and () =
       check "from time with timezone" (1985, 12, 29)
-      @@ Timmy.Date.of_time
-           ~timezone:(Timmy.Timezone.of_gmt_offset_seconds @@ (60 * 60 * 2))
-           birthday
+      @@ Timmy.Date.of_time ~timezone:gmt_plus_2 birthday
     and () =
       check "from time with timezone across day" (1985, 12, 30)
-      @@ Timmy.Date.of_time
-           ~timezone:(Timmy.Timezone.of_gmt_offset_seconds @@ (60 * 60 * 7))
-           birthday
+      @@ Timmy.Date.of_time ~timezone:gmt_plus_7 birthday
     in
     ()
 end
@@ -197,14 +213,10 @@ module Daytime = struct
       @@ Timmy.Daytime.of_time ~timezone:Timmy.Timezone.utc birthday
     and () =
       check "conversion from time with timezone" (19, 35, 42)
-      @@ Timmy.Daytime.of_time
-           ~timezone:(Timmy.Timezone.of_gmt_offset_seconds @@ (60 * 60 * 2))
-           birthday
+      @@ Timmy.Daytime.of_time ~timezone:gmt_plus_2 birthday
     and () =
       check "conversion from time with timezone across day" (00, 35, 42)
-      @@ Timmy.Daytime.of_time
-           ~timezone:(Timmy.Timezone.of_gmt_offset_seconds @@ (60 * 60 * 7))
-           birthday
+      @@ Timmy.Daytime.of_time ~timezone:gmt_plus_7 birthday
     in
     ()
 end
@@ -215,7 +227,7 @@ let () =
       [
         ( "time",
           [
-            test_case "string conversions" `Quick Time.string;
+            test_case "RFC3339 conversions" `Quick Time.rfc3339;
             test_case "ptime" `Quick Time.ptime;
             test_case "pretty-print" `Quick Time.pp;
           ] );
