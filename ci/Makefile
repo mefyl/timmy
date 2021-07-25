@@ -1,3 +1,5 @@
+MAKEFILE=$(abspath $(lastword $(MAKEFILE_LIST)))
+DIR=$(patsubst %/,%,$(dir $(MAKEFILE)))
 OCAML_VERSION ?= $(shell ocamlc --version)
 IMAGE_CI ?= front/ci
 
@@ -53,12 +55,4 @@ image/%:
 	docker build -f "$(dir $(MAKEFILE_LIST))Dockerfile.$*" . --tag "$(IMAGE)/$*" $$CACHE
 
 opam:
-	git clone --depth 1 git@gitlab.routine.co:routine/opam /tmp/opam
-	$(eval FILE := $(CI_PROJECT_NAME).$(CI_COMMIT_TAG))
-	$(eval PKG_PATH := /tmp/opam/packages/$(CI_PROJECT_NAME)/$(FILE))
-	dune build "$(FILE).opam"
-	mkdir -p "$(PKG_PATH)"
-	cp "_build/default/$(FILE).opam" "$(PKG_PATH)/opam"
-	git -C "/tmp/opam" add $(PKG_PATH)/opam
-	GIT_COMMITTER_EMAIL="$$(echo '$(CI_COMMIT_AUTHOR)' | sed 's/^.* <\(.*\)>$$/\1/')" GIT_COMMITTER_NAME="$$(echo '$(CI_COMMIT_AUTHOR)' | sed 's/ <.*>$$//')" git -C "/tmp/opam" commit --author="$(CI_COMMIT_AUTHOR)" --message="Add $(FILE)."
-	git -C "/tmp/opam" push
+	$(DIR)/opam-publish
