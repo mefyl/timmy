@@ -1,0 +1,8 @@
+(include_subdirs unqualified)
+
+(library
+ (name timmy_jsoo)
+ (public_name timmy-jsoo)
+ (libraries acid fmt timmy schematic)
+ (preprocess
+  (pps js_of_ocaml-ppx ppx_here)))

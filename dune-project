@@ -27,3 +27,15 @@
   (schematic
    (= 0.6.0)))
  (depopts js_of_ocaml))
+
+(package
+ (name timmy-jsoo)
+ (synopsis "Js_of_ocaml bindings for Timmy")
+ (depends
+  acid
+  (alcotest :with-test)
+  fmt
+  js_of_ocaml
+  js_of_ocaml-ppx
+  (timmy
+   (= :version))))
