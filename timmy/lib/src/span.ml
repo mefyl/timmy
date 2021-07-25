@@ -1,5 +1,4 @@
 open Base
-include Span_intf
 
 module T = struct
   type t = Ptime.Span.t

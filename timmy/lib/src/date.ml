@@ -1,5 +1,4 @@
 open Acid
-include Date_intf
 
 module T = struct
   type t = {

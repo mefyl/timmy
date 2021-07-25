@@ -1,5 +1,4 @@
 open Base
-include Time_intf
 
 module T = struct
   type t = Ptime.t [@@schematic.name "time"] [@@deriving schema]
