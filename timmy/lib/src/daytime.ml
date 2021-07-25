@@ -57,7 +57,18 @@ let of_time ~timezone t =
   in
   { hours; minutes; seconds }
 
+let pp f { hours; minutes; seconds } =
+  Fmt.pf f "%02i:%02i:%02i" hours minutes seconds
+
 let to_tuple { hours; minutes; seconds } = (hours, minutes, seconds)
+
+let to_time ~timezone date t =
+  match
+    Ptime.of_date_time
+      (Date.to_tuple date, (to_tuple t, Timezone.to_gmt_offset_seconds timezone))
+  with
+  | Some time -> Time.of_ptime time
+  | None -> Fmt.failwith "invalid date + daytime: %a %a" Date.pp date pp t
 
 let of_tuple (hours, minutes, seconds) = make ~hours ~minutes ~seconds
 
@@ -66,9 +77,6 @@ let of_tuple_exn ~here t =
   | Result.Ok r -> r
   | Result.Error _ ->
     Error.raise (Error.create ~here "invalid daytime" t T.sexp_of_tuple)
-
-let pp f { hours; minutes; seconds } =
-  Fmt.pf f "%02i:%02i:%02i" hours minutes seconds
 
 let with_daytime ~timezone daytime time =
   let date = Date.of_time ~timezone time in
