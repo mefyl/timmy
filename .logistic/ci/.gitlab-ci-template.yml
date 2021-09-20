@@ -10,8 +10,8 @@ before_script:
 
 variables:
   BRANCH: "$CI_COMMIT_REF_NAME"
-  IMAGE_CI: "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/ci/$CI_COMMIT_REF_SLUG"
-  IMAGE_CI_MASTER: "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/ci/master"
+  IMAGE_CI: "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/ci:$CI_COMMIT_REF_SLUG"
+  IMAGE_CI_MASTER: "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/ci:master"
   IMAGE: "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME"
   SLUG: "$CI_COMMIT_REF_SLUG"
   FROM_SCRATCH:
@@ -22,14 +22,14 @@ variables:
   image: registry.gitlab.routine.co/routine/logistic/ci-builder
 
 .ocaml:
-  image: $IMAGE_CI:$OCAML_VERSION
+  image: $IMAGE_CI
 
 .ocaml-build-image:
   extends: .docker
   stage: environment
   script:
     - make -f .logistic/ci/Makefile ci/image
-    - docker push "$IMAGE_CI:$OCAML_VERSION"
+    - docker push "$IMAGE_CI"
   variables:
     OCAML_VERSION: "4.12.0"
 
