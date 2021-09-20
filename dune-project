@@ -25,7 +25,7 @@
   fmt
   ptime
   (schematic
-   (= 0.6.0)))
+   (= 0.8.0)))
  (depopts js_of_ocaml))
 
 (package
