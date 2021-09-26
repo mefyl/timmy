@@ -20,19 +20,19 @@
  (name timmy)
  (synopsis "Time library")
  (depends
-  acid
+  (acid
+   (= 0.4.0))
   (alcotest :with-test)
   fmt
   ptime
   (schematic
-   (= 0.8.0)))
+   (= 0.9.0)))
  (depopts js_of_ocaml))
 
 (package
  (name timmy-jsoo)
  (synopsis "Js_of_ocaml bindings for Timmy")
  (depends
-  acid
   (alcotest :with-test)
   fmt
   js_of_ocaml
