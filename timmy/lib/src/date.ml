@@ -147,5 +147,12 @@ let to_time ~timezone t =
 
 let to_string = Fmt.to_to_string pp
 
-let weekday d =
-  Ptime.weekday @@ Time.to_ptime @@ to_time ~timezone:Timezone.utc d
+let weekday d : Weekday.t =
+  match Ptime.weekday @@ Time.to_ptime @@ to_time ~timezone:Timezone.utc d with
+  | `Mon -> Monday
+  | `Tue -> Tuesday
+  | `Wed -> Wednesday
+  | `Thu -> Thursday
+  | `Fri -> Friday
+  | `Sat -> Saturday
+  | `Sun -> Sunday
