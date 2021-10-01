@@ -159,40 +159,44 @@ module Weekday = struct
   let int () =
     let () =
       Alcotest.(
-        check int "Monday is converted correctly" 0 (Timmy.Weekday.to_int `Mon))
+        check int "Monday is converted correctly" 0
+          (Timmy.Weekday.to_int Monday))
     and () =
       Alcotest.(
-        check int "Tuesday is converted correctly" 1 (Timmy.Weekday.to_int `Tue))
+        check int "Tuesday is converted correctly" 1
+          (Timmy.Weekday.to_int Tuesday))
     and () =
       Alcotest.(
         check int "Wednesday is converted correctly" 2
-          (Timmy.Weekday.to_int `Wed))
+          (Timmy.Weekday.to_int Wednesday))
     and () =
       Alcotest.(
         check int "Thursday is converted correctly" 3
-          (Timmy.Weekday.to_int `Thu))
+          (Timmy.Weekday.to_int Thursday))
     and () =
       Alcotest.(
-        check int "Friday is converted correctly" 4 (Timmy.Weekday.to_int `Fri))
+        check int "Friday is converted correctly" 4
+          (Timmy.Weekday.to_int Friday))
     and () =
       Alcotest.(
         check int "Saturday is converted correctly" 5
-          (Timmy.Weekday.to_int `Sat))
+          (Timmy.Weekday.to_int Saturday))
     and () =
       Alcotest.(
-        check int "Sunday is converted correctly" 6 (Timmy.Weekday.to_int `Sun))
+        check int "Sunday is converted correctly" 6
+          (Timmy.Weekday.to_int Sunday))
     and () =
       Alcotest.(
         check int "conversions with a base in the future works" 3
-          (Timmy.Weekday.to_int ~base:`Sat `Tue))
+          (Timmy.Weekday.to_int ~base:Saturday Tuesday))
     and () =
       Alcotest.(
         check int "conversions with a base the same day works" 0
-          (Timmy.Weekday.to_int ~base:`Sun `Sun))
+          (Timmy.Weekday.to_int ~base:Sunday Sunday))
     and () =
       Alcotest.(
         check int "conversions with a base in the past works" 1
-          (Timmy.Weekday.to_int ~base:`Sat `Sun))
+          (Timmy.Weekday.to_int ~base:Saturday Sunday))
     in
     ()
 end
