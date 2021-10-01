@@ -1,3 +1,5 @@
+open Acid
+
 type t =
   | Monday
   | Tuesday
@@ -6,6 +8,7 @@ type t =
   | Friday
   | Saturday
   | Sunday
+[@@deriving schema]
 
 let to_int ?(base = Monday) weekday =
   let to_int = function
@@ -17,4 +20,4 @@ let to_int ?(base = Monday) weekday =
     | Saturday -> 5
     | Sunday -> 6
   in
-  (to_int weekday - to_int base + 7) mod 7
+  Int.rem (to_int weekday - to_int base + 7) 7
