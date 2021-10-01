@@ -2,7 +2,7 @@ open Acid
 
 type t = private {
   day : int;
-  month : int;
+  month : Month.t;
   year : int;
 }
 

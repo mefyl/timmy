@@ -3,13 +3,14 @@ open Acid
 module T = struct
   type t = {
     day : int;
-    month : int;
+    month : Month.t;
     year : int;
   }
 
-  let pp fmt { day; month; year } = Fmt.pf fmt "%04i-%02i-%02i" year month day
+  let pp fmt { day; month; year } =
+    Fmt.pf fmt "%04i-%02i-%02i" year (Month.to_int month) day
 
-  let to_tuple { day; month; year } = (year, month, day)
+  let to_tuple { day; month; year } = (year, Month.to_int month, day)
 
   let to_sexp_tuple (y, m, d) =
     Sexp.List
@@ -24,6 +25,8 @@ module T = struct
     | _ -> Result.failf "invalid %s: %s" msg s
 
   let of_tuple ((year, month, day) as date) =
+    let open Let.Syntax2 (Result) in
+    let* month = Month.of_int month in
     match Ptime.of_date date with
     | Some _ -> Result.Ok { year; month; day }
     | None -> Result.Error (Fmt.str "invalid date: %a" pp { year; month; day })
@@ -47,7 +50,7 @@ module T = struct
   let schema =
     Schematic.Schema.(make ~id:"date" (Map (of_tuple, to_tuple, Date)))
 
-  let to_sexp { year; month; day } = to_sexp_tuple (year, month, day)
+  let to_sexp date = to_sexp_tuple @@ to_tuple date
 
   let compare l r = Poly.compare (to_tuple l) (to_tuple r)
 
@@ -56,6 +59,11 @@ end
 
 include Type
 include T
+
+let month_of_int m =
+  match Month.of_int m with
+  | Result.Ok m -> m
+  | Result.Error e -> failwith e
 
 (* Shamelessly stolen from ptime *)
 let jd_to_date jd =
@@ -66,12 +74,13 @@ let jd_to_date jd =
   let e = c - (1461 * d / 4) in
   let m = ((5 * e) + 2) / 153 in
   let day = e - (((153 * m) + 2) / 5) + 1 in
-  let month = m + 3 - (12 * (m / 10)) in
+  let month = month_of_int (m + 3 - (12 * (m / 10))) in
   let year = (100 * b) + d - 4800 + (m / 10) in
   { year; month; day }
 
 (* Shamelessly stolen from ptime *)
 let jd_of_date { year; month; day } =
+  let month = Month.to_int month in
   let a = (14 - month) / 12 in
   let y = year + 4800 - a in
   let m = month + (12 * a) - 3 in
@@ -114,7 +123,11 @@ let make_overflow ?(day_truncate = false) ~year ~month ~day () =
   in
   let year, month = adjust_month year month in
   if day_truncate then
-    { year; month; day = max 1 @@ min day (max_month_day year month) }
+    {
+      year;
+      month = month_of_int month;
+      day = max 1 @@ min day (max_month_day year month);
+    }
   else
     let rec adjust year month day =
       if day <= 0 then
@@ -124,7 +137,7 @@ let make_overflow ?(day_truncate = false) ~year ~month ~day () =
       else
         let max = max_month_day year month in
         if day <= max then
-          { year; month; day }
+          { year; month = month_of_int month; day }
         else
           let year, month = adjust_month year (month + 1) in
           adjust year month (day - max)

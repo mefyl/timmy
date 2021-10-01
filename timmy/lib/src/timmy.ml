@@ -1,5 +1,6 @@
 module Date = Date
 module Daytime = Daytime
+module Month = Month
 module Span = Span
 module Time = Time
 module Timezone = Timezone
