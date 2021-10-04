@@ -50,7 +50,7 @@ module Time = struct
   let pp () =
     let () =
       Alcotest.(
-        check string "to_string" "1985-12-29 17:35:42 +00:00"
+        check string "to_string" "1985-12-29T17:35:42-00:00"
           (Timmy.Time.to_string birthday))
     and () =
       Alcotest.(

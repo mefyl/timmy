@@ -1,35 +1,74 @@
-open Base
+open Acid
 
+(** {1 Type} *)
+
+(** A point in time. *)
 type t
 
+(** @inline *)
 include module type of Type
 
+(** Time schema. *)
 val schema : t Schematic.schema
 
-val of_ptime : Ptime.t -> t
+(** {1 Construction} *)
 
-val of_rfc3339 : string -> (t, string) Result.t
+(** Timmy leaves the burden of determining the current time to {!Ptime_clock}.
+    Pick the right ptime.clock library for your platform and use
+    [Timmy.Time.of_ptime (Ptime_clock.now ())]. *)
 
-val of_string : string -> (t, string) Result.t
+(** {2 Well known values} *)
 
-val to_ptime : t -> Ptime.t
+(** [epoch] is January 1, 1970 00:00:00 UTC/GMT. *)
+val epoch : t
+
+(** {1 Time manipulation} *)
+
+(** {2 Comparison} *)
 
 include Base.Comparable.S with type t := t
 
+(** {2 Operators} *)
+
+(** Convenience module to only pull operators. *)
 module O : sig
   include Comparable.Infix with type t := t
 
+  (** [time + span] is the time point [span] after [time]. *)
   val ( + ) : t -> Span.t -> t
 
+  (** [end - start] is the duration elapsed from [start] to [end]. *)
   val ( - ) : t -> t -> Span.t
 end
 
 include module type of O
 
-val pp : Formatter.t -> t -> unit
+(** {1 Scalar conversions} *)
 
-val to_string : t -> string
+(** {2 Pretty-print} *)
 
+(** [pp f date] prints [date] to [f] in an unspecified, human readable format. *)
+val pp : t Fmt.t
+
+(** {2 String} *)
+
+(** [to_string time] is the RCF3339 representation of [time], eg. 2021-10-04. *)
+val to_string : ?timezone:Timezone.t -> t -> string
+
+(** [of_string s] is the time represented by [s] as per RCF3339 or a relevant
+    error message if it is invalid. *)
+val of_string : string -> (t, string) Result.t
+
+(** [of_rfc3339] is {!to_string}. *)
 val to_rfc3339 : ?timezone:Timezone.t -> t -> string
 
-val epoch : t
+(** [of_rfc3339] is {!of_string}. *)
+val of_rfc3339 : string -> (t, string) Result.t
+
+(** {2 Ptime} *)
+
+(** [of_ptime ptime] is the time equivalent to [ptime]. *)
+val of_ptime : Ptime.t -> t
+
+(** [to_ptime time] is the Ptime time equivalent to [time]. *)
+val to_ptime : t -> Ptime.t
