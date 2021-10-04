@@ -10,6 +10,8 @@ type t =
   | Sunday
 [@@deriving schema]
 
+let schema_string = schema
+
 let to_int ?(base = Monday) weekday =
   let to_int = function
     | Monday -> 0
