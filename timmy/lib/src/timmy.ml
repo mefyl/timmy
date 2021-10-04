@@ -1,9 +1,6 @@
-module Date = Date
-module Daytime = Daytime
-module Month = Month
-module Span = Span
-module Time = Time
-module Timezone = Timezone
-module Weekday = Weekday
+(** @inline *)
+include Versions.V0_10
 
-type date = Date.t [@@deriving schema]
+(** {1 Backward compatibility} *)
+
+module Versions = Versions
