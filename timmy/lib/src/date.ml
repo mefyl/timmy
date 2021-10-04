@@ -114,7 +114,9 @@ module O = struct
     |> Span.of_ptime
 end
 
-let make ~year ~month ~day = of_tuple (year, month, day)
+include O
+
+let make ~year ~month ~day = of_tuple (year, Month.to_int month, day)
 
 let make_overflow ?(day_truncate = false) ~year ~month ~day () =
   let open Base.Int in
@@ -143,8 +145,6 @@ let make_overflow ?(day_truncate = false) ~year ~month ~day () =
           adjust year month (day - max)
     in
     adjust year month day
-
-include O
 
 let of_time ~timezone t =
   of_tuple_exn ~here:[%here]
