@@ -1,6 +1,6 @@
 (** Backward compatibility versions *)
 
-module V0_10_0 = struct
+module V0_10_2 = struct
   (** {1 Data types} *)
 
   (** A day of a month of a year. *)
@@ -27,6 +27,14 @@ module V0_10_0 = struct
   (** {1 Type shortcuts} *)
 
   type date = Date.t [@@deriving schema]
+end
+
+module V0_10_0 = struct
+  (** @inline *)
+  include V0_10_2
+
+  (** A day of the week. *)
+  module Weekday : Weekday_intf.V0_10_0 = Weekday
 end
 
 module V0_10_1 = V0_10_0
