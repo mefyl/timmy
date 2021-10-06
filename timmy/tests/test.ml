@@ -199,6 +199,38 @@ module Weekday = struct
           (Timmy.Weekday.to_int ~base:Saturday Sunday))
     in
     ()
+
+  let pp () =
+    let () =
+      Alcotest.(
+        check string "Monday is converted correctly" "Monday"
+          (Fmt.str "%a" Timmy.Weekday.pp Monday))
+    and () =
+      Alcotest.(
+        check string "Tuesday is converted correctly" "Tuesday"
+          (Fmt.str "%a" Timmy.Weekday.pp Tuesday))
+    and () =
+      Alcotest.(
+        check string "Wednesday is converted correctly" "Wednesday"
+          (Fmt.str "%a" Timmy.Weekday.pp Wednesday))
+    and () =
+      Alcotest.(
+        check string "Thursday is converted correctly" "Thursday"
+          (Fmt.str "%a" Timmy.Weekday.pp Thursday))
+    and () =
+      Alcotest.(
+        check string "Friday is converted correctly" "Friday"
+          (Fmt.str "%a" Timmy.Weekday.pp Friday))
+    and () =
+      Alcotest.(
+        check string "Saturday is converted correctly" "Saturday"
+          (Fmt.str "%a" Timmy.Weekday.pp Saturday))
+    and () =
+      Alcotest.(
+        check string "Sunday is converted correctly" "Sunday"
+          (Fmt.str "%a" Timmy.Weekday.pp Sunday))
+    in
+    ()
 end
 
 module Daytime = struct
@@ -243,5 +275,9 @@ let () =
             test_case "overflow" `Quick Date.overflow;
           ] );
         ("daytime", [ test_case "time conversion" `Quick Daytime.of_time ]);
-        ("weekday", [ test_case "int conversions" `Quick Weekday.int ]);
+        ( "weekday",
+          [
+            test_case "int conversions" `Quick Weekday.int;
+            test_case "pretty printing" `Quick Weekday.pp;
+          ] );
       ])
