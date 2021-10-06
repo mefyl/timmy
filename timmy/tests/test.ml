@@ -257,6 +257,106 @@ module Daytime = struct
     ()
 end
 
+module Month = struct
+  let int () =
+    let () =
+      Alcotest.(
+        check int "January is converted correctly" 1
+          (Timmy.Month.to_int January))
+    and () =
+      Alcotest.(
+        check int "February is converted correctly" 2
+          (Timmy.Month.to_int February))
+    and () =
+      Alcotest.(
+        check int "March is converted correctly" 3 (Timmy.Month.to_int March))
+    and () =
+      Alcotest.(
+        check int "April is converted correctly" 4 (Timmy.Month.to_int April))
+    and () =
+      Alcotest.(
+        check int "May is converted correctly" 5 (Timmy.Month.to_int May))
+    and () =
+      Alcotest.(
+        check int "June is converted correctly" 6 (Timmy.Month.to_int June))
+    and () =
+      Alcotest.(
+        check int "July is converted correctly" 7 (Timmy.Month.to_int July))
+    and () =
+      Alcotest.(
+        check int "August is converted correctly" 8 (Timmy.Month.to_int August))
+    and () =
+      Alcotest.(
+        check int "September is converted correctly" 9
+          (Timmy.Month.to_int September))
+    and () =
+      Alcotest.(
+        check int "October is converted correctly" 10
+          (Timmy.Month.to_int October))
+    and () =
+      Alcotest.(
+        check int "November is converted correctly" 11
+          (Timmy.Month.to_int November))
+    and () =
+      Alcotest.(
+        check int "December is converted correctly" 12
+          (Timmy.Month.to_int December))
+    in
+    ()
+
+  let pp () =
+    let () =
+      Alcotest.(
+        check string "January is converted correctly" "January"
+          (Fmt.str "%a" Timmy.Month.pp January))
+    and () =
+      Alcotest.(
+        check string "February is converted correctly" "February"
+          (Fmt.str "%a" Timmy.Month.pp February))
+    and () =
+      Alcotest.(
+        check string "March is converted correctly" "March"
+          (Fmt.str "%a" Timmy.Month.pp March))
+    and () =
+      Alcotest.(
+        check string "April is converted correctly" "April"
+          (Fmt.str "%a" Timmy.Month.pp April))
+    and () =
+      Alcotest.(
+        check string "May is converted correctly" "May"
+          (Fmt.str "%a" Timmy.Month.pp May))
+    and () =
+      Alcotest.(
+        check string "June is converted correctly" "June"
+          (Fmt.str "%a" Timmy.Month.pp June))
+    and () =
+      Alcotest.(
+        check string "July is converted correctly" "July"
+          (Fmt.str "%a" Timmy.Month.pp July))
+    and () =
+      Alcotest.(
+        check string "August is converted correctly" "August"
+          (Fmt.str "%a" Timmy.Month.pp August))
+    and () =
+      Alcotest.(
+        check string "September is converted correctly" "September"
+          (Fmt.str "%a" Timmy.Month.pp September))
+    and () =
+      Alcotest.(
+        check string "October is converted correctly" "October"
+          (Fmt.str "%a" Timmy.Month.pp October))
+    and () =
+      Alcotest.(
+        check string "November is converted correctly" "November"
+          (Fmt.str "%a" Timmy.Month.pp November))
+    and () =
+      Alcotest.(
+        check string "December is converted correctly" "December"
+          (Fmt.str "%a" Timmy.Month.pp December))
+    in
+    ()
+end
+
 let () =
   Alcotest.(
     run "Timmy"
@@ -275,6 +375,11 @@ let () =
             test_case "overflow" `Quick Date.overflow;
           ] );
         ("daytime", [ test_case "time conversion" `Quick Daytime.of_time ]);
+        ( "month",
+          [
+            test_case "int conversions" `Quick Month.int;
+            test_case "pretty printing" `Quick Month.pp;
+          ] );
         ( "weekday",
           [
             test_case "int conversions" `Quick Weekday.int;
