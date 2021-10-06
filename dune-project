@@ -2,7 +2,7 @@
 
 (name timmy)
 
-(version 0.10.0)
+(version 0.10.1)
 
 (generate_opam_files true)
 
@@ -21,7 +21,9 @@
  (synopsis "Time library")
  (depends
   (acid
-   (= 0.4.0))
+   (and
+    (>= 0.5.0)
+    (< 0.6.0)))
   (alcotest :with-test)
   fmt
   ptime
