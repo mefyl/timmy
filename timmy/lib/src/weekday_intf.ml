@@ -1,5 +1,6 @@
-(** {1 Type} *)
 module type V0_10_0 = sig
+  (** {1 Type} *)
+
   (** A day of the week. *)
   type t =
     | Monday
@@ -25,4 +26,18 @@ module type V0_10_0 = sig
 
       Base defaults to [Monday].*)
   val to_int : ?base:t -> t -> int
+end
+
+module type V0_10_3 = sig
+  include V0_10_0
+
+  (** {2 Pretty-print} *)
+
+  (** [pp f weekday] prints [weekday] to [f] as its english name. *)
+  val pp : t Fmt.t
+
+  (** {2 String} *)
+
+  (** [to_string weekday] is the english name of [weekday]. *)
+  val to_string : t -> string
 end

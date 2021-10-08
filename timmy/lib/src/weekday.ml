@@ -8,7 +8,7 @@ type t =
   | Friday
   | Saturday
   | Sunday
-[@@deriving schema]
+[@@deriving eq, schema]
 
 let schema_string = schema
 
@@ -34,3 +34,11 @@ let to_string = function
   | Sunday -> "Sunday"
 
 let pp = Fmt.of_to_string to_string
+
+module O = struct
+  let ( = ) l r = equal l r
+
+  let ( <> ) l r = not (l = r)
+end
+
+include O

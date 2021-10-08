@@ -232,6 +232,14 @@ module Weekday = struct
           (Fmt.str "%a" Timmy.Weekday.pp Sunday))
     in
     ()
+
+  let comparison () =
+    Alcotest.(check bool "comparisons" true Timmy.Weekday.(Monday = Monday));
+    Alcotest.(
+      check bool "comparisons" false Timmy.Weekday.(Wednesday = Tuesday));
+    Alcotest.(check bool "comparisons" false Timmy.Weekday.(Monday <> Monday));
+    Alcotest.(
+      check bool "comparisons" true Timmy.Weekday.(Wednesday <> Tuesday))
 end
 
 module Daytime = struct
@@ -395,5 +403,6 @@ let () =
           [
             test_case "int conversions" `Quick Weekday.int;
             test_case "pretty printing" `Quick Weekday.pp;
+            test_case "comparison" `Quick Weekday.comparison;
           ] );
       ])

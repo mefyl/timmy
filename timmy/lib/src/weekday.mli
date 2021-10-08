@@ -1,12 +1,12 @@
 (** @inline *)
-include Weekday_intf.V0_10_0
+include Weekday_intf.V0_10_3
 
-(** {2 Pretty-print} *)
+val equal : t -> t -> bool
 
-(** [pp f weekday] prints [weekday] to [f] as its english name. *)
-val pp : t Fmt.t
+module O : sig
+  val ( = ) : t -> t -> bool
 
-(** {2 String} *)
+  val ( <> ) : t -> t -> bool
+end
 
-(** [to_string weekday] is the english name of [weekday]. *)
-val to_string : t -> string
+include module type of O
