@@ -1,19 +1,41 @@
 open Acid
 
-type t =
-  | January
-  | February
-  | March
-  | April
-  | May
-  | June
-  | July
-  | August
-  | September
-  | October
-  | November
-  | December
-[@@deriving schema]
+module Type = struct
+  type t =
+    | January
+    | February
+    | March
+    | April
+    | May
+    | June
+    | July
+    | August
+    | September
+    | October
+    | November
+    | December
+  [@@deriving ord, schema]
+
+  let to_string = function
+    | January -> "January"
+    | February -> "February"
+    | March -> "March"
+    | April -> "April"
+    | May -> "May"
+    | June -> "June"
+    | July -> "July"
+    | August -> "August"
+    | September -> "September"
+    | October -> "October"
+    | November -> "November"
+    | December -> "December"
+
+  let sexp_of_t t = Sexp.Atom (to_string t)
+end
+
+include Type
+module O = Comparable.Make (Type)
+include O
 
 let to_int = function
   | January -> 1
@@ -55,19 +77,5 @@ let schema_int =
   }
 
 let schema = schema_int
-
-let to_string = function
-  | January -> "January"
-  | February -> "February"
-  | March -> "March"
-  | April -> "April"
-  | May -> "May"
-  | June -> "June"
-  | July -> "July"
-  | August -> "August"
-  | September -> "September"
-  | October -> "October"
-  | November -> "November"
-  | December -> "December"
 
 let pp = Fmt.of_to_string to_string

@@ -1,47 +1,15 @@
-(** {1 Type} *)
+open Acid
 
-(** A month. *)
-type t =
-  | January
-  | February
-  | March
-  | April
-  | May
-  | June
-  | July
-  | August
-  | September
-  | October
-  | November
-  | December
+(** @inline *)
+include Month_intf.V0_10_3
 
-(** Schema mapping months to their english names. *)
-val schema_string : t Schematic.Schema.t
+(** {2 Comparison} *)
 
-(** Schema mapping months to integers, 1 being January and 12 December. *)
-val schema_int : t Schematic.Schema.t
+include Comparable.S with type t := t
 
-(** [schema] is [schema_int]. *)
-val schema : t Schematic.Schema.t
+(** {2 Operators} *)
 
-(** {1 Scalar conversions} *)
+(** Convenience module to only pull operators. *)
+module O : Comparable.Infix with type t := t
 
-(** {2 Integer} *)
-
-(** [to_int month] is 1-based index of [month] in the year, ie. 1 is January and
-    12 is December. *)
-val to_int : t -> int
-
-(** [of_int n] is the [t] corresponding to the [n]th month of the year, 1 being
-    January and 12 December. *)
-val of_int : int -> (t, string) Result.t
-
-(** {2 Pretty-print} *)
-
-(** [pp f month] pretty-prints [month] to [f] as its english name. *)
-val pp : t Fmt.t
-
-(** {2 String} *)
-
-(** [to_string month] is the english name of [month]. *)
-val to_string : t -> string
+include module type of O
