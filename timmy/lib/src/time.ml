@@ -1,4 +1,4 @@
-open Base
+open Acid
 
 module T = struct
   type t = Ptime.t [@@schematic.name "time"] [@@deriving schema]

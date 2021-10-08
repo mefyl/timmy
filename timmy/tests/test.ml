@@ -1,4 +1,5 @@
 open Acid
+module Timmy = Timmy.Versions.V0_10_4
 
 let ptime =
   Option.value_exn (Ptime.of_date_time ((1985, 12, 29), ((17, 35, 42), 0)))
@@ -355,6 +356,15 @@ module Month = struct
           (Fmt.str "%a" Timmy.Month.pp December))
     in
     ()
+
+  let comparison () =
+    Alcotest.(check bool "comparisons" false Timmy.Month.(January < January));
+    Alcotest.(check bool "comparisons" true Timmy.Month.(January < February));
+    Alcotest.(check bool "comparisons" false Timmy.Month.(February < January));
+    Alcotest.(check bool "comparisons" true Timmy.Month.(March = March));
+    Alcotest.(check bool "comparisons" false Timmy.Month.(March <> March));
+    Alcotest.(check bool "comparisons" true Timmy.Month.(April <> May));
+    Alcotest.(check bool "comparisons" false Timmy.Month.(April = May))
 end
 
 let () =
@@ -379,6 +389,7 @@ let () =
           [
             test_case "int conversions" `Quick Month.int;
             test_case "pretty printing" `Quick Month.pp;
+            test_case "comparison" `Quick Month.comparison;
           ] );
         ( "weekday",
           [
