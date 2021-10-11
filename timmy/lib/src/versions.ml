@@ -33,16 +33,16 @@ module V0_10_4 = struct
   (** @inline *)
   include V0_10_5
 
-  module Date : Date_intf.V0_10_4 = Date
+  module Date : Date_intf.V0_10_4 with type t = Date.t = Date
 end
 
 module V0_10_3 = struct
   (** @inline *)
   include V0_10_4
 
-  module Month : Month_intf.V0_10_3 = Month
+  module Month : Month_intf.V0_10_3 with type t = Month.t = Month
 
-  module Weekday : Weekday_intf.V0_10_3 = Weekday
+  module Weekday : Weekday_intf.V0_10_3 with type t = Weekday.t = Weekday
 end
 
 module V0_10_2 = V0_10_3
@@ -51,7 +51,7 @@ module V0_10_1 = struct
   (** @inline *)
   include V0_10_2
 
-  module Weekday : Weekday_intf.V0_10_0 = Weekday
+  module Weekday : Weekday_intf.V0_10_0 with type t = Weekday.t = Weekday
 end
 
 module V0_10_0 = V0_10_1
