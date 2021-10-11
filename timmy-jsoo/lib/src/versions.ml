@@ -1,19 +1,22 @@
 (** Backward compatibility versions *)
 
-module V0_10_5 = struct
+module V0_10_6 = struct
   module Date = struct
-    include Timmy.Versions.V0_10_5.Daytime
+    include Timmy.Versions.V0_10_6.Daytime
     include Date
   end
 
-  module Daytime = Timmy.Versions.V0_10_5.Daytime
-  module Span = Timmy.Versions.V0_10_5.Span
-  module Time = Timmy.Versions.V0_10_5.Time
-  module Timezone = Timmy.Versions.V0_10_5.Timezone
-  module Weekday = Timmy.Versions.V0_10_5.Weekday
+  module Daytime = Timmy.Versions.V0_10_6.Daytime
+  module Month = Timmy.Versions.V0_10_6.Month
+  module Span = Timmy.Versions.V0_10_6.Span
+  module Time = Timmy.Versions.V0_10_6.Time
+  module Timezone = Timmy.Versions.V0_10_6.Timezone
+  module Weekday = Timmy.Versions.V0_10_6.Weekday
 
-  type date = Timmy.Versions.V0_10_5.date [@@deriving schema]
+  type date = Timmy.Versions.V0_10_6.date [@@deriving schema]
 end
+
+module V0_10_5 = V0_10_6
 
 module V0_10_4 = struct
   (** @inline *)
