@@ -1,6 +1,6 @@
 (** Backward compatibility versions *)
 
-module V0_10_7 = struct
+module V0_10_8 = struct
   (** {1 Data types} *)
 
   (** A day of a month of a year. *)
@@ -29,6 +29,7 @@ module V0_10_7 = struct
   type date = Date.t [@@deriving schema]
 end
 
+module V0_10_7 = V0_10_8
 module V0_10_6 = V0_10_7
 module V0_10_5 = V0_10_6
 
