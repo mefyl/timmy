@@ -66,7 +66,7 @@ let month_of_int m =
   | Result.Error e -> failwith e
 
 (* Shamelessly stolen from ptime *)
-let jd_to_date jd =
+let of_int jd =
   let a = jd + 32044 in
   let b = ((4 * a) + 3) / 146097 in
   let c = a - (146097 * b / 4) in
@@ -79,7 +79,7 @@ let jd_to_date jd =
   { year; month; day }
 
 (* Shamelessly stolen from ptime *)
-let jd_of_date { year; month; day } =
+let to_int { year; month; day } =
   let month = Month.to_int month in
   let a = (14 - month) / 12 in
   let y = year + 4800 - a in
@@ -88,7 +88,7 @@ let jd_of_date { year; month; day } =
   + (((153 * m) + 2) / 5)
   + (365 * y) + (y / 4) - (y / 100) + (y / 400) - 32045
 
-let add_days date days = jd_to_date @@ (jd_of_date date + days)
+let add_days date days = of_int @@ (to_int date + days)
 
 (* Shamelessly stolen from ptime, which does not intend on exposing it publicly *)
 let max_month_day =
@@ -110,7 +110,7 @@ module O = struct
 
   let ( - ) l r =
     Option.value_exn ~here:[%here]
-      (Ptime.Span.of_d_ps (jd_of_date l - jd_of_date r, 0L))
+      (Ptime.Span.of_d_ps (to_int l - to_int r, 0L))
     |> Span.of_ptime
 end
 
