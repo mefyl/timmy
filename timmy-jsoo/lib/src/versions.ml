@@ -1,6 +1,6 @@
 (** Backward compatibility versions *)
 
-module V0_10_8 = struct
+module V0_10_9 = struct
   module Date = struct
     include Timmy.Versions.V0_10_8.Date
     include Date
@@ -16,6 +16,7 @@ module V0_10_8 = struct
   type date = Timmy.Versions.V0_10_8.date [@@deriving schema]
 end
 
+module V0_10_8 = V0_10_9
 module V0_10_7 = V0_10_8
 module V0_10_6 = V0_10_7
 module V0_10_5 = V0_10_6
