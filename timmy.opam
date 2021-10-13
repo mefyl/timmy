@@ -13,7 +13,7 @@ depends: [
   "alcotest" {with-test}
   "fmt"
   "ptime"
-  "schematic" {= "0.9.0"}
+  "schematic" {>= "0.10.0" & < "0.11.0"}
   "odoc" {with-doc}
 ]
 depopts: ["js_of_ocaml"]
