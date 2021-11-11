@@ -1,12 +1,11 @@
 open Acid
-module Timmy = Timmy.Versions.V0_10_4
+open Testable
+module Timmy = Timmy.Versions.V0_11_0
 
 let ptime =
   Option.value_exn (Ptime.of_date_time ((1985, 12, 29), ((17, 35, 42), 0)))
 
 let test_ptime = Alcotest.testable Ptime.pp Ptime.equal
-
-let time = Alcotest.testable Timmy.Time.pp Timmy.Time.( = )
 
 let daytime = Alcotest.testable Timmy.Daytime.pp Timmy.Daytime.( = )
 
@@ -60,8 +59,6 @@ module Time = struct
     in
     ()
 end
-
-let date = Alcotest.testable Timmy.Date.pp Timmy.Date.( = )
 
 module Date = struct
   let birthday = Timmy.Date.of_tuple_exn ~here:[%here] (1985, 12, 29)
@@ -405,4 +402,5 @@ let () =
             test_case "pretty printing" `Quick Weekday.pp;
             test_case "comparison" `Quick Weekday.comparison;
           ] );
+        ("schemas", Schemas.tests);
       ])

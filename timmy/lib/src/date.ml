@@ -1,16 +1,8 @@
 open Acid
 
 module T = struct
-  type t = {
-    day : int;
-    month : Month.t;
-    year : int;
-  }
-
-  let pp fmt { day; month; year } =
-    Fmt.pf fmt "%04i-%02i-%02i" year (Month.to_int month) day
-
-  let to_tuple { day; month; year } = (year, Month.to_int month, day)
+  include Type.Date
+  include Type_js.Date
 
   let to_sexp_tuple (y, m, d) =
     Sexp.List
@@ -23,13 +15,6 @@ module T = struct
   let int_of_string msg s =
     try Result.return @@ Int.of_string s with
     | _ -> Result.failf "invalid %s: %s" msg s
-
-  let of_tuple ((year, month, day) as date) =
-    let open Let.Syntax2 (Result) in
-    let* month = Month.of_int month in
-    match Ptime.of_date date with
-    | Some _ -> Result.Ok { year; month; day }
-    | None -> Result.Error (Fmt.str "invalid date: %a" pp { year; month; day })
 
   let of_string s =
     match String.split ~on:'-' s with
@@ -47,9 +32,6 @@ module T = struct
       Error.raise (Error.create ~here "invalid date" date to_sexp_tuple)
     | Result.Ok d -> d
 
-  let schema =
-    Schematic.Schema.(make ~id:"date" (Map (of_tuple, to_tuple, Date)))
-
   let to_sexp date = to_sexp_tuple @@ to_tuple date
 
   let compare l r = Poly.compare (to_tuple l) (to_tuple r)
@@ -57,7 +39,6 @@ module T = struct
   let sexp_of_t = to_sexp
 end
 
-include Type
 include T
 
 let month_of_int m =

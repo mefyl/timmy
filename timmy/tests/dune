@@ -1,5 +1,20 @@
-(test
+(executable
  (name test)
- (libraries acid alcotest ptime timmy)
+ (libraries
+  acid
+  alcotest
+  ptime
+  timmy
+  (select
+   schemas.ml
+   from
+   (schematic -> schemas.schematic.ml)
+   (!schematic -> schemas.noschematic.ml)))
+ (modules schemas test testable)
  (preprocess
   (pps ppx_here)))
+
+(rule
+ (alias runtest)
+ (action
+  (run ./test.exe)))

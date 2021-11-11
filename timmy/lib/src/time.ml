@@ -1,7 +1,8 @@
 open Acid
 
 module T = struct
-  type t = Ptime.t [@@schematic.name "time"] [@@deriving schema]
+  include Type.Time
+  include Type_js.Time
 
   let compare = Ptime.compare
 

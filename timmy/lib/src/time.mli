@@ -2,14 +2,11 @@ open Acid
 
 (** {1 Type} *)
 
-(** A point in time. *)
-type t
+(** @inline *)
+include Type.TIME
 
 (** @inline *)
-include module type of Type
-
-(** Time schema. *)
-val schema : t Schematic.schema
+include module type of Type_js.Time
 
 (** {1 Construction} *)
 
