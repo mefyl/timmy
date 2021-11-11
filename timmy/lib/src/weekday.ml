@@ -1,16 +1,5 @@
 open Acid
-
-type t =
-  | Monday
-  | Tuesday
-  | Wednesday
-  | Thursday
-  | Friday
-  | Saturday
-  | Sunday
-[@@deriving eq, schema]
-
-let schema_string = schema
+include Type.Weekday
 
 let to_int ?(base = Monday) weekday =
   let to_int = function

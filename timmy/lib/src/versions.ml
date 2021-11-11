@@ -1,6 +1,6 @@
 (** Backward compatibility versions *)
 
-module V0_10_9 = struct
+module V0_11_0 = struct
   (** {1 Data types} *)
 
   (** A day of a month of a year. *)
@@ -23,40 +23,4 @@ module V0_10_9 = struct
 
   (** A day of the week. *)
   module Weekday = Weekday
-
-  (** {1 Type shortcuts} *)
-
-  type date = Date.t [@@deriving schema]
 end
-
-module V0_10_8 = V0_10_9
-module V0_10_7 = V0_10_8
-module V0_10_6 = V0_10_7
-module V0_10_5 = V0_10_6
-
-module V0_10_4 = struct
-  (** @inline *)
-  include V0_10_5
-
-  module Date : Date_intf.V0_10_4 with type t = Date.t = Date
-end
-
-module V0_10_3 = struct
-  (** @inline *)
-  include V0_10_4
-
-  module Month : Month_intf.V0_10_3 with type t = Month.t = Month
-
-  module Weekday : Weekday_intf.V0_10_3 with type t = Weekday.t = Weekday
-end
-
-module V0_10_2 = V0_10_3
-
-module V0_10_1 = struct
-  (** @inline *)
-  include V0_10_2
-
-  module Weekday : Weekday_intf.V0_10_0 with type t = Weekday.t = Weekday
-end
-
-module V0_10_0 = V0_10_1

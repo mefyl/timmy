@@ -2,7 +2,7 @@
 
 (name timmy)
 
-(version 0.10.9)
+(version 0.11.0)
 
 (generate_opam_files true)
 
@@ -22,16 +22,19 @@
  (depends
   (acid
    (and
-    (>= 0.5.0)
-    (< 0.6.0)))
+    (>= 0.6.0)
+    (< 0.7.0)))
   (alcotest :with-test)
   fmt
-  ptime
+  (ppx_here :with-test)
+  ppx_deriving
+  ptime)
+ (depopts
+  js_of_ocaml
   (schematic
    (and
     (>= 0.10.0)
-    (< 0.11.0))))
- (depopts js_of_ocaml))
+    (< 0.11.0)))))
 
 (package
  (name timmy-jsoo)
