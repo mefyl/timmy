@@ -1,2 +1,60 @@
 include:
-  - local: '/.logistic/ci/.gitlab-ci.yml'
+  - local: '/.logistic/ci/.gitlab-ci-template.yml'
+
+toolchain:
+  extends: .ocaml-build-image
+  variables:
+    OPAM_PACKAGES: "schematic"
+
+toolchain:no-schematic:
+  extends: .ocaml-build-image
+  variables:
+    VARIANT: "-no-schematic"
+
+build:
+  extends: .ocaml-build
+  dependencies:
+    - toolchain
+  needs:
+    - toolchain
+
+build:no-schematic:
+  extends: .ocaml-build
+  dependencies:
+    - toolchain:no-schematic
+  needs:
+    - toolchain:no-schematic
+  variables:
+    VARIANT: "-no-schematic"
+
+check:
+  extends: .ocaml-check
+  dependencies:
+    - build
+  needs:
+    - build
+
+check:no-schematic:
+  extends: .ocaml-check
+  dependencies:
+    - build:no-schematic
+  needs:
+    - build:no-schematic
+  variables:
+    VARIANT: "-no-schematic"
+
+package:
+  extends: .ocaml-package
+  dependencies:
+    - check
+  needs:
+    - check
+    - check:no-schematic
+
+opam:
+  extends: .ocaml-opam
+  dependencies:
+    - check
+  needs:
+    - check
+    - check:no-schematic
