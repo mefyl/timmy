@@ -22,14 +22,14 @@ variables:
   image: registry.gitlab.routine.co/routine/logistic/ci-builder
 
 .ocaml:
-  image: $IMAGE_CI
+  image: $IMAGE_CI$VARIANT
 
 .ocaml-build-image:
   extends: .docker
   stage: environment
   script:
     - make -f .logistic/ci/Makefile ci/image
-    - docker push "$IMAGE_CI"
+    - docker push "$IMAGE_CI$VARIANT"
   variables:
     OCAML_VERSION: "4.12.0"
 
