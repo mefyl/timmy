@@ -26,7 +26,7 @@
     (< 0.7.0)))
   (alcotest :with-test)
   fmt
-  (ppx_here :with-test)
+  ppx_here
   ppx_deriving
   ptime)
  (depopts
