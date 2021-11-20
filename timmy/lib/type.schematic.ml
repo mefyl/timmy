@@ -256,7 +256,7 @@ module Month = struct
             ];
           key = None;
         }
-    and id = "type.js" in
+    and id = "month" in
     let open Schematic.Schema in
     { descriptor; id = Some id; parametric = None }
 
