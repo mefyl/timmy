@@ -9,8 +9,6 @@ module T = struct
   let sexp_of_t t = Sexp.Atom (Ptime.to_rfc3339 t)
 end
 
-include Type
-
 module Infix = struct
   include Comparable.Make (T)
 

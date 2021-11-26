@@ -93,6 +93,17 @@ module type DATE = sig
   }
 end
 
+module Span = struct
+  type t = Ptime.Span.t
+end
+
+module type SPAN = sig
+  (** A duration.
+
+      Spans may be negative. *)
+  type t
+end
+
 module Time = struct
   (** A point in time. *)
   type t = Ptime.t
