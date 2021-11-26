@@ -1,7 +1,7 @@
 open Base
 
 module T = struct
-  type t = Ptime.Span.t
+  include Type.Span
 
   let compare = Ptime.Span.compare
 

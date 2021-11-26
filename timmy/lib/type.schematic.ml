@@ -271,6 +271,21 @@ module Month = struct
     }
 end
 
+module Span = struct
+  (** @inline *)
+  include Types_bare.Span
+
+  let schema =
+    { Schematic.Schema.Schemas.Ptime.span_schema with id = Some "span" }
+end
+
+module type SPAN = sig
+  include Types_bare.SPAN
+
+  (** [schema] encode spans a number of seconds. *)
+  val schema : t Schematic.Schema.t
+end
+
 module Time = struct
   (** @inline *)
   include Types_bare.Time

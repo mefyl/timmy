@@ -2,10 +2,7 @@ open Acid
 
 (** {1 Type} *)
 
-(** A duration.
-
-    Spans may be negative. *)
-type t
+include Type.SPAN
 
 (** {1 Construction} *)
 
