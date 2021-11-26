@@ -38,6 +38,12 @@ include module type of O
 
 (** {1 Scalar conversions} *)
 
+(** {2 Pretty-print} *)
+
+(** [pp f span] prints [span] to [f] in an unspecified human readable format,
+    e.g. 45s or 2h. *)
+val pp : t Fmt.t
+
 (** {2 Ptime} *)
 
 (** [of_ptime ptime_span] is the span equivalent to [ptime_span]. *)
