@@ -153,6 +153,25 @@ module Date = struct
     ()
 end
 
+module Span = struct
+  let pp () =
+    let check name exp seconds =
+      Alcotest.(
+        check string name exp
+          (Fmt.str "%a" Timmy.Span.pp @@ Timmy.Span.seconds seconds))
+    in
+    let () = check "Seconds are printed correctly" "45s" 45
+    and () = check "Minutes are printed correctly" "12m" (60 * 12)
+    and () = check "Hours are printed correctly" "3h" (60 * 60 * 3)
+    and () = check "One day is printed correctly" "1 day" (60 * 60 * 24)
+    and () = check "Days are printed correctly" "7 days" (60 * 60 * 24 * 7)
+    and () =
+      check "A composite duration is printed correctly" "100 days 3h 58m 41s"
+        8654321
+    in
+    ()
+end
+
 module Weekday = struct
   let int () =
     let () =
@@ -396,6 +415,7 @@ let () =
             test_case "pretty printing" `Quick Month.pp;
             test_case "comparison" `Quick Month.comparison;
           ] );
+        ("span", [ test_case "pretty printing" `Quick Span.pp ]);
         ( "weekday",
           [
             test_case "int conversions" `Quick Weekday.int;
