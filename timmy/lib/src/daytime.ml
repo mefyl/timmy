@@ -1,12 +1,7 @@
 open Acid
 
 module T = struct
-  type t = {
-    hours : int;
-    minutes : int;
-    seconds : int;
-  }
-  [@@deriving ord]
+  include Type.Daytime
 
   let sexp_of_tuple (hours, minutes, seconds) =
     let open Base.Sexp in
@@ -22,26 +17,6 @@ module T = struct
 end
 
 include T
-
-let make ~hours ~minutes ~seconds =
-  let open Let.Syntax2 (Result) in
-  let+ () =
-    if hours >= 0 && hours < 24 then
-      Result.return ()
-    else
-      Result.failf "invalid hours: %i" hours
-  and+ () =
-    if minutes >= 0 && minutes < 60 then
-      Result.return ()
-    else
-      Result.failf "invalid minutes: %i" hours
-  and+ () =
-    if seconds >= 0 && seconds < 60 then
-      Result.return ()
-    else
-      Result.failf "invalid seconds: %i" hours
-  in
-  { hours; minutes; seconds }
 
 module O = struct
   include Comparable.Make (T)
@@ -59,8 +34,6 @@ let of_time ~timezone t =
 
 let pp f { hours; minutes; seconds } =
   Fmt.pf f "%02i:%02i:%02i" hours minutes seconds
-
-let to_tuple { hours; minutes; seconds } = (hours, minutes, seconds)
 
 let to_time ~timezone date t =
   match

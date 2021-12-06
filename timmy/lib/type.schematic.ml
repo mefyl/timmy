@@ -13,6 +13,26 @@ module Date = struct
     Schematic.Schema.(make ~id:"date" (Map (of_tuple, to_tuple, Date)))
 end
 
+module Daytime = struct
+  include Types_bare.Daytime
+
+  let schema =
+    Schematic.Schema.(
+      make ~id:"daytime"
+        (Map
+           ( (fun (hours, minutes, seconds) ->
+               Types_bare.Daytime.make ~hours ~minutes ~seconds),
+             Types_bare.Daytime.to_tuple,
+             Date )))
+end
+
+module type DAYTIME = sig
+  include Types_bare.DAYTIME
+
+  (** [schema] maps daytimes to hours, minutes, seconds triplets. *)
+  val schema : t Schematic.Schema.t
+end
+
 module type MONTH = sig
   (** @inline *)
   include Types_bare.MONTH

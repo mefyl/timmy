@@ -2,12 +2,8 @@ open Acid
 
 (** {1 Type} *)
 
-(** A time of the day. *)
-type t = private {
-  hours : int;
-  minutes : int;
-  seconds : int;
-}
+(** @inline *)
+include Type.DAYTIME
 
 (** {1 Construction} *)
 
