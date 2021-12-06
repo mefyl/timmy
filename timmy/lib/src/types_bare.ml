@@ -93,6 +93,46 @@ module type DATE = sig
   }
 end
 
+module Daytime = struct
+  type t = {
+    hours : int;
+    minutes : int;
+    seconds : int;
+  }
+  [@@deriving ord]
+
+  let make ~hours ~minutes ~seconds =
+    let open Let.Syntax2 (Result) in
+    let+ () =
+      if hours >= 0 && hours < 24 then
+        Result.return ()
+      else
+        Result.failf "invalid hours: %i" hours
+    and+ () =
+      if minutes >= 0 && minutes < 60 then
+        Result.return ()
+      else
+        Result.failf "invalid minutes: %i" hours
+    and+ () =
+      if seconds >= 0 && seconds < 60 then
+        Result.return ()
+      else
+        Result.failf "invalid seconds: %i" hours
+    in
+    { hours; minutes; seconds }
+
+  let to_tuple { hours; minutes; seconds } = (hours, minutes, seconds)
+end
+
+module type DAYTIME = sig
+  (** A time of the day. *)
+  type t = private {
+    hours : int;
+    minutes : int;
+    seconds : int;
+  }
+end
+
 module Span = struct
   type t = Ptime.Span.t
 end

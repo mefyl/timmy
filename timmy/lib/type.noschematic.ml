@@ -2,6 +2,10 @@ module type DATE = Types_bare.DATE
 
 module Date = Types_bare.Date
 
+module type DAYTIME = Types_bare.DAYTIME
+
+module Daytime = Types_bare.Daytime
+
 module type MONTH = Types_bare.MONTH
 
 module Month = Types_bare.Month
