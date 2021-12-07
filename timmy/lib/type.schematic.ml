@@ -17,13 +17,56 @@ module Daytime = struct
   include Types_bare.Daytime
 
   let schema =
-    Schematic.Schema.(
-      make ~id:"daytime"
-        (Map
-           ( (fun (hours, minutes, seconds) ->
-               Types_bare.Daytime.make ~hours ~minutes ~seconds),
-             Types_bare.Daytime.to_tuple,
-             Date )))
+    let open Schematic.Schema.Schemas in
+    let descriptor =
+      Schema.Map
+        ( (fun (hours, (minutes, (seconds, ()))) ->
+            Result.Ok ({ hours; minutes; seconds } : t)),
+          (fun ({ hours; minutes; seconds } : t) ->
+            (hours, (minutes, (seconds, ())))),
+          Object
+            (Field
+               {
+                 description = None;
+                 examples = [];
+                 field = "hours";
+                 maximum = None;
+                 minimum = None;
+                 omit = false;
+                 requirement = Required;
+                 rest =
+                   Field
+                     {
+                       description = None;
+                       examples = [];
+                       field = "minutes";
+                       maximum = None;
+                       minimum = None;
+                       omit = false;
+                       requirement = Default 0;
+                       rest =
+                         Field
+                           {
+                             description = None;
+                             examples = [];
+                             field = "seconds";
+                             maximum = None;
+                             minimum = None;
+                             omit = false;
+                             requirement = Default 0;
+                             rest = FieldEnd;
+                             schema = Outline int_schema;
+                             title = None;
+                           };
+                       schema = Outline int_schema;
+                       title = None;
+                     };
+                 schema = Outline int_schema;
+                 title = None;
+               }) )
+    and id = "daytime" in
+    let open Schema in
+    { descriptor; id = Some id; parametric = None }
 end
 
 module type DAYTIME = sig
