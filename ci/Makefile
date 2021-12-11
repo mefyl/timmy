@@ -28,6 +28,8 @@ package/clean:
 	docker rmi "$(IMAGE):$$(git describe --always)" "$(IMAGE):$$SLUG"
 
 ci/image:
+	cp "$(CI_ID_RSA)" .logistic/id_rsa
+	cp "$(CI_ID_RSA_PUB)" .logistic/id_rsa.pub
 	if test -e Dockerfile.ci; then cat Dockerfile.ci >> "$(dir $(MAKEFILE_LIST))Dockerfile.ci"; fi
 	if test -z "$$FROM_SCRATCH"; then \
 		if test -n "$(IMAGE_CI)$(VARIANT)" && docker pull "$(IMAGE_CI)$(VARIANT)"; then \
