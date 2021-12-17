@@ -1,4 +1,4 @@
-module type DATE = Types_bare.DATE
+module type DATE = Types_bare.DATE with type t = Types_bare.Date.t
 
 module Date = Types_bare.Date
 
