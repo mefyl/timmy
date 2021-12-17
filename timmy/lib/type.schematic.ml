@@ -9,8 +9,7 @@ end
 module Date = struct
   include Types_bare.Date
 
-  let schema =
-    Schematic.Schema.(make ~id:"date" (Map (of_tuple, to_tuple, Date)))
+  let schema = Schematic.Schema.(make (Map (of_tuple, to_tuple, Date)))
 end
 
 module Daytime = struct
