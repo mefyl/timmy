@@ -7,6 +7,9 @@ include Type.MONTH with type t = Types_bare.Month.t
 
 (** {1 Time manipulation} *)
 
+(** [add_months month n] is the month occuring [n] months after [month]. *)
+val add_months : t -> int -> t
+
 (** {1 Scalar conversions} *)
 
 (** {2 Integer} *)
@@ -36,6 +39,11 @@ include Comparable.S with type t := t
 (** {2 Operators} *)
 
 (** Convenience module to only pull operators. *)
-module O : Comparable.Infix with type t := t
+module O : sig
+  include Comparable.Infix with type t := t
+
+  (** [month + n] is [add_months month n] *)
+  val ( + ) : t -> int -> t
+end
 
 include module type of O

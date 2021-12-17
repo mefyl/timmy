@@ -21,7 +21,16 @@ module Type = struct
 end
 
 include Type
-module O = Comparable.Make (Type)
+
+let add_months m n =
+  ((to_int m + n - 1) % 12) + 1 |> of_int |> Result.ok_or_failwith
+
+module O = struct
+  include Comparable.Make (Type)
+
+  let ( + ) = add_months
+end
+
 include O
 
 let pp = Fmt.of_to_string to_string
