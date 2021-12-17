@@ -10,6 +10,13 @@ include Type.MONTH with type t = Types_bare.Month.t
 (** [add_months month n] is the month occuring [n] months after [month]. *)
 val add_months : t -> int -> t
 
+(** [days ~year month] is the sequence of days in [month] of year [year] in
+    chronological order. *)
+val days : year:int -> t -> Types_bare.Date.t Base.Sequence.t
+
+(** [to_date ~year month] is the first day of month [month] in year [year] *)
+val to_date : year:int -> t -> Types_bare.Date.t
+
 (** {1 Scalar conversions} *)
 
 (** {2 Integer} *)

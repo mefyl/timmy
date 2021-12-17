@@ -25,6 +25,18 @@ include Type
 let add_months m n =
   ((to_int m + n - 1) % 12) + 1 |> of_int |> Result.ok_or_failwith
 
+let to_date ~year month =
+  Types_bare.Date.of_tuple (year, to_int month, 1) |> Result.ok_or_failwith
+
+let days ~year month =
+  let month = to_int month in
+  let f i =
+    match Types_bare.Date.of_tuple (year, month, i) with
+    | Result.Ok date -> Some (date, i + 1)
+    | Result.Error _ -> None
+  in
+  Base.Sequence.unfold ~init:1 ~f
+
 module O = struct
   include Comparable.Make (Type)
 

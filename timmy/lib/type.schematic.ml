@@ -1,6 +1,6 @@
 module type DATE = sig
   (** @inline *)
-  include Types_bare.DATE
+  include Types_bare.DATE with type t = Types_bare.Date.t
 
   (** [schema] maps dates to [(year, month, day)] triplets. *)
   val schema : t Schematic.schema
