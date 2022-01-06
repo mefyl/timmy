@@ -352,11 +352,16 @@ module Time = struct
   (** @inline *)
   include Types_bare.Time
 
-  (** Time schema. *)
   let schema = { Schematic.Schema.Schemas.Ptime.schema with id = Some "time" }
 end
 
-module type TIME = module type of Time
+module type TIME = sig
+  (** @inline *)
+  include Types_bare.TIME
+
+  (** Time schema. *)
+  val schema : t Schematic.Schema.t
+end
 
 module Weekday = struct
   include Types_bare.Weekday

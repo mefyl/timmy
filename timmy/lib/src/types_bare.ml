@@ -149,7 +149,9 @@ module Time = struct
   type t = Ptime.t
 end
 
-module type TIME = module type of Time
+module type TIME = sig
+  type t
+end
 
 module Weekday = struct
   type t =
