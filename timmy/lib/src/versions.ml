@@ -21,6 +21,9 @@ module V0_11_0 = struct
   (** A timezone. *)
   module Timezone = Timezone
 
+  (** A week of a year. *)
+  module Week = Week
+
   (** A day of the week. *)
   module Weekday = Weekday
 end

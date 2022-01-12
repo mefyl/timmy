@@ -363,6 +363,55 @@ module type TIME = sig
   val schema : t Schematic.Schema.t
 end
 
+module Week = struct
+  include Types_bare.Week
+
+  let schema =
+    let open Schematic.Schema.Schemas in
+    let descriptor =
+      Schema.Map
+        ( (fun (n, (year, ())) -> Result.Ok ({ n; year } : t)),
+          (fun ({ n; year } : t) -> (n, (year, ()))),
+          Object
+            (Field
+               {
+                 description = None;
+                 examples = [];
+                 field = "n";
+                 maximum = None;
+                 minimum = None;
+                 omit = false;
+                 requirement = Required;
+                 rest =
+                   Field
+                     {
+                       description = None;
+                       examples = [];
+                       field = "year";
+                       maximum = None;
+                       minimum = None;
+                       omit = false;
+                       requirement = Default 0;
+                       rest = FieldEnd;
+                       schema = Outline int_schema;
+                       title = None;
+                     };
+                 schema = Outline int_schema;
+                 title = None;
+               }) )
+    and id = "week" in
+    let open Schema in
+    { descriptor; id = Some id; parametric = None }
+end
+
+module type WEEK = sig
+  (** @inline *)
+  include Types_bare.WEEK
+
+  (** Week schema. *)
+  val schema : t Schematic.Schema.t
+end
+
 module Weekday = struct
   include Types_bare.Weekday
 
