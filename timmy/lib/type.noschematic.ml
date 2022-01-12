@@ -20,4 +20,10 @@ module Time = Types_bare.Time
 
 module type WEEKDAY = Types_bare.WEEKDAY
 
+module Week = Types_bare.Week
+
+module type WEEK = Types_bare.WEEK
+
 module Weekday = Types_bare.Weekday
+
+module type WEEKDAY = Types_bare.WEEKDAY

@@ -145,12 +145,30 @@ module type SPAN = sig
 end
 
 module Time = struct
-  (** A point in time. *)
   type t = Ptime.t
 end
 
 module type TIME = sig
+  (** A point in time. *)
   type t
+end
+
+module Week = struct
+  type t = {
+    n : int;
+    year : int;
+  }
+end
+
+module type WEEK = sig
+  (** A week of a year.
+
+      Per ISO 8601 week date system, a week is attributed to the year its
+      Thursday is in.*)
+  type t = private {
+    n : int;
+    year : int;
+  }
 end
 
 module Weekday = struct

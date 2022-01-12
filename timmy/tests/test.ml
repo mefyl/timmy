@@ -391,6 +391,29 @@ module Month = struct
     Alcotest.(check bool "comparisons" false Timmy.Month.(April = May))
 end
 
+module Week = struct
+  (* let week = Alcotest.testable Timmy.Week.pp Timmy.Week.equal *)
+
+  let construction () =
+    let check exp year n =
+      let eff =
+        Result.map ~f:(fun Timmy.Week.{ n; year } -> (year, n))
+        @@ Timmy.Week.make ~year n
+      in
+      Alcotest.(
+        check
+          (result (pair int int) string)
+          (Fmt.str "%04i-%02i" year n)
+          exp eff)
+    in
+    check (Result.Ok (2021, 1)) 2021 1;
+    check (Result.Ok (2021, 52)) 2021 52;
+    check (Result.Ok (2020, 53)) 2020 53;
+    check (Result.Error "year 2021 has no week 53") 2021 53;
+    check (Result.Error "week 0 is less than 1") 2021 0;
+    check (Result.Error "week 54 is greater than 53") 2021 54
+end
+
 let () =
   Alcotest.(
     run "Timmy"
@@ -416,6 +439,7 @@ let () =
             test_case "comparison" `Quick Month.comparison;
           ] );
         ("span", [ test_case "pretty printing" `Quick Span.pp ]);
+        ("week", [ test_case "construction" `Quick Week.construction ]);
         ( "weekday",
           [
             test_case "int conversions" `Quick Weekday.int;
