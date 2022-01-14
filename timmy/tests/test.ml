@@ -392,7 +392,7 @@ module Month = struct
 end
 
 module Week = struct
-  (* let week = Alcotest.testable Timmy.Week.pp Timmy.Week.equal *)
+  let week = Alcotest.testable Timmy.Week.pp Timmy.Week.equal
 
   let construction () =
     let check exp year n =
@@ -412,6 +412,44 @@ module Week = struct
     check (Result.Error "year 2021 has no week 53") 2021 53;
     check (Result.Error "week 0 is less than 1") 2021 0;
     check (Result.Error "week 54 is greater than 53") 2021 54
+
+  let to_date () =
+    let check exp year n =
+      let eff = Timmy.Week.make ~year n |> Result.ok_or_failwith
+      and monday = Timmy.Date.of_tuple_exn ~here:[%here] exp in
+      Alcotest.(
+        check date
+          (Fmt.str "to_date %a" Timmy.Week.pp eff)
+          monday (Timmy.Week.to_date eff));
+      Base.Sequence.(iter (range 0 7)) ~f:(fun i ->
+          Alcotest.(
+            check week
+              (Fmt.str "of_date %a" Timmy.Date.pp
+                 (Timmy.Date.add_days monday i))
+              (Timmy.Week.of_date monday)
+              eff))
+    in
+    check (2021, 12, 27) 2021 52;
+    check (2022, 1, 3) 2022 1;
+    check (2022, 12, 26) 2022 52
+
+  let sum () =
+    let check (year_start, n_start) i (year_exp, n_exp) =
+      let start =
+        Timmy.Week.make ~year:year_start n_start |> Result.ok_or_failwith
+      and exp = Timmy.Week.make ~year:year_exp n_exp |> Result.ok_or_failwith in
+      let eff = Timmy.Week.(start + i)
+      and name = Fmt.str "%a + %i" Timmy.Week.pp start i in
+      Alcotest.check week name exp eff
+    in
+    check (2021, 52) 0 (2021, 52);
+    check (2021, 52) 1 (2022, 1);
+    check (2021, 52) (-1) (2021, 51);
+    check (2022, 1) (-1) (2021, 52);
+    check (2020, 52) 0 (2020, 52);
+    check (2020, 52) 1 (2020, 53);
+    check (2020, 52) (-1) (2020, 51);
+    check (2021, 1) (-1) (2020, 53)
 end
 
 let () =
@@ -439,7 +477,12 @@ let () =
             test_case "comparison" `Quick Month.comparison;
           ] );
         ("span", [ test_case "pretty printing" `Quick Span.pp ]);
-        ("week", [ test_case "construction" `Quick Week.construction ]);
+        ( "week",
+          [
+            test_case "construction" `Quick Week.construction;
+            test_case "to_date" `Quick Week.to_date;
+            test_case "sum" `Quick Week.sum;
+          ] );
         ( "weekday",
           [
             test_case "int conversions" `Quick Weekday.int;
