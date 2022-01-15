@@ -2,12 +2,12 @@ include:
   - local: '/.logistic/ci/.gitlab-ci-template.yml'
 
 toolchain:
-  extends: .ocaml-build-image
+  extends: .ocaml-toolchain
   variables:
     OPAM_PACKAGES: "schematic"
 
 toolchain:no-schematic:
-  extends: .ocaml-build-image
+  extends: .ocaml-toolchain
   variables:
     VARIANT: "-no-schematic"
 
