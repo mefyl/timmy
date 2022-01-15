@@ -1,4 +1,4 @@
-open Acid
+open Base
 
 module Month = struct
   type t =
@@ -77,7 +77,7 @@ module Date = struct
   let to_tuple { day; month; year } = (year, Month.to_int month, day)
 
   let of_tuple ((year, month, day) as date) =
-    let open Let.Syntax2 (Result) in
+    let ( let* ) = Result.( >>= ) in
     let* month = Month.of_int month in
     match Ptime.of_date date with
     | Some _ -> Result.Ok { year; month; day }
@@ -102,24 +102,26 @@ module Daytime = struct
   [@@deriving ord]
 
   let make ~hours ~minutes ~seconds =
-    let open Let.Syntax2 (Result) in
-    let+ () =
+    let ( let* ) = Result.( >>= ) in
+    let* () =
       if hours >= 0 && hours < 24 then
         Result.return ()
       else
         Result.failf "invalid hours: %i" hours
-    and+ () =
+    in
+    let* () =
       if minutes >= 0 && minutes < 60 then
         Result.return ()
       else
         Result.failf "invalid minutes: %i" hours
-    and+ () =
+    in
+    let* () =
       if seconds >= 0 && seconds < 60 then
         Result.return ()
       else
         Result.failf "invalid seconds: %i" hours
     in
-    { hours; minutes; seconds }
+    Result.return { hours; minutes; seconds }
 
   let to_tuple { hours; minutes; seconds } = (hours, minutes, seconds)
 end

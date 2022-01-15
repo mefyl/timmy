@@ -9,8 +9,8 @@ homepage: "https://gitlab.routine.co/routine/timmy"
 bug-reports: "https://gitlab.routine.co/routine/timmy/-/issues"
 depends: [
   "dune" {>= "2.8"}
-  "acid" {>= "0.6.0" & < "0.7.0"}
   "alcotest" {with-test}
+  "base"
   "fmt"
   "ppx_here"
   "ppx_deriving"

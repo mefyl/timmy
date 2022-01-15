@@ -1,4 +1,4 @@
-open Acid
+open Base
 open Testable
 module Timmy = Timmy.Versions.V0_11_0
 
@@ -265,7 +265,7 @@ module Daytime = struct
     Alcotest.(check daytime)
       name
       (Option.value_exn ~here:[%here]
-         (Result.to_option @@ Timmy.Daytime.make ~hours ~minutes ~seconds))
+         (Result.ok @@ Timmy.Daytime.make ~hours ~minutes ~seconds))
       eff
 
   let of_time () =
