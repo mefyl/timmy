@@ -24,7 +24,7 @@ variables:
 .ocaml:
   image: $IMAGE_CI$VARIANT
 
-.ocaml-build-image:
+.ocaml-toolchain:
   extends: .docker
   stage: environment
   script:
