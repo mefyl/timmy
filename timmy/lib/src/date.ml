@@ -1,4 +1,4 @@
-open Acid
+open Base
 
 module T = struct
   include Type.Date
@@ -19,10 +19,10 @@ module T = struct
   let of_string s =
     match String.split ~on:'-' s with
     | [ y; m; d ] ->
-      let open Let.Syntax2 (Result) in
-      let* y = int_of_string "year" y
-      and* m = int_of_string "month" m
-      and* d = int_of_string "day" d in
+      let ( let* ) = Result.( >>= ) in
+      let* y = int_of_string "year" y in
+      let* m = int_of_string "month" m in
+      let* d = int_of_string "day" d in
       of_tuple (y, m, d)
     | _ -> Result.fail Fmt.(str "invalid date: %s" s)
 

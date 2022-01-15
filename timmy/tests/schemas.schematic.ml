@@ -1,4 +1,4 @@
-open Acid
+open Base
 open Testable
 
 let json = Alcotest.testable Schematic.Json.pp Schematic.Json.equal

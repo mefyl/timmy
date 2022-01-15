@@ -1,4 +1,4 @@
-open Acid
+open Base
 include Type.Weekday
 
 let to_int ?(base = Monday) weekday =

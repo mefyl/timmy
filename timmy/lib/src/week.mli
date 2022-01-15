@@ -1,4 +1,4 @@
-open Acid
+open Base
 
 (** {1 Type} *)
 

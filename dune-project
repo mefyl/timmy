@@ -20,11 +20,8 @@
  (name timmy)
  (synopsis "Time library")
  (depends
-  (acid
-   (and
-    (>= 0.6.0)
-    (< 0.7.0)))
   (alcotest :with-test)
+  base
   fmt
   ppx_here
   ppx_deriving

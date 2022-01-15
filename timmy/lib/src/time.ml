@@ -1,4 +1,4 @@
-open Acid
+open Base
 
 module T = struct
   include Type.Time
