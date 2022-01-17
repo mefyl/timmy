@@ -4,6 +4,7 @@
  (name timmy)
  (public_name timmy)
  (libraries
+  base
   fmt
   ptime
   (select
