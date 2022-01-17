@@ -1,7 +1,6 @@
 (executable
  (name test)
  (libraries
-  acid
   alcotest
   ptime
   timmy
