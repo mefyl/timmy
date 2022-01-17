@@ -30,7 +30,7 @@
   js_of_ocaml
   (schematic
    (and
-    (>= 0.11.0)
+    (>= 0.11.7)
     (< 0.12.0)))))
 
 (package
