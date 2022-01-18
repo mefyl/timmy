@@ -57,3 +57,12 @@ module O = struct
 end
 
 include O
+
+let to_string = Fmt.to_to_string pp
+
+let of_string s =
+  match String.split ~on:'-' s with
+  | [ year; week ] -> (
+    try make ~year:(Int.of_string year) (Int.of_string week) with
+    | _ -> Result.failf "invalid number in date: %S" s)
+  | _ -> Result.failf "invalid date format: %S" s
