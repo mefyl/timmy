@@ -46,3 +46,12 @@ include module type of O
 
 (** [pp f week] prints [week] to [f] in YYYY-NN format, eg. 2021-02. *)
 val pp : t Fmt.t
+
+(** {2 String} *)
+
+(** [to_string week] is the YYYY-WW representation of [week], eg. 2022-03. *)
+val to_string : t -> string
+
+(** [of_string s] is the week represented by [s] as yielded by [to_string] or a
+    relevant error message if it is invalid. *)
+val of_string : string -> (t, string) Result.t
