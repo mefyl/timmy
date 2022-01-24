@@ -406,7 +406,7 @@ end
 
 module type WEEK = sig
   (** @inline *)
-  include Types_bare.WEEK
+  include Types_bare.WEEK with type t = Types_bare.Week.t
 
   (** Week schema. *)
   val schema : t Schematic.Schema.t
