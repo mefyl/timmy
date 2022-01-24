@@ -1,14 +1,15 @@
-module Js = Js_of_ocaml.Js
-
 module Date = struct
-  type js = Js.date Js.t
+  type js = Js_of_ocaml.Js.date Js_of_ocaml.Js.t
 end
 
 module Time = struct
-  type js = Js.date Js.t
+  (** Time representation in javascript. *)
+  type js = Js_of_ocaml.Js.date Js_of_ocaml.Js.t
 end
 
 module Week = struct
   type js =
-    < n : Js.number Js.readonly_prop ; year : Js.number Js.readonly_prop > Js.t
+    < n : Js_of_ocaml.Js.number Js_of_ocaml.Js.readonly_prop
+    ; year : Js_of_ocaml.Js.number Js_of_ocaml.Js.readonly_prop >
+    Js_of_ocaml.Js.t
 end

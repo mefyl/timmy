@@ -1,3 +1,4 @@
+include Timmy.Date
 module Js = Js_of_ocaml.Js
 
 let to_js Timmy.Date.{ year; month; day } =
