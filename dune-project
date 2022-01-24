@@ -30,7 +30,7 @@
   js_of_ocaml
   (schematic
    (and
-    (>= 0.11.7)
+    (>= 0.11.9)
     (< 0.12.0)))))
 
 (package
@@ -41,5 +41,9 @@
   fmt
   js_of_ocaml
   js_of_ocaml-ppx
+  (schematic-jsoo
+   (and
+    (>= 0.11.9)
+    (< 0.12.0)))
   (timmy
    (= :version))))

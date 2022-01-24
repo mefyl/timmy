@@ -7,5 +7,6 @@ module V0_11_0 = struct
   module Span = Timmy.Span
   module Time = Time
   module Timezone = Timmy.Timezone
+  module Week = Week
   module Weekday = Timmy.Weekday
 end

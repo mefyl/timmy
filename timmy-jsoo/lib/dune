@@ -3,6 +3,13 @@
 (library
  (name timmy_jsoo)
  (public_name timmy-jsoo)
- (libraries fmt timmy)
+ (libraries
+  fmt
+  timmy
+  (select
+   js_decode.ml
+   from
+   (schematic-jsoo -> js_decode.enabled.ml)
+   (!schematic-jsoo -> js_decode.disabled.ml)))
  (preprocess
   (pps js_of_ocaml-ppx ppx_here)))

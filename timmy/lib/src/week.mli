@@ -21,7 +21,7 @@ val make : year:int -> int -> (t, string) Result.t
 (** [to_date week] is the first day (Monday) of [week] *)
 val to_date : t -> Date.t
 
-(** [of_date date] is the week than includes [date] *)
+(** [of_date date] is the week that includes [date] *)
 val of_date : Date.t -> t
 
 (** {2 Comparison} *)
