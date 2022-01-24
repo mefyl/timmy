@@ -2,7 +2,7 @@
 
 (name timmy)
 
-(version 0.11.9)
+(version 0.11.10)
 
 (generate_opam_files true)
 
