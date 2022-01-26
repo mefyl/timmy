@@ -89,6 +89,8 @@ let max_month_day =
 module O = struct
   include Base.Comparable.Make (T)
 
+  let ( + ) = add_days
+
   let ( - ) l r =
     Option.value_exn ~here:[%here]
       (Ptime.Span.of_d_ps (to_int l - to_int r, 0L))

@@ -73,6 +73,9 @@ include Base.Comparable.S with type t := t
 module O : sig
   include Comparable.Infix with type t := t
 
+  (** [date + n] is [add_days date n]. *)
+  val ( + ) : t -> int -> t
+
   (** [end - start] is the duration elapsed from [start] to [end]. *)
   val ( - ) : t -> t -> Span.t
 end
