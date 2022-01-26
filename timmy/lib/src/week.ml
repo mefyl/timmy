@@ -47,6 +47,8 @@ let of_date d = of_monday @@ (Date.to_int d - (Date.weekday d |> Weekday.to_int)
 
 let to_date week = Date.of_int @@ to_date week
 
+let day week weekday = Date.add_days (to_date week) (Weekday.to_int weekday)
+
 let days week =
   Base.Sequence.unfold
     ~init:(to_date week, 0)

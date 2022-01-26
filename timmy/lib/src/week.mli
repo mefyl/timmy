@@ -19,6 +19,9 @@ val make : year:int -> int -> (t, string) Result.t
 (** [days week] is the sequence of dates in [week] in chronological order. *)
 val days : t -> Types_bare.Date.t Base.Sequence.t
 
+(** [day week weekday] is the [weekday] of [week]. *)
+val day : t -> Weekday.t -> Types_bare.Date.t
+
 (** {2 Time conversions} *)
 
 (** [to_date week] is the first day (Monday) of [week] *)
