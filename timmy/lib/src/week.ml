@@ -47,6 +47,13 @@ let of_date d = of_monday @@ (Date.to_int d - (Date.weekday d |> Weekday.to_int)
 
 let to_date week = Date.of_int @@ to_date week
 
+let days week =
+  Base.Sequence.unfold
+    ~init:(to_date week, 0)
+    ~f:(function
+      | _, 7 -> None
+      | date, n -> Some (Date.(date + n), (date, n + 1)))
+
 let pp f { n; year } = Fmt.pf f "%04i-%02i" year n
 
 module O = struct
