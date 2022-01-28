@@ -22,8 +22,6 @@ module O = struct
   include Comparable.Make (T)
 end
 
-include O
-
 let of_time ~timezone t =
   let (hours, minutes, seconds), _ =
     snd
@@ -34,6 +32,43 @@ let of_time ~timezone t =
 
 let pp f { hours; minutes; seconds } =
   Fmt.pf f "%02i:%02i:%02i" hours minutes seconds
+
+let pp_opt
+    ?(format = `_24)
+    ?(precision = `Seconds)
+    ?(size = `Short)
+    ()
+    f
+    { hours; minutes; seconds } =
+  let format_hours =
+    match (format, hours) with
+    | `_24, _ -> hours
+    | `_12, 0
+    | `_12, 12 ->
+      12
+    | `_12, _ -> Int.rem hours 12
+  in
+  let () =
+    match (precision, size, minutes, seconds) with
+    | `Hours, _, _, _
+    | `Minutes, `Short, 0, _
+    | `Seconds, `Short, 0, 0 ->
+      Fmt.pf f "%02i" format_hours
+    | `Minutes, _, _, _
+    | `Seconds, `Short, _, 0 ->
+      Fmt.pf f "%02i:%02i" format_hours minutes
+    | `Seconds, _, _, _ ->
+      Fmt.pf f "%02i:%02i:%02i" format_hours minutes seconds
+  in
+  match format with
+  | `_24 -> ()
+  | `_12 ->
+    if hours < 12 then
+      Fmt.string f "AM"
+    else
+      Fmt.string f "PM"
+
+include O
 
 let to_time ~timezone date t =
   match
