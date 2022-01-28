@@ -9,7 +9,13 @@ include Type.SPAN
 (** [days n] is a duration of [n] days. *)
 val days : int -> t
 
-(** [secondsn n] is a duration of [n] seconds. *)
+(** [minutes n] is a duration of [n] hours. *)
+val hours : int -> t
+
+(** [minutes n] is a duration of [n] minutes. *)
+val minutes : int -> t
+
+(** [seconds n] is a duration of [n] seconds. *)
 val seconds : int -> t
 
 (** {1 Time manipulation} *)
