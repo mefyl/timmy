@@ -58,6 +58,15 @@ include module type of O
 
 (** {1 Scalar conversions} *)
 
+(** {2 Integer} *)
+
+(** [to_int daytime] the number of seconds from midnight to [daytime]. *)
+val to_int : t -> int
+
+(** [of_int n] the daytime [n] seconds after midnight or a relevant error
+    message if the result is out of bounds. *)
+val of_int : int -> (t, string) Result.t
+
 (** {2 Pretty-print} *)
 
 (** [pp f daytime] prints [daytime] to [f] in RFC3339 format, eg. 12:43:51. *)

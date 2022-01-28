@@ -18,6 +18,16 @@ end
 
 include T
 
+let to_int { hours; minutes; seconds } =
+  (hours * 60 * 60) + (minutes * 60) + seconds
+
+let of_int s =
+  let minutes = s / 60
+  and seconds = Int.rem s 60 in
+  let hours = minutes / 60
+  and minutes = Int.rem minutes 60 in
+  make ~hours ~minutes ~seconds
+
 module O = struct
   include Comparable.Make (T)
 end

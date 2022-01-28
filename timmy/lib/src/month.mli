@@ -21,8 +21,8 @@ val to_date : year:int -> t -> Types_bare.Date.t
 
 (** {2 Integer} *)
 
-(** [to_int month] is 1-based index of [month] in the year, ie. 1 is January and
-    12 is December. *)
+(** [to_int month] is the 1-based index of [month] in the year, ie. 1 is January
+    and 12 is December. *)
 val to_int : t -> int
 
 (** [of_int n] is the [t] corresponding to the [n]th month of the year, 1 being
