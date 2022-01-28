@@ -95,6 +95,10 @@ let with_daytime ~timezone daytime time =
        ~message:"invalid ptime out of Timmy.Daytime.with_daytime" ?error:None
   |> Time.of_ptime
 
+let truncate_seconds daytime = { daytime with seconds = 0 }
+
+let truncate_minutes daytime = { daytime with minutes = 0; seconds = 0 }
+
 let latest = { hours = 23; minutes = 59; seconds = 59 }
 
 let midnight = { hours = 0; minutes = 0; seconds = 0 }
