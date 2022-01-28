@@ -280,6 +280,56 @@ module Daytime = struct
       @@ Timmy.Daytime.of_time ~timezone:gmt_plus_7 birthday
     in
     ()
+
+  let pp () =
+    let check
+        time
+        hours
+        minutes
+        minutes_long
+        seconds
+        seconds_long
+        hours_12
+        minutes_12
+        minutes_long_12
+        seconds_12
+        seconds_long_12 =
+      let check name pp exp =
+        Alcotest.(check string name exp) (Fmt.str "%a" pp time)
+      in
+      check "hours" (Timmy.Daytime.pp_opt ~precision:`Hours ()) hours;
+      check "minutes" (Timmy.Daytime.pp_opt ~precision:`Minutes ()) minutes;
+      check "minutes"
+        (Timmy.Daytime.pp_opt ~precision:`Minutes ~size:`Long ())
+        minutes_long;
+      check "seconds" (Timmy.Daytime.pp_opt ~precision:`Seconds ()) seconds;
+      check "default" (Timmy.Daytime.pp_opt ()) seconds;
+      check "seconds"
+        (Timmy.Daytime.pp_opt ~precision:`Seconds ~size:`Long ())
+        seconds_long;
+      check "hours"
+        (Timmy.Daytime.pp_opt ~format:`_12 ~precision:`Hours ())
+        hours_12;
+      check "minutes"
+        (Timmy.Daytime.pp_opt ~format:`_12 ~precision:`Minutes ())
+        minutes_12;
+      check "minutes"
+        (Timmy.Daytime.pp_opt ~format:`_12 ~precision:`Minutes ~size:`Long ())
+        minutes_long_12;
+      check "seconds"
+        (Timmy.Daytime.pp_opt ~format:`_12 ~precision:`Seconds ())
+        seconds_12;
+      check "default" (Timmy.Daytime.pp_opt ~format:`_12 ()) seconds_12;
+      check "seconds"
+        (Timmy.Daytime.pp_opt ~format:`_12 ~precision:`Seconds ~size:`Long ())
+        seconds_long_12
+    in
+    check Timmy.Daytime.midnight "00" "00" "00:00" "00" "00:00:00" "12AM" "12AM"
+      "12:00AM" "12AM" "12:00:00AM";
+    check Timmy.Daytime.noon "12" "12" "12:00" "12" "12:00:00" "12PM" "12PM"
+      "12:00PM" "12PM" "12:00:00PM";
+    check Timmy.Daytime.latest "23" "23:59" "23:59" "23:59:59" "23:59:59" "11PM"
+      "11:59PM" "11:59PM" "11:59:59PM" "11:59:59PM"
 end
 
 module Month = struct
@@ -469,7 +519,11 @@ let () =
             test_case "time conversion" `Quick Date.of_time;
             test_case "overflow" `Quick Date.overflow;
           ] );
-        ("daytime", [ test_case "time conversion" `Quick Daytime.of_time ]);
+        ( "daytime",
+          [
+            test_case "pretty printing" `Quick Daytime.pp;
+            test_case "time conversion" `Quick Daytime.of_time;
+          ] );
         ( "month",
           [
             test_case "int conversions" `Quick Month.int;

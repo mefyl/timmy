@@ -57,6 +57,25 @@ include module type of O
 (** [pp f daytime] prints [daytime] to [f] in RFC3339 format, eg. 12:43:51. *)
 val pp : t Fmt.t
 
+(** [pp_opt ~format ~precision ~size () f daytime] pretty-prints [daytime] to
+    [f] according to the given options.
+
+    - [format]: [`_12] prints in a US-style twelve hour format (eg. [12AM],
+      [1:30AM], [12PM], [1:30PM]), [`_24] prints in twelve twenty-four hour
+      format (eg. [00:00], [1:30], [12:00], [13:30]). Default is [`_24].
+    - [precision]: [`Hours] displays only hours (eg. [1PM], [13]), [`Minutes]
+      also displays minutes (eg. [13:42], [1:42PM]) and [`Seconds] additionally
+      displays seconds (eg. [13:42:51], [1:42:51PM]). Default is [`Seconds].
+    - [size]: [`Long] displays null minutes and seconds (eg. [12:42:00],
+      [13:00:00]) while [`Short] omits them (eg. [12:42], [13]). Default is
+      [`Short]. *)
+val pp_opt :
+  ?format:[ `_12 | `_24 ] ->
+  ?precision:[ `Hours | `Minutes | `Seconds ] ->
+  ?size:[ `Long | `Short ] ->
+  unit ->
+  t Fmt.t
+
 (** {2 Tuple} *)
 
 (** [to_tuple { hours; minutes; seconds }] is [(hours, minutes, seconds)]. *)
