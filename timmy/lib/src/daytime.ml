@@ -30,6 +30,8 @@ let of_int s =
 
 module O = struct
   include Comparable.Make (T)
+
+  let ( + ) time span = to_int time + Span.to_seconds span |> of_int
 end
 
 let of_time ~timezone t =

@@ -52,6 +52,10 @@ include Comparable.S with type t := t
 (** Convenience module to only pull operators. *)
 module O : sig
   include Comparable.Infix with type t := t
+
+  (** [daytime + span] is the daytime after [span] has elapsed, or a relevant
+      error message if the result is out of bounds. *)
+  val ( + ) : t -> Span.t -> (t, string) Result.t
 end
 
 include module type of O
