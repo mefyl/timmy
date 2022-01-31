@@ -52,7 +52,12 @@ let pp_opt
     ()
     f
     { hours; minutes; seconds } =
-  let format_hours =
+  let hours_format :
+      type x. unit -> (int -> x, Formatter.t, unit, unit, unit, x) format6 =
+    match format with
+    | `_24 -> fun () -> "%02i"
+    | `_12 -> fun () -> "%i"
+  and hours_formatted =
     match (format, hours) with
     | `_24, _ -> hours
     | `_12, 0
@@ -65,12 +70,14 @@ let pp_opt
     | `Hours, _, _, _
     | `Minutes, `Short, 0, _
     | `Seconds, `Short, 0, 0 ->
-      Fmt.pf f "%02i" format_hours
+      Fmt.pf f (hours_format ()) hours_formatted
     | `Minutes, _, _, _
     | `Seconds, `Short, _, 0 ->
-      Fmt.pf f "%02i:%02i" format_hours minutes
+      Fmt.pf f Caml.(hours_format () ^^ ":%02i") hours_formatted minutes
     | `Seconds, _, _, _ ->
-      Fmt.pf f "%02i:%02i:%02i" format_hours minutes seconds
+      Fmt.pf f
+        Caml.(hours_format () ^^ ":%02i:%02i")
+        hours_formatted minutes seconds
   in
   match format with
   | `_24 -> ()

@@ -324,6 +324,10 @@ module Daytime = struct
         (Timmy.Daytime.pp_opt ~format:`_12 ~precision:`Seconds ~size:`Long ())
         seconds_long_12
     in
+    check
+      (Timmy.Daytime.make ~hours:2 ~minutes:0 ~seconds:0
+      |> Result.ok_or_failwith)
+      "02" "02" "02:00" "02" "02:00:00" "2AM" "2AM" "2:00AM" "2AM" "2:00:00AM";
     check Timmy.Daytime.midnight "00" "00" "00:00" "00" "00:00:00" "12AM" "12AM"
       "12:00AM" "12AM" "12:00:00AM";
     check Timmy.Daytime.noon "12" "12" "12:00" "12" "12:00:00" "12PM" "12PM"
