@@ -26,7 +26,6 @@ let pp = Fmt.of_to_string to_string
 
 module O = struct
   let ( = ) l r = equal l r
-
   let ( <> ) l r = not (l = r)
 end
 

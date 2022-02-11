@@ -109,13 +109,8 @@ module Month = struct
                       id = None;
                       parametric = None;
                     });
-                  encoder =
-                    (function
-                    | January -> Some ()
-                    | _ -> None);
-                  decoder =
-                    (function
-                    | () -> January);
+                  encoder = (function January -> Some () | _ -> None);
+                  decoder = (function () -> January);
                 };
               Schema.Case
                 {
@@ -127,13 +122,8 @@ module Month = struct
                       id = None;
                       parametric = None;
                     });
-                  encoder =
-                    (function
-                    | February -> Some ()
-                    | _ -> None);
-                  decoder =
-                    (function
-                    | () -> February);
+                  encoder = (function February -> Some () | _ -> None);
+                  decoder = (function () -> February);
                 };
               Schema.Case
                 {
@@ -145,13 +135,8 @@ module Month = struct
                       id = None;
                       parametric = None;
                     });
-                  encoder =
-                    (function
-                    | March -> Some ()
-                    | _ -> None);
-                  decoder =
-                    (function
-                    | () -> March);
+                  encoder = (function March -> Some () | _ -> None);
+                  decoder = (function () -> March);
                 };
               Schema.Case
                 {
@@ -163,13 +148,8 @@ module Month = struct
                       id = None;
                       parametric = None;
                     });
-                  encoder =
-                    (function
-                    | April -> Some ()
-                    | _ -> None);
-                  decoder =
-                    (function
-                    | () -> April);
+                  encoder = (function April -> Some () | _ -> None);
+                  decoder = (function () -> April);
                 };
               Schema.Case
                 {
@@ -181,13 +161,8 @@ module Month = struct
                       id = None;
                       parametric = None;
                     });
-                  encoder =
-                    (function
-                    | May -> Some ()
-                    | _ -> None);
-                  decoder =
-                    (function
-                    | () -> May);
+                  encoder = (function May -> Some () | _ -> None);
+                  decoder = (function () -> May);
                 };
               Schema.Case
                 {
@@ -199,13 +174,8 @@ module Month = struct
                       id = None;
                       parametric = None;
                     });
-                  encoder =
-                    (function
-                    | June -> Some ()
-                    | _ -> None);
-                  decoder =
-                    (function
-                    | () -> June);
+                  encoder = (function June -> Some () | _ -> None);
+                  decoder = (function () -> June);
                 };
               Schema.Case
                 {
@@ -217,13 +187,8 @@ module Month = struct
                       id = None;
                       parametric = None;
                     });
-                  encoder =
-                    (function
-                    | July -> Some ()
-                    | _ -> None);
-                  decoder =
-                    (function
-                    | () -> July);
+                  encoder = (function July -> Some () | _ -> None);
+                  decoder = (function () -> July);
                 };
               Schema.Case
                 {
@@ -235,13 +200,8 @@ module Month = struct
                       id = None;
                       parametric = None;
                     });
-                  encoder =
-                    (function
-                    | August -> Some ()
-                    | _ -> None);
-                  decoder =
-                    (function
-                    | () -> August);
+                  encoder = (function August -> Some () | _ -> None);
+                  decoder = (function () -> August);
                 };
               Schema.Case
                 {
@@ -253,13 +213,8 @@ module Month = struct
                       id = None;
                       parametric = None;
                     });
-                  encoder =
-                    (function
-                    | September -> Some ()
-                    | _ -> None);
-                  decoder =
-                    (function
-                    | () -> September);
+                  encoder = (function September -> Some () | _ -> None);
+                  decoder = (function () -> September);
                 };
               Schema.Case
                 {
@@ -271,13 +226,8 @@ module Month = struct
                       id = None;
                       parametric = None;
                     });
-                  encoder =
-                    (function
-                    | October -> Some ()
-                    | _ -> None);
-                  decoder =
-                    (function
-                    | () -> October);
+                  encoder = (function October -> Some () | _ -> None);
+                  decoder = (function () -> October);
                 };
               Schema.Case
                 {
@@ -289,13 +239,8 @@ module Month = struct
                       id = None;
                       parametric = None;
                     });
-                  encoder =
-                    (function
-                    | November -> Some ()
-                    | _ -> None);
-                  decoder =
-                    (function
-                    | () -> November);
+                  encoder = (function November -> Some () | _ -> None);
+                  decoder = (function () -> November);
                 };
               Schema.Case
                 {
@@ -307,13 +252,8 @@ module Month = struct
                       id = None;
                       parametric = None;
                     });
-                  encoder =
-                    (function
-                    | December -> Some ()
-                    | _ -> None);
-                  decoder =
-                    (function
-                    | () -> December);
+                  encoder = (function December -> Some () | _ -> None);
+                  decoder = (function () -> December);
                 };
             ];
           key = None;
@@ -432,13 +372,8 @@ module Weekday = struct
                       id = None;
                       parametric = None;
                     });
-                  encoder =
-                    (function
-                    | Monday -> Some ()
-                    | _ -> None);
-                  decoder =
-                    (function
-                    | () -> Monday);
+                  encoder = (function Monday -> Some () | _ -> None);
+                  decoder = (function () -> Monday);
                 };
               Schema.Case
                 {
@@ -450,13 +385,8 @@ module Weekday = struct
                       id = None;
                       parametric = None;
                     });
-                  encoder =
-                    (function
-                    | Tuesday -> Some ()
-                    | _ -> None);
-                  decoder =
-                    (function
-                    | () -> Tuesday);
+                  encoder = (function Tuesday -> Some () | _ -> None);
+                  decoder = (function () -> Tuesday);
                 };
               Schema.Case
                 {
@@ -468,13 +398,8 @@ module Weekday = struct
                       id = None;
                       parametric = None;
                     });
-                  encoder =
-                    (function
-                    | Wednesday -> Some ()
-                    | _ -> None);
-                  decoder =
-                    (function
-                    | () -> Wednesday);
+                  encoder = (function Wednesday -> Some () | _ -> None);
+                  decoder = (function () -> Wednesday);
                 };
               Schema.Case
                 {
@@ -486,13 +411,8 @@ module Weekday = struct
                       id = None;
                       parametric = None;
                     });
-                  encoder =
-                    (function
-                    | Thursday -> Some ()
-                    | _ -> None);
-                  decoder =
-                    (function
-                    | () -> Thursday);
+                  encoder = (function Thursday -> Some () | _ -> None);
+                  decoder = (function () -> Thursday);
                 };
               Schema.Case
                 {
@@ -504,13 +424,8 @@ module Weekday = struct
                       id = None;
                       parametric = None;
                     });
-                  encoder =
-                    (function
-                    | Friday -> Some ()
-                    | _ -> None);
-                  decoder =
-                    (function
-                    | () -> Friday);
+                  encoder = (function Friday -> Some () | _ -> None);
+                  decoder = (function () -> Friday);
                 };
               Schema.Case
                 {
@@ -522,13 +437,8 @@ module Weekday = struct
                       id = None;
                       parametric = None;
                     });
-                  encoder =
-                    (function
-                    | Saturday -> Some ()
-                    | _ -> None);
-                  decoder =
-                    (function
-                    | () -> Saturday);
+                  encoder = (function Saturday -> Some () | _ -> None);
+                  decoder = (function () -> Saturday);
                 };
               Schema.Case
                 {
@@ -540,13 +450,8 @@ module Weekday = struct
                       id = None;
                       parametric = None;
                     });
-                  encoder =
-                    (function
-                    | Sunday -> Some ()
-                    | _ -> None);
-                  decoder =
-                    (function
-                    | () -> Sunday);
+                  encoder = (function Sunday -> Some () | _ -> None);
+                  decoder = (function () -> Sunday);
                 };
             ];
           key = None;
