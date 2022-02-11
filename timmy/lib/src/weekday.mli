@@ -27,7 +27,6 @@ val equal : t -> t -> bool
 
 module O : sig
   val ( = ) : t -> t -> bool
-
   val ( <> ) : t -> t -> bool
 end
 

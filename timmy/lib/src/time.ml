@@ -5,7 +5,6 @@ module T = struct
   include Type_js.Time
 
   let compare = Ptime.compare
-
   let sexp_of_t t = Sexp.Atom (Ptime.to_rfc3339 t)
 end
 
@@ -30,9 +29,7 @@ let of_rfc3339 s =
     Result.fail Fmt.(str "invalid date: %a" Ptime.pp_rfc3339_error e)
 
 let of_string = of_rfc3339
-
 let to_ptime t = t
-
 let pp = Ptime.pp
 
 let to_rfc3339 ?timezone t =
@@ -41,7 +38,6 @@ let to_rfc3339 ?timezone t =
     t
 
 let to_string = to_rfc3339
-
 let epoch = Ptime.epoch
 
 module O = Infix

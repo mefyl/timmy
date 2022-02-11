@@ -47,7 +47,9 @@ module Month = struct
 end
 
 module type MONTH = sig
-  (** A month. *)
+  (** A month.
+
+      @canonical Timmy.Month.t *)
   type t =
     | January
     | February
@@ -104,22 +106,16 @@ module Daytime = struct
   let make ~hours ~minutes ~seconds =
     let ( let* ) = Result.( >>= ) in
     let* () =
-      if hours >= 0 && hours < 24 then
-        Result.return ()
-      else
-        Result.failf "invalid hours: %i" hours
+      if hours >= 0 && hours < 24 then Result.return ()
+      else Result.failf "invalid hours: %i" hours
     in
     let* () =
-      if minutes >= 0 && minutes < 60 then
-        Result.return ()
-      else
-        Result.failf "invalid minutes: %i" hours
+      if minutes >= 0 && minutes < 60 then Result.return ()
+      else Result.failf "invalid minutes: %i" hours
     in
     let* () =
-      if seconds >= 0 && seconds < 60 then
-        Result.return ()
-      else
-        Result.failf "invalid seconds: %i" hours
+      if seconds >= 0 && seconds < 60 then Result.return ()
+      else Result.failf "invalid seconds: %i" hours
     in
     Result.return { hours; minutes; seconds }
 

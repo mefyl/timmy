@@ -13,8 +13,8 @@ module T = struct
       ]
 
   let int_of_string msg s =
-    try Result.return @@ Int.of_string s with
-    | _ -> Result.failf "invalid %s: %s" msg s
+    try Result.return @@ Int.of_string s
+    with _ -> Result.failf "invalid %s: %s" msg s
 
   let of_string s =
     match String.split ~on:'-' s with
@@ -33,18 +33,14 @@ module T = struct
     | Result.Ok d -> d
 
   let to_sexp date = to_sexp_tuple @@ to_tuple date
-
   let compare l r = Poly.compare (to_tuple l) (to_tuple r)
-
   let sexp_of_t = to_sexp
 end
 
 include T
 
 let month_of_int m =
-  match Month.of_int m with
-  | Result.Ok m -> m
-  | Result.Error e -> failwith e
+  match Month.of_int m with Result.Ok m -> m | Result.Error e -> failwith e
 
 (* Shamelessly stolen from ptime *)
 let of_int jd =
@@ -71,7 +67,8 @@ let to_int { year; month; day } =
 
 let add_days date days = of_int @@ (to_int date + days)
 
-(* Shamelessly stolen from ptime, which does not intend on exposing it publicly *)
+(* Shamelessly stolen from ptime, which does not intend on exposing it
+   publicly *)
 let max_month_day =
   (* max day number in a given year's month. *)
   let is_leap_year y =
@@ -80,11 +77,7 @@ let max_month_day =
   let mlen =
     [| 31; 28 (* or not *); 31; 30; 31; 30; 31; 31; 30; 31; 30; 31 |]
   in
-  fun y m ->
-    if m = 2 && is_leap_year y then
-      29
-    else
-      mlen.(m - 1)
+  fun y m -> if m = 2 && is_leap_year y then 29 else mlen.(m - 1)
 
 module O = struct
   include Base.Comparable.Make (T)
@@ -121,8 +114,7 @@ let make_overflow ?(day_truncate = false) ~year ~month ~day () =
         adjust year month (day + offset)
       else
         let max = max_month_day year month in
-        if day <= max then
-          { year; month = month_of_int month; day }
+        if day <= max then { year; month = month_of_int month; day }
         else
           let year, month = adjust_month year (month + 1) in
           adjust year month (day - max)

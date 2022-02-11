@@ -6,11 +6,8 @@ let ptime =
   Option.value_exn (Ptime.of_date_time ((1985, 12, 29), ((17, 35, 42), 0)))
 
 let test_ptime = Alcotest.testable Ptime.pp Ptime.equal
-
 let daytime = Alcotest.testable Timmy.Daytime.pp Timmy.Daytime.( = )
-
 let gmt_plus_2 = Timmy.Timezone.of_gmt_offset_seconds @@ (60 * 60 * 2)
-
 let gmt_plus_7 = Timmy.Timezone.of_gmt_offset_seconds @@ (60 * 60 * 7)
 
 module Time = struct
@@ -282,18 +279,8 @@ module Daytime = struct
     ()
 
   let pp () =
-    let check
-        time
-        hours
-        minutes
-        minutes_long
-        seconds
-        seconds_long
-        hours_12
-        minutes_12
-        minutes_long_12
-        seconds_12
-        seconds_long_12 =
+    let check time hours minutes minutes_long seconds seconds_long hours_12
+        minutes_12 minutes_long_12 seconds_12 seconds_long_12 =
       let check name pp exp =
         Alcotest.(check string name exp) (Fmt.str "%a" pp time)
       in
