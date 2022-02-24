@@ -13,7 +13,7 @@ depends: [
   "fmt"
   "js_of_ocaml"
   "js_of_ocaml-ppx"
-  "schematic-jsoo" {>= "0.11.9" & < "0.12.0"}
+  "schematic-jsoo" {>= "0.12.0" & < "0.13.0"}
   "timmy" {= version}
   "odoc" {with-doc}
 ]

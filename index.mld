@@ -1,0 +1,33 @@
+{0 Timmy}
+
+Timmy is a general-purpose time and calendar library.
+
+{1 Contents}
+
+The entry point of this library is the module: {!Timmy}.
+
+{1 Rationale and relation to [Ptime]}
+
+[Timmy] is built on top of the widely used [Ptime] library which does
+most of the underlying heavy lifting.  It does not intended as a
+replacement for it but as an (arguably) higher level, safer and more
+complete calendar-wise layer, while certainly not being as lean and as
+battle-tested.  Interoperability exists for all relevant objects so
+both can easily be mixed if needed.
+
+We describe here the main rationale for such a wrapper.
+
+{2 Timezone safety}
+
+
+
+{2 Static guarantees of operation correctness}
+
+{2 Advanced calendar features}
+
+
+{1 Concepts}
+
+{2 Time points versus time representation}
+
+{2 Leap seconds}
