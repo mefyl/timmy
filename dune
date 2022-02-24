@@ -21,3 +21,7 @@
     (cat %{opam})
     (echo
      "url {\n  src: \"git://git@gitlab.routine.co:routine/timmy#%{version:timmy-jsoo}\"\n}\n")))))
+
+(documentation
+ (package timmy)
+ (mld_files "index"))

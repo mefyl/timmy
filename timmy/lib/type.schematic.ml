@@ -2,6 +2,8 @@ module type DATE = sig
   (** @inline *)
   include Types_bare.DATE with type t = Types_bare.Date.t
 
+  val schema_versioned : Schematic.Version.t option -> t Schematic.schema
+
   (** [schema] maps dates to [(year, month, day)] triplets. *)
   val schema : t Schematic.schema
 end
@@ -9,14 +11,26 @@ end
 module Date = struct
   include Types_bare.Date
 
-  let schema = Schematic.Schema.(make (Map (of_tuple, to_tuple, Date)))
+  let schema_versioned _ =
+    Schematic.Schema.(make (Map (of_tuple, to_tuple, Date)))
+
+  let schema = schema_versioned None
+end
+
+module type DAYTIME = sig
+  include Types_bare.DAYTIME
+
+  val schema_versioned : Schematic.Version.t option -> t Schematic.Schema.t
+
+  (** [schema] maps daytimes to hours, minutes, seconds triplets. *)
+  val schema : t Schematic.Schema.t
 end
 
 module Daytime = struct
   include Types_bare.Daytime
 
-  let schema =
-    let open Schematic.Schema.Schemas in
+  let schema_versioned _ =
+    let open Schematic.Schemas in
     let descriptor =
       Schema.Map
         ( (fun (hours, (minutes, (seconds, ()))) ->
@@ -66,13 +80,8 @@ module Daytime = struct
     and id = "daytime" in
     let open Schema in
     { descriptor; id = Some id; parametric = None }
-end
 
-module type DAYTIME = sig
-  include Types_bare.DAYTIME
-
-  (** [schema] maps daytimes to hours, minutes, seconds triplets. *)
-  val schema : t Schematic.Schema.t
+  let schema = schema_versioned None
 end
 
 module type MONTH = sig
@@ -85,6 +94,8 @@ module type MONTH = sig
   (** [schema_int] maps months to integers, 1 being January and 12 December. *)
   val schema_int : t Schematic.Schema.t
 
+  val schema_versioned : Schematic.Version.t option -> t Schematic.Schema.t
+
   (** [schema] is [schema_int]. *)
   val schema : t Schematic.Schema.t
 end
@@ -92,7 +103,7 @@ end
 module Month = struct
   include Types_bare.Month
 
-  let schema =
+  let schema_versioned _ =
     let open Schematic in
     let descriptor =
       Schema.Union
@@ -262,6 +273,7 @@ module Month = struct
     let open Schematic.Schema in
     { descriptor; id = Some id; parametric = None }
 
+  let schema = schema_versioned None
   let schema_string = schema
 
   let schema_int =
@@ -273,18 +285,32 @@ module Month = struct
     }
 end
 
+module type SPAN = sig
+  include Types_bare.SPAN
+
+  val schema_versioned : Schematic.Version.t option -> t Schematic.Schema.t
+
+  (** [schema] encode spans a number of seconds. *)
+  val schema : t Schematic.Schema.t
+end
+
 module Span = struct
   (** @inline *)
   include Types_bare.Span
 
-  let schema =
-    { Schematic.Schema.Schemas.Ptime.span_schema with id = Some "span" }
+  let schema_versioned _ =
+    { Schematic.Schemas.Ptime.span_schema with id = Some "span" }
+
+  let schema = schema_versioned None
 end
 
-module type SPAN = sig
-  include Types_bare.SPAN
+module type TIME = sig
+  (** @inline *)
+  include Types_bare.TIME
 
-  (** [schema] encode spans a number of seconds. *)
+  val schema_versioned : Schematic.Version.t option -> t Schematic.Schema.t
+
+  (** Time schema. *)
   val schema : t Schematic.Schema.t
 end
 
@@ -292,22 +318,27 @@ module Time = struct
   (** @inline *)
   include Types_bare.Time
 
-  let schema = { Schematic.Schema.Schemas.Ptime.schema with id = Some "time" }
+  let schema_versioned _ =
+    { Schematic.Schemas.Ptime.schema with id = Some "time" }
+
+  let schema = schema_versioned None
 end
 
-module type TIME = sig
+module type WEEK = sig
   (** @inline *)
-  include Types_bare.TIME
+  include Types_bare.WEEK with type t = Types_bare.Week.t
 
-  (** Time schema. *)
+  val schema_versioned : Schematic.Version.t option -> t Schematic.Schema.t
+
+  (** Week schema. *)
   val schema : t Schematic.Schema.t
 end
 
 module Week = struct
   include Types_bare.Week
 
-  let schema =
-    let open Schematic.Schema.Schemas in
+  let schema_versioned _ =
+    let open Schematic.Schemas in
     let descriptor =
       Schema.Map
         ( (fun (n, (year, ())) -> Result.Ok ({ n; year } : t)),
@@ -342,20 +373,28 @@ module Week = struct
     and id = "week" in
     let open Schema in
     { descriptor; id = Some id; parametric = None }
+
+  let schema = schema_versioned None
 end
 
-module type WEEK = sig
+module type WEEKDAY = sig
   (** @inline *)
-  include Types_bare.WEEK with type t = Types_bare.Week.t
+  include Types_bare.WEEKDAY
 
-  (** Week schema. *)
+  (** Schema mapping week days to their english name. *)
+  val schema_string : t Schematic.Schema.t
+
+  (** [schema] is [schema_int]. *)
   val schema : t Schematic.Schema.t
+
+  (** [schema_versioned _] is [schema] *)
+  val schema_versioned : Schematic.Version.t option -> t Schematic.Schema.t
 end
 
 module Weekday = struct
   include Types_bare.Weekday
 
-  let schema =
+  let schema_versioned _ =
     let open Schematic in
     let descriptor =
       Schema.Union
@@ -459,16 +498,6 @@ module Weekday = struct
     and id = "weekday" in
     Schema.{ descriptor; id = Some id; parametric = None }
 
+  let schema = schema_versioned None
   let schema_string = schema
-end
-
-module type WEEKDAY = sig
-  (** @inline *)
-  include Types_bare.WEEKDAY
-
-  (** Schema mapping week days to their english name. *)
-  val schema_string : t Schematic.Schema.t
-
-  (** [schema] is [schema_int]. *)
-  val schema : t Schematic.Schema.t
 end
