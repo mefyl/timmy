@@ -27,18 +27,19 @@ RUN ssh-keyscan gitlab.routine.co > /root/.ssh/known_hosts
 # No recursive lookup available
 ARG PACKAGES
 RUN if test -n "$PACKAGES"; then apk add --no-cache $PACKAGES; fi
-ARG OPAM_PACKAGES
 ADD .exists *.opam.extdeps /root/
 # FIXME: With a more recent version of opam: opam switch set-invariant ocamlformat.0.20.1
 RUN opam update && \
-    (if test -f /root/*.extdeps; then  opam install --yes --deps-only /root/*.extdeps; fi) && \
-    opam install --yes ocamlformat.0.20.1 $OPAM_PACKAGES && \
+    (if find /root -name '*.extdeps'; then  opam install --yes --deps-only /root/*.extdeps; fi) && \
+    opam install --yes ocamlformat.0.20.1 && \
     opam clean -a -c -s --logs -r && \
     rm -rf /root/.cache/dune
+ARG OPAM_PACKAGES
 ADD .exists *.opam /root/
 RUN opam repository add --all routine git@gitlab.routine.co:routine/opam && \
     opam update && \
     opam install --yes --deps-only --with-test /root && \
+    (if test -n "$OPAM_PACKAGES"; then opam install --yes $OPAM_PACKAGES; fi) && \
     (if test -n "$OPAM_WITHOUT_PACKAGES"; then opam remove --yes $OPAM_WITHOUT_PACKAGES; fi) && \
     opam clean -a -c -s --logs -r && \
     rm -rf /root/.cache/dune
