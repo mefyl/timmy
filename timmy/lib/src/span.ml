@@ -31,6 +31,7 @@ let pp f s =
   and m = s / 60 % 60
   and s = s % 60 in
   let open Fmt in
+  let maybe_minus f is_negative = if is_negative then char f '-' else () in
   let days f = function
     | 0 -> ()
     | 1 -> string f "1 day"
@@ -41,6 +42,7 @@ let pp f s =
   and sp l r = if Int.(l > 0 && r > 0) then const char ' ' else nop in
   concat ~sep:nop
     [
+      const maybe_minus Poly.(s < 0);
       const days d;
       sp d h;
       const hours h;
