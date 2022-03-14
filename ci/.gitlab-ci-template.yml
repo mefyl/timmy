@@ -39,6 +39,7 @@ variables:
   script:
     - make -f .logistic/ci/Makefile build
   artifacts:
+    expire_in: 10 days
     paths:
       - _build/
   variables:
@@ -50,6 +51,7 @@ variables:
   script:
     - make -f .logistic/ci/Makefile check
   artifacts:
+    expire_in: 10 days
     paths:
       - _build/
   variables:
@@ -62,9 +64,6 @@ variables:
     - make -f .logistic/ci/Makefile package
   after_script:
     - make -f .logistic/ci/Makefile package/clean
-  artifacts:
-    reports:
-      metrics: metrics.txt
   variables:
     OCAML_VERSION: "4.12.0"
 
