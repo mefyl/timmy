@@ -4,7 +4,7 @@ OCAML_VERSION ?= $(shell ocamlc --version)
 
 build: lint
 	dune subst
-	dune build --ignore-promoted-rules
+	dune build --ignore-promoted-rules @install
 
 lint:
 	dune build @fmt
