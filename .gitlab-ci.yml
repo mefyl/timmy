@@ -4,11 +4,13 @@ include:
 toolchain:
   extends: .ocaml-toolchain
   variables:
+    OCAML_VERSION: "4.12.0"
     OPAM_PACKAGES: "schematic"
 
 toolchain:no-schematic:
   extends: .ocaml-toolchain
   variables:
+    OCAML_VERSION: "4.12.0"
     VARIANT: "-no-schematic"
 
 build:
@@ -25,6 +27,7 @@ build:no-schematic:
   needs:
     - toolchain:no-schematic
   variables:
+    OCAML_VERSION: "4.12.0"
     VARIANT: "-no-schematic"
 
 check:
@@ -41,6 +44,7 @@ check:no-schematic:
   needs:
     - build:no-schematic
   variables:
+    OCAML_VERSION: "4.12.0"
     VARIANT: "-no-schematic"
 
 package:
