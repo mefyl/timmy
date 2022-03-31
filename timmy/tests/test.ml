@@ -155,7 +155,10 @@ module Span = struct
     let check name exp seconds =
       Alcotest.(
         check string name exp
-          (Fmt.str "%a" Timmy.Span.pp @@ Timmy.Span.seconds seconds))
+          (Fmt.str "%a" Timmy.Span.pp @@ Timmy.Span.seconds seconds));
+      Alcotest.(
+        check string name ("-" ^ exp)
+          (Fmt.str "%a" Timmy.Span.pp @@ Timmy.Span.seconds (-seconds)))
     in
     let () = check "Seconds are printed correctly" "45s" 45
     and () = check "Minutes are printed correctly" "12m" (60 * 12)
