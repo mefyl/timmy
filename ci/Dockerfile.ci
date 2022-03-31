@@ -9,6 +9,7 @@ RUN chmod a+x /root
 # ENV DUNE_CACHE_TRANSPORT=direct
 # time rclone sync spaces:routine-cache/dune /root/.cache/dune
 # time rclone sync /root/.cache/dune spaces:routine-cache/dune
+ENV OPAMROOTISOK=1
 ENV ENV="/etc/profile"
 ENV PATH="/root/.opam/$OCAML_VERSION/bin:$PATH"
 ARG AWS_SECRET_ACCESS_KEY
