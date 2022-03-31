@@ -4,7 +4,7 @@ OCAML_VERSION ?= $(shell ocamlc --version)
 
 build: lint
 	dune subst
-	dune build
+	dune build --ignore-promoted-rules @install
 
 lint:
 	dune build @fmt
@@ -56,7 +56,7 @@ image/%:
 	if test -n "$(FROM_SCRATCH)"; then CACHE="--no-cache"; \
 	else if docker pull "$(IMAGE)/$*"; then CACHE="--cache-from $(IMAGE)/$*"; fi; \
 	fi; \
-	docker build -f "$(dir $(MAKEFILE_LIST))Dockerfile.$*" . --tag "$(IMAGE)/$*" $$CACHE
+	docker build -f "$(dir $(MAKEFILE_LIST))Dockerfile.$*" . --tag "$(IMAGE)/$*" $$CACHE --build-arg PACKAGES="$(PACKAGES)"
 
 opam:
 	$(DIR)/opam-publish
