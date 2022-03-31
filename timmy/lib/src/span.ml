@@ -24,12 +24,13 @@ let seconds s = Ptime.Span.of_int_s s
 let to_days s = Ptime.Span.to_d_ps s |> fst
 let to_seconds s = Option.value_exn ~here:[%here] (Ptime.Span.to_int_s s)
 
-let pp f s =
-  let s = to_seconds s in
-  let d = s / (60 * 60 * 24)
-  and h = s / (60 * 60) % 24
-  and m = s / 60 % 60
-  and s = s % 60 in
+let pp f span =
+  let span = to_seconds span in
+  let span_abs = Int.abs span in
+  let d = span_abs / (60 * 60 * 24)
+  and h = span_abs / (60 * 60) % 24
+  and m = span_abs / 60 % 60
+  and s = span_abs % 60 in
   let open Fmt in
   let days f = function
     | 0 -> ()
@@ -41,6 +42,7 @@ let pp f s =
   and sp l r = if Int.(l > 0 && r > 0) then const char ' ' else nop in
   concat ~sep:nop
     [
+      (if Int.(span < 0) then const char '-' else nop);
       const days d;
       sp d h;
       const hours h;
