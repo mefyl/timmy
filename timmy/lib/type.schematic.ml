@@ -12,7 +12,8 @@ module Date = struct
   include Types_bare.Date
 
   let schema_versioned _ =
-    Schematic.Schema.(make (Map (of_tuple, to_tuple, Date)))
+    Schematic.Schema.(
+      make (Map { decode = of_tuple; encode = to_tuple; descriptor = Date }))
 
   let schema = schema_versioned None
 end
@@ -33,50 +34,55 @@ module Daytime = struct
     let open Schematic.Schemas in
     let descriptor =
       Schema.Map
-        ( (fun (hours, (minutes, (seconds, ()))) ->
-            Result.Ok ({ hours; minutes; seconds } : t)),
-          (fun ({ hours; minutes; seconds } : t) ->
-            (hours, (minutes, (seconds, ())))),
-          Object
-            (Field
-               {
-                 description = None;
-                 examples = [];
-                 field = "hours";
-                 maximum = None;
-                 minimum = None;
-                 omit = false;
-                 requirement = Required;
-                 rest =
-                   Field
-                     {
-                       description = None;
-                       examples = [];
-                       field = "minutes";
-                       maximum = None;
-                       minimum = None;
-                       omit = false;
-                       requirement = Default 0;
-                       rest =
-                         Field
-                           {
-                             description = None;
-                             examples = [];
-                             field = "seconds";
-                             maximum = None;
-                             minimum = None;
-                             omit = false;
-                             requirement = Default 0;
-                             rest = FieldEnd;
-                             schema = Outline int_schema;
-                             title = None;
-                           };
-                       schema = Outline int_schema;
-                       title = None;
-                     };
-                 schema = Outline int_schema;
-                 title = None;
-               }) )
+        {
+          decode =
+            (fun (hours, (minutes, (seconds, ()))) ->
+              Result.Ok ({ hours; minutes; seconds } : t));
+          encode =
+            (fun ({ hours; minutes; seconds } : t) ->
+              (hours, (minutes, (seconds, ()))));
+          descriptor =
+            Object
+              (Field
+                 {
+                   description = None;
+                   examples = [];
+                   field = "hours";
+                   maximum = None;
+                   minimum = None;
+                   omit = false;
+                   requirement = Required;
+                   rest =
+                     Field
+                       {
+                         description = None;
+                         examples = [];
+                         field = "minutes";
+                         maximum = None;
+                         minimum = None;
+                         omit = false;
+                         requirement = Default 0;
+                         rest =
+                           Field
+                             {
+                               description = None;
+                               examples = [];
+                               field = "seconds";
+                               maximum = None;
+                               minimum = None;
+                               omit = false;
+                               requirement = Default 0;
+                               rest = FieldEnd;
+                               schema = Outline int_schema;
+                               title = None;
+                             };
+                         schema = Outline int_schema;
+                         title = None;
+                       };
+                   schema = Outline int_schema;
+                   title = None;
+                 });
+        }
     and id = "daytime" in
     let open Schema in
     { descriptor; id = Some id; parametric = None }
@@ -279,7 +285,7 @@ module Month = struct
   let schema_int =
     let open Schematic.Schema in
     {
-      descriptor = Map (of_int, to_int, Int);
+      descriptor = Map { decode = of_int; encode = to_int; descriptor = Int };
       id = Some "month";
       parametric = None;
     }
@@ -341,35 +347,38 @@ module Week = struct
     let open Schematic.Schemas in
     let descriptor =
       Schema.Map
-        ( (fun (n, (year, ())) -> Result.Ok ({ n; year } : t)),
-          (fun ({ n; year } : t) -> (n, (year, ()))),
-          Object
-            (Field
-               {
-                 description = None;
-                 examples = [];
-                 field = "n";
-                 maximum = None;
-                 minimum = None;
-                 omit = false;
-                 requirement = Required;
-                 rest =
-                   Field
-                     {
-                       description = None;
-                       examples = [];
-                       field = "year";
-                       maximum = None;
-                       minimum = None;
-                       omit = false;
-                       requirement = Default 0;
-                       rest = FieldEnd;
-                       schema = Outline int_schema;
-                       title = None;
-                     };
-                 schema = Outline int_schema;
-                 title = None;
-               }) )
+        {
+          decode = (fun (n, (year, ())) -> Result.Ok ({ n; year } : t));
+          encode = (fun ({ n; year } : t) -> (n, (year, ())));
+          descriptor =
+            Object
+              (Field
+                 {
+                   description = None;
+                   examples = [];
+                   field = "n";
+                   maximum = None;
+                   minimum = None;
+                   omit = false;
+                   requirement = Required;
+                   rest =
+                     Field
+                       {
+                         description = None;
+                         examples = [];
+                         field = "year";
+                         maximum = None;
+                         minimum = None;
+                         omit = false;
+                         requirement = Required;
+                         rest = FieldEnd;
+                         schema = Outline int_schema;
+                         title = None;
+                       };
+                   schema = Outline int_schema;
+                   title = None;
+                 });
+        }
     and id = "week" in
     let open Schema in
     { descriptor; id = Some id; parametric = None }
