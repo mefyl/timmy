@@ -30,7 +30,7 @@ RUN if test -n "$PACKAGES"; then apk add --no-cache $PACKAGES; fi
 ADD .exists *.opam.extdeps /root/
 # FIXME: With a more recent version of opam: opam switch set-invariant ocamlformat.0.20.1
 RUN opam update && \
-    (if find /root -name '*.extdeps'; then  opam install --yes --deps-only /root/*.extdeps; fi) && \
+    (if find /root -name '*.extdeps'; then  opam install --yes --deps-only --with-test /root/*.extdeps; fi) && \
     opam install --yes ocamlformat.0.20.1 && \
     opam clean -a -c -s --logs -r && \
     rm -rf /root/.cache/dune
