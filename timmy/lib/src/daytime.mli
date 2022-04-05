@@ -36,11 +36,15 @@ val truncate_minutes : t -> t
 
 (** {2 Time conversions} *)
 
-(** [of_time ~timezone time] is the time of the day at [time] in [timezone]. *)
+(** [of_time ~timezone time] is the time of the day at [time] in [timezone].
+
+    @raise Failure if [time] does not exist in [timezone]. *)
 val of_time : timezone:Timezone.t -> Time.t -> t
 
 (** [to_time ~timezone date daytime] is the time at [daytime] on [date] in
-    [timezone]. *)
+    [timezone].
+
+    @raise Failure if the [date] and [datetime] do not exist in [timezone]. *)
 val to_time : timezone:Timezone.t -> Date.t -> t -> Time.t
 
 (** {2 Comparison} *)

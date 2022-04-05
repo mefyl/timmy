@@ -1,27 +1,46 @@
-(** Timmy can only represent static timezones with a fixed offset from UTC. To
-    accomodate for an evolving timezone -- eg. daylight saving time -- one must
-    recompute the current timezone regularly and pass an updated value to
-    {!Timmy}.*)
+(** Timmy timezone implementation is available in two flavors: one static and
+    one system dependant. The static one can be created as an offset from UTC.
+    The native one will bind to the underlying system to accomodate for daylight
+    savings (or any other time transition implemented with a timezone shift).*)
 
 (** {1 Type} *)
 
-(** A static timezone with a fixed offset from UTC. *)
+(** A timezone. *)
 type t
 
 (** {1 Construction} *)
 
-(** Timmy leaves the burden of determining the local time to {!Ptime_clock}.
-    Pick the right ptime.clock library for your platform and use
-    [Ptime_clock.current_tz_offset_s] in conjunction with
-    [Timmy.Timezone.of_gmt_offset_seconds]. *)
+(** [native] is a system specific implementation that relies on the underlying
+    system to adjust for evolving timezones. *)
+val native : t
 
-(** [of_gmt_offset_seconds s] is the timezone offset by [s] seconds from UTC. *)
+(** [of_gmt_offset_seconds s] is a static timezone with offset [s] seconds from
+    UTC.*)
 val of_gmt_offset_seconds : int -> t
 
-(** [to_gmt_offset_seconds tz] is the number of seconds [tz] is offset from UTC. *)
-val to_gmt_offset_seconds : t -> int
-
-(** {2 Well known values} *)
-
-(** [utc] is the UTC timezone. *)
+(** [utc] is the UTC timezone.*)
 val utc : t
+
+(** {1 Usage} *)
+
+(** When the timezone was created using {native} the offset depends on the given
+    time. It includes daylight savings where it applies. Static timezones yield
+    the same offset regardless of given time. *)
+
+(** [to_gmt_offset_seconds_with_datetime tz ~date ~time] is the number of
+    seconds that offset from UTC, for the given day (year, month, day) and time
+    (hour, minute, second).
+
+    @raise Failure
+      if the native implementation finds that [date] and [time] do not exist in
+      [tz]. *)
+val to_gmt_offset_seconds_with_datetime :
+  t -> date:int * int * int -> time:int * int * int -> int
+
+(** [to_gmt_offset_seconds_with_ptime tz timestamp] is the number of seconds
+    that offset from UTC at the time given by a unix timestamp (Ptime.t).
+
+    @raise Failure
+      if the native implementation finds that the [timestamp] do not exist in
+      [tz]. *)
+val to_gmt_offset_seconds_with_ptime : t -> Ptime.t -> int
