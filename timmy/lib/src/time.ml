@@ -33,9 +33,11 @@ let to_ptime t = t
 let pp = Ptime.pp
 
 let to_rfc3339 ?timezone t =
-  Ptime.to_rfc3339
-    ?tz_offset_s:(Option.map ~f:Timezone.to_gmt_offset_seconds timezone)
-    t
+  let tz_offset_s =
+    let f tz = Timezone.to_gmt_offset_seconds_with_ptime tz t in
+    Option.map timezone ~f
+  in
+  Ptime.to_rfc3339 ?tz_offset_s t
 
 let to_string = to_rfc3339
 let epoch = Ptime.epoch
