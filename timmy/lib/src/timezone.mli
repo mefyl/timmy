@@ -10,20 +10,24 @@ type t
 
 (** {1 Construction} *)
 
-(** [native] is a system specific implementation that relies on the underlying
-    system to adjust for evolving timezones. *)
-val native : t
-
 (** [of_gmt_offset_seconds s] is a static timezone with offset [s] seconds from
     UTC.*)
 val of_gmt_offset_seconds : int -> t
+
+(** [of_implementation ~offset_calendar_time_s ~offset_timestamp_s] builds a
+    timezone by providing an implementation of the offset computation fromt a
+    date and from a timestamp (in seconds)*)
+val of_implementation :
+  offset_calendar_time_s:(date:int * int * int -> time:int * int * int -> int) ->
+  offset_timestamp_s:(unix_timestamp:int -> int) ->
+  t
 
 (** [utc] is the UTC timezone.*)
 val utc : t
 
 (** {1 Usage} *)
 
-(** When the timezone was created using {native} the offset depends on the given
+(** When the timezone was created using [native] the offset depends on the given
     time. It includes daylight savings where it applies. Static timezones yield
     the same offset regardless of given time. *)
 

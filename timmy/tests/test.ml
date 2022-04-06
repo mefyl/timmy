@@ -1,6 +1,6 @@
 open Base
 open Testable
-module Timmy = Timmy.Versions.V0_12_0
+module Timmy = Timmy.Versions.V0_13_0
 
 let ptime =
   Option.value_exn (Ptime.of_date_time ((1985, 12, 29), ((17, 35, 42), 0)))
