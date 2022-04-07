@@ -31,9 +31,9 @@ val utc : t
     time. It includes daylight savings where it applies. Static timezones yield
     the same offset regardless of given time. *)
 
-(** [gmt_offset_seconds_with_datetime tz ~date ~time] is the number of
-    seconds that offset from UTC, for the given day (year, month, day) and time
-    (hour, minute, second).
+(** [gmt_offset_seconds_with_datetime tz ~date ~time] is the number of seconds
+    that offset from UTC, for the given day (year, month, day) and time (hour,
+    minute, second).
 
     @raise Failure
       if the native implementation finds that [date] and [time] do not exist in
@@ -41,8 +41,8 @@ val utc : t
 val gmt_offset_seconds_with_datetime :
   t -> date:int * int * int -> time:int * int * int -> int
 
-(** [gmt_offset_seconds_with_ptime tz timestamp] is the number of seconds
-    that offset from UTC at the time given by a unix timestamp (Ptime.t).
+(** [gmt_offset_seconds_with_ptime tz timestamp] is the number of seconds that
+    offset from UTC at the time given by a unix timestamp (Ptime.t).
 
     @raise Failure
       if the native implementation finds that the [timestamp] do not exist in
