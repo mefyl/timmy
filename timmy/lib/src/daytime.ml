@@ -36,7 +36,7 @@ end
 
 let of_time ~timezone t =
   let time = Time.to_ptime t in
-  let tz_offset_s = Timezone.to_gmt_offset_seconds_with_ptime timezone time in
+  let tz_offset_s = Timezone.gmt_offset_seconds_with_ptime timezone time in
   let _, ((hours, minutes, seconds), _) =
     Ptime.to_date_time ~tz_offset_s time
   in
@@ -77,7 +77,7 @@ let to_time ~timezone date t =
   match
     let date_tuple, time_tuple = (Date.to_tuple date, to_tuple t) in
     let tz_offset_s =
-      Timezone.to_gmt_offset_seconds_with_datetime timezone ~date:date_tuple
+      Timezone.gmt_offset_seconds_with_datetime timezone ~date:date_tuple
         ~time:time_tuple
     in
     Ptime.of_date_time (date_tuple, (time_tuple, tz_offset_s))
@@ -97,7 +97,7 @@ let with_daytime ~timezone daytime time =
   let date = Date.of_time ~timezone time in
   let date_tuple, daytime_tuple = (Date.to_tuple date, to_tuple daytime) in
   let tz_offset_s =
-    Timezone.to_gmt_offset_seconds_with_datetime timezone ~date:date_tuple
+    Timezone.gmt_offset_seconds_with_datetime timezone ~date:date_tuple
       ~time:daytime_tuple
   in
   Ptime.of_date_time (date_tuple, (daytime_tuple, tz_offset_s))

@@ -34,7 +34,7 @@ let pp = Ptime.pp
 
 let to_rfc3339 ?timezone t =
   let tz_offset_s =
-    let f tz = Timezone.to_gmt_offset_seconds_with_ptime tz t in
+    let f tz = Timezone.gmt_offset_seconds_with_ptime tz t in
     Option.map timezone ~f
   in
   Ptime.to_rfc3339 ?tz_offset_s t
