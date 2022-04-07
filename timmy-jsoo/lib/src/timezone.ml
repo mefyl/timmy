@@ -15,10 +15,10 @@ let offset_calendar_time_s ~date:(year, month, day)
     | true -> ()
     | false ->
       Fmt.failwith
-        "Given date and time %04i-%02i-%02i %02i:%02i:%02i are not valid" year
-        month day hours minutes seconds
+        "Given date and time %04i-%02i-%02i at %02i:%02i:%02i are not valid"
+        year month day hours minutes seconds
   in
-  let js_date = new%js Js.date_sec year month day hours minutes seconds in
+  let js_date = new%js Js.date_sec year (month - 1) day hours minutes seconds in
   js_date##getTimezoneOffset * 60 * -1
 
 let offset_timestamp_s ~unix_timestamp =
