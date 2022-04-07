@@ -39,6 +39,9 @@ val pp : t Fmt.t
 (** [to_string month] is the english name of [month]. *)
 val to_string : t -> string
 
+(** [of_string month] is the month corresponding to english name [month]. *)
+val of_string : string -> (t, string) Result.t
+
 (** {2 Comparison} *)
 
 include Comparable.S with type t := t
