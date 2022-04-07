@@ -22,6 +22,22 @@ end
 
 include Type
 
+let of_string m =
+  match String.lowercase m with
+  | "january" -> Result.Ok January
+  | "february" -> Result.Ok February
+  | "march" -> Result.Ok March
+  | "april" -> Result.Ok April
+  | "may" -> Result.Ok May
+  | "june" -> Result.Ok June
+  | "july" -> Result.Ok July
+  | "august" -> Result.Ok August
+  | "september" -> Result.Ok September
+  | "october" -> Result.Ok October
+  | "november" -> Result.Ok November
+  | "december" -> Result.Ok December
+  | s -> Result.failf "invalid month name: %s" s
+
 let add_months m n =
   ((to_int m + n - 1) % 12) + 1 |> of_int |> Result.ok_or_failwith
 
