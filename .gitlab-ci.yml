@@ -1,17 +1,19 @@
 include:
-  - local: '/.logistic/ci/.gitlab-ci-template.yml'
+  - local: "/.logistic/ci/.gitlab-ci-template.yml"
 
 toolchain:
   extends: .ocaml-toolchain
   variables:
     OCAML_VERSION: "4.12.0"
     OPAM_PACKAGES: "schematic"
+    PACKAGES: "nodejs npm"
 
 toolchain:no-schematic:
   extends: .ocaml-toolchain
   variables:
     OCAML_VERSION: "4.12.0"
     VARIANT: "-no-schematic"
+    PACKAGES: "nodejs npm"
 
 build:
   extends: .ocaml-build
