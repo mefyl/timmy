@@ -32,6 +32,13 @@ let daylight_savings () =
     in
     let () =
       Alcotest.(
+        check bool
+          (Fmt.str "%s: Timezone was not set properly, needs to be in CET."
+             pretty_date)
+          (shift_ts != 0) true)
+    in
+    let () =
+      Alcotest.(
         check int
           (Fmt.str
              "%s: Computed offset for date and timestamps have to be equal"
