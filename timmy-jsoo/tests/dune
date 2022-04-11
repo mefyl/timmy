@@ -1,12 +1,10 @@
-
 (executable
  (name test)
  (modules test)
  (modes js)
  (libraries alcotest js_of_ocaml timmy-jsoo)
-  (preprocess
-  (pps ppx_here js_of_ocaml-ppx))
-)
+ (preprocess
+  (pps ppx_here js_of_ocaml-ppx)))
 
 (rule
  (alias runtest)

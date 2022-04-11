@@ -32,10 +32,10 @@ val utc : t
     that offset from UTC, for the given date (year, month, day) and time (hour,
     minute, second).
 
-    Note: Implementations will struggle with consistency for ambiguous
-    dates. As an example: requesting the offset for an hour that is skipped
-    during a daylight saving transition will yeild an offset that may not agree
-    with {gmt_offset_seconds_with_ptime}.*)
+    Note: Implementations will struggle with consistency for ambiguous dates. As
+    an example: requesting the offset for an hour that is skipped during a
+    daylight saving transition will yeild an offset that may not agree with
+    {gmt_offset_seconds_with_ptime}.*)
 val gmt_offset_seconds_with_datetime :
   t -> date:int * int * int -> time:int * int * int -> int
 
