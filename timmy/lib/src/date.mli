@@ -57,14 +57,10 @@ val weekday : t -> Weekday.t
 
 (** {2 Time conversions} *)
 
-(** [of_time ~timezone date] is the date on [date] in [timezone].
-
-    @raise Failure if the [date] does not exist in [timezone]. *)
+(** [of_time ~timezone date] is the date on [date] in [timezone].*)
 val of_time : timezone:Timezone.t -> Time.t -> t
 
-(** [to_time ~timezone date] is the time at midnight on [date] in [timezone].
-
-    @raise Failure if the [date] does not exist in [timezone]. *)
+(** [to_time ~timezone date] is the time at midnight on [date] in [timezone]. *)
 val to_time : timezone:Timezone.t -> t -> Time.t
 
 (** {2 Comparison} *)
