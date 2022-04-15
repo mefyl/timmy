@@ -1,8 +1,6 @@
-(** Timmy timezone implementation is available in two flavors: using a static
-    offset from UTC or by providing an implementation. Providing an
-    implementation can be used when the need for accomodating to daylight
-    savings is needed (or any other time transition implemented with a timezone
-    shift). See {timmy-jsoo} for a native Javascript implementation. *)
+(** A [Timezone.t] maps local time to universal time and inversely by providing
+    the offset in seconds between UTC and local time. This offset is dependent
+    on the date, to accommodate for timezones with daylight saving times. *)
 
 (** {1 Type} *)
 
@@ -11,8 +9,8 @@ type t
 
 (** {1 Construction} *)
 
-(** [of_gmt_offset_seconds s] is a static timezone with offset [s] seconds from
-    UTC. UTC + offset = local.*)
+(** [of_gmt_offset_seconds s] is a timezone with a fixed offset of [s] seconds
+    from UTC. In other words, [localtime = UTC + offset].*)
 val of_gmt_offset_seconds : int -> t
 
 (** [of_implementation ~offset_calendar_time_s ~offset_timestamp_s] builds a
@@ -28,17 +26,16 @@ val utc : t
 
 (** {1 Usage} *)
 
-(** [gmt_offset_seconds_with_datetime tz ~date ~time] is the number of seconds
+(** [gmt_offset_seconds_at_datetime tz ~date ~time] is the number of seconds
     that offset from UTC, for the given date (year, month, day) and time (hour,
     minute, second).
 
-    Note: Implementations will struggle with consistency for ambiguous dates. As
-    an example: requesting the offset for an hour that is skipped during a
-    daylight saving transition will yeild an offset that may not agree with
-    {gmt_offset_seconds_with_ptime}.*)
-val gmt_offset_seconds_with_datetime :
+    Note: In case of an ambiguous date, any of the two valid [Time.t] will be
+    picked depending on the implementation.*)
+val gmt_offset_seconds_at_datetime :
   t -> date:int * int * int -> time:int * int * int -> int
 
-(** [gmt_offset_seconds_with_ptime tz timestamp] is the number of seconds that
-    offset from UTC, at the time given by a unix timestamp (Ptime.t). *)
-val gmt_offset_seconds_with_ptime : t -> Ptime.t -> int
+(** [gmt_offset_seconds_at_time tz timestamp] is the number of seconds that
+    offset from UTC, at the time given by a unix timestamp (Ptime.t). In other
+    words, [localtime = UTC + offset]. *)
+val gmt_offset_seconds_at_time : t -> Ptime.t -> int

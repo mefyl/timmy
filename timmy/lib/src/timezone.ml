@@ -18,9 +18,9 @@ let utc =
     offset_timestamp_s = (fun ~unix_timestamp:_ -> 0);
   }
 
-let gmt_offset_seconds_with_datetime (tz : t) ~date ~time =
+let gmt_offset_seconds_at_datetime (tz : t) ~date ~time =
   tz.offset_calendar_time_s ~date ~time
 
-let gmt_offset_seconds_with_ptime (tz : t) ptime =
+let gmt_offset_seconds_at_time (tz : t) ptime =
   let unix_timestamp = Ptime.to_float_s ptime |> Int.of_float in
   tz.offset_timestamp_s ~unix_timestamp

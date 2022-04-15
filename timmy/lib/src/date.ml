@@ -123,7 +123,7 @@ let make_overflow ?(day_truncate = false) ~year ~month ~day () =
 
 let of_time ~timezone t =
   let tz_offset_s =
-    Time.to_ptime t |> Timezone.gmt_offset_seconds_with_ptime timezone
+    Time.to_ptime t |> Timezone.gmt_offset_seconds_at_time timezone
   in
   of_tuple_exn ~here:[%here]
   @@ fst
@@ -132,7 +132,7 @@ let of_time ~timezone t =
 
 let to_time ~timezone t =
   let tz_offset_s =
-    Timezone.gmt_offset_seconds_with_datetime timezone ~date:(to_tuple t)
+    Timezone.gmt_offset_seconds_at_datetime timezone ~date:(to_tuple t)
       ~time:(0, 0, 0)
   in
   Option.value_exn ~here:[%here]
