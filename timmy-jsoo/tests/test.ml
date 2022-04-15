@@ -12,7 +12,7 @@ let timezone = Timmy_jsoo.Timezone.native
 let daylight_savings () =
   let test date ((_, h, m) as time) =
     let shift =
-      Timmy.Timezone.gmt_offset_seconds_with_datetime ~date ~time timezone
+      Timmy.Timezone.gmt_offset_seconds_at_datetime ~date ~time timezone
       / 60 / 60
     in
     let date_t = Timmy.Date.of_tuple_exn ~here:[%here] date
@@ -22,7 +22,7 @@ let daylight_savings () =
       Timmy.Daytime.of_time ~timezone timestamp |> Timmy.Daytime.to_tuple
     in
     let shift_ts =
-      Timmy.Timezone.gmt_offset_seconds_with_ptime timezone
+      Timmy.Timezone.gmt_offset_seconds_at_time timezone
         (Timmy.Time.to_ptime timestamp)
       / 60 / 60
     in
