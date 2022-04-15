@@ -35,10 +35,10 @@ module O = struct
 end
 
 let of_time ~timezone t =
-  let (hours, minutes, seconds), _ =
-    snd
-    @@ Ptime.to_date_time ~tz_offset_s:(Timezone.to_gmt_offset_seconds timezone)
-    @@ Time.to_ptime t
+  let time = Time.to_ptime t in
+  let tz_offset_s = Timezone.gmt_offset_seconds_at_time timezone time in
+  let _, ((hours, minutes, seconds), _) =
+    Ptime.to_date_time ~tz_offset_s time
   in
   { hours; minutes; seconds }
 
@@ -75,8 +75,12 @@ include O
 
 let to_time ~timezone date t =
   match
-    Ptime.of_date_time
-      (Date.to_tuple date, (to_tuple t, Timezone.to_gmt_offset_seconds timezone))
+    let date_tuple, time_tuple = (Date.to_tuple date, to_tuple t) in
+    let tz_offset_s =
+      Timezone.gmt_offset_seconds_at_datetime timezone ~date:date_tuple
+        ~time:time_tuple
+    in
+    Ptime.of_date_time (date_tuple, (time_tuple, tz_offset_s))
   with
   | Some time -> Time.of_ptime time
   | None -> Fmt.failwith "invalid date + daytime: %a %a" Date.pp date pp t
@@ -91,9 +95,12 @@ let of_tuple_exn ~here t =
 
 let with_daytime ~timezone daytime time =
   let date = Date.of_time ~timezone time in
-  Ptime.of_date_time
-    ( Date.to_tuple date,
-      (to_tuple daytime, Timezone.to_gmt_offset_seconds timezone) )
+  let date_tuple, daytime_tuple = (Date.to_tuple date, to_tuple daytime) in
+  let tz_offset_s =
+    Timezone.gmt_offset_seconds_at_datetime timezone ~date:date_tuple
+      ~time:daytime_tuple
+  in
+  Ptime.of_date_time (date_tuple, (daytime_tuple, tz_offset_s))
   |> Option.value_exn ~here:[%here]
        ~message:"invalid ptime out of Timmy.Daytime.with_daytime" ?error:None
   |> Time.of_ptime
