@@ -57,7 +57,7 @@ val weekday : t -> Weekday.t
 
 (** {2 Time conversions} *)
 
-(** [of_time ~timezone date] is the date on [date] in [timezone]. *)
+(** [of_time ~timezone date] is the date on [date] in [timezone].*)
 val of_time : timezone:Timezone.t -> Time.t -> t
 
 (** [to_time ~timezone date] is the time at midnight on [date] in [timezone]. *)

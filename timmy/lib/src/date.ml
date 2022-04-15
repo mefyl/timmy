@@ -122,15 +122,21 @@ let make_overflow ?(day_truncate = false) ~year ~month ~day () =
     adjust year month day
 
 let of_time ~timezone t =
+  let tz_offset_s =
+    Time.to_ptime t |> Timezone.gmt_offset_seconds_at_time timezone
+  in
   of_tuple_exn ~here:[%here]
   @@ fst
-  @@ Ptime.to_date_time ~tz_offset_s:(Timezone.to_gmt_offset_seconds timezone)
+  @@ Ptime.to_date_time ~tz_offset_s
   @@ Time.to_ptime t
 
 let to_time ~timezone t =
+  let tz_offset_s =
+    Timezone.gmt_offset_seconds_at_datetime timezone ~date:(to_tuple t)
+      ~time:(0, 0, 0)
+  in
   Option.value_exn ~here:[%here]
-    (Ptime.of_date_time
-       (to_tuple t, ((0, 0, 0), Timezone.to_gmt_offset_seconds timezone)))
+    (Ptime.of_date_time (to_tuple t, ((0, 0, 0), tz_offset_s)))
   |> Time.of_ptime
 
 let to_string = Fmt.to_to_string pp
