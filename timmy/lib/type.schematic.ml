@@ -2,7 +2,7 @@ module type DATE = sig
   (** @inline *)
   include Types_bare.DATE with type t = Types_bare.Date.t
 
-  val schema_versioned : Schematic.Version.t option -> t Schematic.schema
+  val schema_versioned : Schematic.Schema.version -> t Schematic.schema
 
   (** [schema] maps dates to [(year, month, day)] triplets. *)
   val schema : t Schematic.schema
@@ -21,7 +21,7 @@ end
 module type DAYTIME = sig
   include Types_bare.DAYTIME
 
-  val schema_versioned : Schematic.Version.t option -> t Schematic.Schema.t
+  val schema_versioned : Schematic.Schema.version -> t Schematic.Schema.t
 
   (** [schema] maps daytimes to hours, minutes, seconds triplets. *)
   val schema : t Schematic.Schema.t
@@ -45,42 +45,51 @@ module Daytime = struct
             Object
               (Field
                  {
-                   description = None;
-                   examples = [];
-                   field = "hours";
-                   maximum = None;
-                   minimum = None;
-                   omit = false;
-                   requirement = Required;
+                   field =
+                     {
+                       description = None;
+                       examples = [];
+                       name = "hours";
+                       maximum = None;
+                       minimum = None;
+                       omit = false;
+                       requirement = Required;
+                       schema = Outline int_schema;
+                       title = None;
+                     };
                    rest =
                      Field
                        {
-                         description = None;
-                         examples = [];
-                         field = "minutes";
-                         maximum = None;
-                         minimum = None;
-                         omit = false;
-                         requirement = Default 0;
+                         field =
+                           {
+                             description = None;
+                             examples = [];
+                             name = "minutes";
+                             maximum = None;
+                             minimum = None;
+                             omit = false;
+                             requirement = Default 0;
+                             schema = Outline int_schema;
+                             title = None;
+                           };
                          rest =
                            Field
                              {
-                               description = None;
-                               examples = [];
-                               field = "seconds";
-                               maximum = None;
-                               minimum = None;
-                               omit = false;
-                               requirement = Default 0;
+                               field =
+                                 {
+                                   description = None;
+                                   examples = [];
+                                   name = "seconds";
+                                   maximum = None;
+                                   minimum = None;
+                                   omit = false;
+                                   requirement = Default 0;
+                                   schema = Outline int_schema;
+                                   title = None;
+                                 };
                                rest = FieldEnd;
-                               schema = Outline int_schema;
-                               title = None;
                              };
-                         schema = Outline int_schema;
-                         title = None;
                        };
-                   schema = Outline int_schema;
-                   title = None;
                  });
         }
     and id = "daytime" in
@@ -100,7 +109,7 @@ module type MONTH = sig
   (** [schema_int] maps months to integers, 1 being January and 12 December. *)
   val schema_int : t Schematic.Schema.t
 
-  val schema_versioned : Schematic.Version.t option -> t Schematic.Schema.t
+  val schema_versioned : Schematic.Schema.version -> t Schematic.Schema.t
 
   (** [schema] is [schema_int]. *)
   val schema : t Schematic.Schema.t
@@ -294,7 +303,7 @@ end
 module type SPAN = sig
   include Types_bare.SPAN
 
-  val schema_versioned : Schematic.Version.t option -> t Schematic.Schema.t
+  val schema_versioned : Schematic.Schema.version -> t Schematic.Schema.t
 
   (** [schema] encode spans a number of seconds. *)
   val schema : t Schematic.Schema.t
@@ -314,7 +323,7 @@ module type TIME = sig
   (** @inline *)
   include Types_bare.TIME
 
-  val schema_versioned : Schematic.Version.t option -> t Schematic.Schema.t
+  val schema_versioned : Schematic.Schema.version -> t Schematic.Schema.t
 
   (** Time schema. *)
   val schema : t Schematic.Schema.t
@@ -334,7 +343,7 @@ module type WEEK = sig
   (** @inline *)
   include Types_bare.WEEK with type t = Types_bare.Week.t
 
-  val schema_versioned : Schematic.Version.t option -> t Schematic.Schema.t
+  val schema_versioned : Schematic.Schema.version -> t Schematic.Schema.t
 
   (** Week schema. *)
   val schema : t Schematic.Schema.t
@@ -354,29 +363,35 @@ module Week = struct
             Object
               (Field
                  {
-                   description = None;
-                   examples = [];
-                   field = "n";
-                   maximum = None;
-                   minimum = None;
-                   omit = false;
-                   requirement = Required;
+                   field =
+                     {
+                       description = None;
+                       examples = [];
+                       name = "n";
+                       maximum = None;
+                       minimum = None;
+                       omit = false;
+                       requirement = Required;
+                       schema = Outline int_schema;
+                       title = None;
+                     };
                    rest =
                      Field
                        {
-                         description = None;
-                         examples = [];
-                         field = "year";
-                         maximum = None;
-                         minimum = None;
-                         omit = false;
-                         requirement = Required;
+                         field =
+                           {
+                             description = None;
+                             examples = [];
+                             name = "year";
+                             maximum = None;
+                             minimum = None;
+                             omit = false;
+                             requirement = Required;
+                             schema = Outline int_schema;
+                             title = None;
+                           };
                          rest = FieldEnd;
-                         schema = Outline int_schema;
-                         title = None;
                        };
-                   schema = Outline int_schema;
-                   title = None;
                  });
         }
     and id = "week" in
@@ -397,7 +412,7 @@ module type WEEKDAY = sig
   val schema : t Schematic.Schema.t
 
   (** [schema_versioned _] is [schema] *)
-  val schema_versioned : Schematic.Version.t option -> t Schematic.Schema.t
+  val schema_versioned : Schematic.Schema.version -> t Schematic.Schema.t
 end
 
 module Weekday = struct
