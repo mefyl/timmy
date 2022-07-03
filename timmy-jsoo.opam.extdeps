@@ -1,6 +1,6 @@
 opam-version: "2.0"
 name: "timmy-jsoo"
-version: "0.12.0"
+version: "0.13.0"
 synopsis: "Js_of_ocaml bindings for Timmy"
 maintainer: "mefyl <mefyl@gruntech.org>"
 authors: "mefyl <mefyl@gruntech.org>"
@@ -13,7 +13,6 @@ depends: [
   "astring" {= "0.8.5" & with-test}
   "base" {= "v0.14.3"}
   "base-bigarray" {= "base"}
-  "base-bytes" {= "base"}
   "base-threads" {= "base"}
   "base-unix" {= "base"}
   "base64" {= "3.5.0"}
@@ -45,7 +44,7 @@ depends: [
   "ppx_derivers" {= "1.2.1"}
   "ppx_deriving" {= "5.2.1"}
   "ppx_here" {= "v0.14.0"}
-  "ppxlib" {= "0.24.0"}
+  "ppxlib" {= "0.25.0"}
   "ptime" {= "1.0.0"}
   "re" {= "1.10.3" & with-test}
   "result" {= "1.5"}
@@ -54,7 +53,7 @@ depends: [
   "sexplib0" {= "v0.14.0"}
   "stdlib-shims" {= "0.3.0"}
   "stringext" {= "1.6.0"}
-  "timmy" {= "0.12.0"}
+  "timmy" {= "0.13.0"}
   "topkg" {= "1.0.5"}
   "tyxml" {= "4.5.0" & with-doc}
   "uchar" {= "0.0.2"}
