@@ -1,0 +1,14 @@
+#!/bin/sh
+
+VERSION=$(sed -n 's/(version \(.*\))/\1/p' dune-project)
+VERSION="V${VERSION//./_}"
+
+check () {
+    if ! grep -q "$VERSION" "$1"; then
+        echo "missing module $VERSION in $1" 1>&2
+        exit 1
+    fi
+}
+
+check "timmy/lib/src/versions.ml"
+check "timmy-jsoo/lib/src/versions.ml"
