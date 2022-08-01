@@ -17,6 +17,7 @@ module T = struct
 end
 
 include T
+include Type_js.Daytime
 
 let to_int { hours; minutes; seconds } =
   (hours * 60 * 60) + (minutes * 60) + seconds
