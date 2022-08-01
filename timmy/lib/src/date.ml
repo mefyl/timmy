@@ -141,6 +141,19 @@ let to_time ~timezone t =
 
 let to_string = Fmt.to_to_string pp
 
+let pp_human f { year; month; day } =
+  let open Fmt in
+  let nth f i =
+    let () = int f i in
+    let open Int in
+    if i = 11 || i = 12 || i = 13 then string f "th"
+    else if i % 10 = 1 then string f "st"
+    else if i % 10 = 2 then string f "nd"
+    else if i % 10 = 3 then string f "rd"
+    else string f "th"
+  in
+  pf f "%a %a %04i" Month.pp month nth day year
+
 let weekday d : Weekday.t =
   match Ptime.weekday @@ Time.to_ptime @@ to_time ~timezone:Timezone.utc d with
   | `Mon -> Monday
@@ -150,3 +163,14 @@ let weekday d : Weekday.t =
   | `Fri -> Friday
   | `Sat -> Saturday
   | `Sun -> Sunday
+
+let pp_relative ?(default = pp_human) ~reference f date =
+  let diff = Int.( - ) (to_int date) (to_int reference) in
+  let open Int in
+  if diff = 0 then Fmt.string f "today"
+  else if diff = -1 then Fmt.string f "yesterday"
+  else if diff = 1 then Fmt.string f "tomorrow"
+  else if diff < 0 && diff >= -7 then
+    Fmt.pf f "last %a" Weekday.pp (weekday date)
+  else if diff > 0 && diff <= 6 then Weekday.pp f (weekday date)
+  else default f date

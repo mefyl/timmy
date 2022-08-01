@@ -89,6 +89,18 @@ include module type of O
 (** [pp f date] prints [date] to [f] in RFC3339 format, eg. 2021-10-04. *)
 val pp : t Fmt.t
 
+(** [pp_human f date] prints [date] to [f] in an unspecified human readable
+    english format, eg. "August 1st 2022". *)
+val pp_human : t Fmt.t
+
+(** [pp_relative ?default ~reference f date] prints [date] to [f] in an
+    unspecified human readable english format relative to [reference], eg.
+    "today", "last Sunday", "Tuesday".
+
+    If no relevant relative format is found, [default] is used. It defaults to
+    [pp_human].*)
+val pp_relative : ?default:t Fmt.t -> reference:t -> t Fmt.t
+
 (** {2 String} *)
 
 (** [to_string date] is the RCF3339 representation of [date], eg. 2021-10-04. *)
