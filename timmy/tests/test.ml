@@ -58,7 +58,10 @@ module Time = struct
 end
 
 module Date = struct
-  let birthday = Timmy.Date.of_tuple_exn ~here:[%here] (1985, 12, 29)
+  let make year month day =
+    Timmy.Date.of_tuple_exn ~here:[%here] (year, month, day)
+
+  let birthday = make 1985 12 29
 
   let string () =
     let check = Alcotest.(check (result date string)) in
@@ -146,6 +149,41 @@ module Date = struct
     and () =
       check "from time with timezone across day" (1985, 12, 30)
       @@ Timmy.Date.of_time ~timezone:gmt_plus_7 birthday
+    in
+    ()
+
+  let pp () =
+    let check name pp date expected =
+      Alcotest.(check string) name expected (Fmt.str "%a" pp date)
+    and reference = make 2022 8 1 in
+    let check_relative name diff expected =
+      check name
+        Timmy.Date.(pp_relative ~reference)
+        (Timmy.Date.add_days reference diff)
+        expected
+    in
+    let () =
+      check "human readable pretty printing" Timmy.Date.pp_human birthday
+        "December 29th 1985"
+    and () =
+      check "far away relative pretty printing"
+        Timmy.Date.(pp_relative ~reference)
+        birthday "December 29th 1985"
+    and () =
+      check_relative "more than one week ago relative pretty printing" (-8)
+        "July 24th 2022"
+    and () =
+      check_relative "one week ago relative pretty printing" (-7) "last Monday"
+    and () =
+      check_relative "yesterday relative pretty printing" (-1) "yesterday"
+    and () = check_relative "yesterday relative pretty printing" 0 "today"
+    and () = check_relative "tomorrow relative pretty printing" 1 "tomorrow"
+    and () =
+      check_relative "less than a week later relative pretty printing" 6
+        "Sunday"
+    and () =
+      check_relative "one week later relative pretty printing" 7
+        "August 8th 2022"
     in
     ()
 end
@@ -512,6 +550,7 @@ let () =
             test_case "arithmetics" `Quick Date.arithmetics;
             test_case "time conversion" `Quick Date.of_time;
             test_case "overflow" `Quick Date.overflow;
+            test_case "pretty printing" `Quick Date.pp;
           ] );
         ( "daytime",
           [
