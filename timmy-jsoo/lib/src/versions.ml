@@ -1,6 +1,6 @@
 (** Backward compatibility versions *)
 
-module V0_13_0 = struct
+module V0_13_1 = struct
   module Date = Date
   module Daytime = Timmy.Daytime
   module Month = Timmy.Month
@@ -10,3 +10,5 @@ module V0_13_0 = struct
   module Week = Week
   module Weekday = Timmy.Weekday
 end
+
+module V0_13_0 = V0_13_1
