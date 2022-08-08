@@ -24,6 +24,7 @@ val pp : t Fmt.t
 val to_string : t -> string
 
 val equal : t -> t -> bool
+val compare : t -> t -> int
 
 module O : sig
   val ( = ) : t -> t -> bool
