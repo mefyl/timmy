@@ -178,7 +178,7 @@ module Weekday = struct
     | Friday
     | Saturday
     | Sunday
-  [@@deriving eq]
+  [@@deriving eq, ord]
 end
 
 module type WEEKDAY = sig
