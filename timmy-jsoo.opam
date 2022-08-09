@@ -4,7 +4,7 @@ version: "0.13.2"
 synopsis: "Js_of_ocaml bindings for Timmy"
 maintainer: ["mefyl <mefyl@gruntech.org>"]
 authors: ["mefyl <mefyl@gruntech.org>"]
-license: "GPLv3"
+license: "LGPL-3.0-or-later"
 homepage: "https://gitlab.routine.co/routine/timmy"
 bug-reports: "https://gitlab.routine.co/routine/timmy/-/issues"
 depends: [

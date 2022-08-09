@@ -6,7 +6,7 @@
 
 (generate_opam_files true)
 
-(license GPLv3)
+(license LGPL-3.0-or-later)
 
 (maintainers "mefyl <mefyl@gruntech.org>")
 
