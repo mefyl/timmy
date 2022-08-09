@@ -15,6 +15,14 @@ toolchain:no-schematic:
     VARIANT: "-no-schematic"
     PACKAGES: "nodejs npm"
 
+toolchain:no-jsoo:
+  extends: .ocaml-toolchain
+  variables:
+    OCAML_VERSION: "4.12.0"
+    OPAM_WITHOUT_PACKAGES: "js_of_ocaml"
+    VARIANT: "-no-jsoo"
+    PACKAGES: "nodejs npm"
+
 build:
   extends: .ocaml-build
   dependencies:
@@ -31,6 +39,16 @@ build:no-schematic:
   variables:
     OCAML_VERSION: "4.12.0"
     VARIANT: "-no-schematic"
+
+build:no-jsoo:
+  extends: .ocaml-build
+  dependencies:
+    - toolchain:no-jsoo
+  needs:
+    - toolchain:no-jsoo
+  variables:
+    OCAML_VERSION: "4.12.0"
+    VARIANT: "-no-jsoo"
 
 check:
   extends: .ocaml-check
@@ -49,6 +67,16 @@ check:no-schematic:
     OCAML_VERSION: "4.12.0"
     VARIANT: "-no-schematic"
 
+check:no-jsoo:
+  extends: .ocaml-check
+  dependencies:
+    - build:no-jsoo
+  needs:
+    - build:no-jsoo
+  variables:
+    OCAML_VERSION: "4.12.0"
+    VARIANT: "-no-jsoo"
+
 package:
   extends: .ocaml-package
   dependencies:
@@ -56,6 +84,7 @@ package:
   needs:
     - check
     - check:no-schematic
+    - check:no-jsoo
 
 opam:
   extends: .ocaml-opam
@@ -64,3 +93,4 @@ opam:
   needs:
     - check
     - check:no-schematic
+    - check:no-jsoo

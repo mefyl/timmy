@@ -34,7 +34,7 @@ RUN opam update && \
     opam install --yes ocamlformat.0.20.1 && \
     opam clean -a -c -s --logs -r && \
     rm -rf /root/.cache/dune
-ARG OPAM_PACKAGES
+ARG OPAM_PACKAGES OPAM_WITHOUT_PACKAGES
 ADD .exists *.opam /root/
 RUN opam repository add --all routine git@gitlab.routine.co:routine/opam && \
     opam update && \
