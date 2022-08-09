@@ -1,6 +1,6 @@
 opam-version: "2.0"
 name: "timmy-jsoo"
-version: "0.13.1"
+version: "0.13.2"
 synopsis: "Js_of_ocaml bindings for Timmy"
 maintainer: "mefyl <mefyl@gruntech.org>"
 authors: "mefyl <mefyl@gruntech.org>"
@@ -51,7 +51,7 @@ depends: [
   "sexplib0" {= "v0.14.0"}
   "stdlib-shims" {= "0.3.0"}
   "stringext" {= "1.6.0"}
-  "timmy" {= "0.13.1"}
+  "timmy" {= "0.13.2"}
   "topkg" {= "1.0.5"}
   "tyxml" {= "4.5.0" & with-doc}
   "uchar" {= "0.0.2"}
