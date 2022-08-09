@@ -5,11 +5,13 @@
  (public_name timmy-jsoo)
  (libraries
   fmt
+  js_of_ocaml
   timmy
   (select
    js_decode.ml
    from
    (schematic-jsoo -> js_decode.enabled.ml)
    (!schematic-jsoo -> js_decode.disabled.ml)))
+ (optional)
  (preprocess
   (pps js_of_ocaml-ppx ppx_here)))

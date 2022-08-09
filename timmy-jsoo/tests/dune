@@ -9,5 +9,6 @@
 (rule
  (alias runtest)
  (deps ./test.bc.js)
+ (enabled_if %{lib-available:js_of_ocaml})
  (action
   (run ./test-js)))
