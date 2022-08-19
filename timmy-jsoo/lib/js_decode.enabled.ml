@@ -1,16 +1,37 @@
+module Js = Js_of_ocaml.Js
+
 module Daytime = struct
   let prototype =
-    let open Js_of_ocaml in
-    object%js (self)
-      val hours = 0
-      val minutes = Js.undefined
-      val seconds = Js.undefined
-
-      method valueOf =
-        (self##.hours * 60 * 60)
-        + (Js.Optdef.get self##.minutes (fun () -> 0) * 60)
-        + Js.Optdef.get self##.seconds (fun () -> 0)
-    end
+    let res =
+      object%js (self)
+        method valueOf =
+          let self = Js.Unsafe.coerce self in
+          (self##.hours * 60 * 60)
+          + (Js.Optdef.get self##.minutes (fun () -> 0) * 60)
+          + Js.Optdef.get self##.seconds (fun () -> 0)
+      end
+    in
+    let () =
+      Js.Unsafe.global##._Object##defineProperty
+        res (Js.string "hours")
+        (object%js
+           val value = 0
+           val writable = false
+        end)
+    and () =
+      Js.Unsafe.global##._Object##defineProperty
+        res (Js.string "minutes")
+        (object%js
+           method get = 0
+        end)
+    and () =
+      Js.Unsafe.global##._Object##defineProperty
+        res (Js.string "seconds")
+        (object%js
+           method get = 0
+        end)
+    in
+    res
 
   let to_js, of_js, of_js_exn =
     Schematic_jsoo.Jsoo.helpers_typed
@@ -19,10 +40,8 @@ module Daytime = struct
 
   let to_js e =
     let res = to_js e in
-    let () =
-      Js_of_ocaml.Js.Unsafe.global##._Object##setPrototypeOf res prototype
-    in
-    res
+    let () = Js.Unsafe.global##._Object##setPrototypeOf res prototype in
+    Js.Unsafe.global##._Object##freeze res
 end
 
 module Week = struct
