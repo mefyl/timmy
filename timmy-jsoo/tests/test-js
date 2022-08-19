@@ -1,2 +1,0 @@
-#!/bin/sh
-env TZ='Europe/Amsterdam' node ./test.mjs
