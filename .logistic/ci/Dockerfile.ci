@@ -51,4 +51,6 @@ RUN if test -e /root/package.json; then \
     rm -rf /usr/local/share/.cache /root/.cache /tmp/*; \
     fi
 ENV NODE_PATH=/root/node_modules
+ARG DUNE_PACKAGES
+ENV DUNE_PACKAGES="$DUNE_PACKAGES"
 ENTRYPOINT ["/bin/ash", "-l", "-c"]
