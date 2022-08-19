@@ -5,13 +5,15 @@ toolchain:
   extends: .ocaml-toolchain
   variables:
     OCAML_VERSION: "4.12.0"
-    OPAM_PACKAGES: "schematic"
+    OPAM_PACKAGES: "js_of_ocaml schematic"
     PACKAGES: "nodejs npm"
 
 toolchain:no-schematic:
   extends: .ocaml-toolchain
   variables:
     OCAML_VERSION: "4.12.0"
+    OPAM_PACKAGES: "js_of_ocaml"
+    OPAM_WITHOUT_PACKAGES: "schematic"
     VARIANT: "-no-schematic"
     PACKAGES: "nodejs npm"
 
@@ -19,6 +21,7 @@ toolchain:no-jsoo:
   extends: .ocaml-toolchain
   variables:
     OCAML_VERSION: "4.12.0"
+    OPAM_PACKAGES: "schematic"
     OPAM_WITHOUT_PACKAGES: "js_of_ocaml"
     VARIANT: "-no-jsoo"
     PACKAGES: "nodejs npm"
