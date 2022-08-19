@@ -7,3 +7,10 @@
 
 (rule
  (copy timmy.bc.js timmy.js))
+
+(install
+ (files
+  (timmy.js as node_modules/timmy/index.js)
+  (timmy.d.ts as node_modules/timmy/index.d.ts))
+ (section share_root)
+ (package timmy-jsoo))
