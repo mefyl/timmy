@@ -96,7 +96,21 @@ let daylight_savings () =
   test_relaxed (2022, 3, 27) (2, 59, 59);
   ()
 
-let () =
-  Alcotest.(
-    run "Timmy-jsoo"
-      [ ("timezone", [ test_case "daylight saving" `Quick daylight_savings ]) ])
+let _ =
+  Js.export_all
+    (object%js
+       method testSuite =
+         Alcotest.(
+           run "Timmy-jsoo"
+             [
+               ( "timezone",
+                 [ test_case "daylight saving" `Quick daylight_savings ] );
+             ])
+
+       method make hours minutes seconds =
+         match Timmy.Daytime.make ~hours ~minutes ~seconds with
+         | Result.Ok dt -> Timmy.Daytime.to_js dt
+         | Result.Error msg ->
+           Js.Js_error.raise_ @@ Js.Js_error.of_error
+           @@ new%js Js.error_constr (Js.string msg)
+    end)

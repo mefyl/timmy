@@ -1,2 +1,2 @@
 #!/bin/sh
-env TZ='Europe/Amsterdam' node ./test.bc.js
+env TZ='Europe/Amsterdam' node ./test.mjs
