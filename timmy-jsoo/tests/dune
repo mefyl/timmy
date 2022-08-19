@@ -8,7 +8,16 @@
 
 (rule
  (alias runtest)
- (deps ./test.bc.js ./test.mjs)
  (enabled_if %{lib-available:js_of_ocaml})
  (action
-  (run ./test-js)))
+  (setenv
+   TZ
+   Europe/Amsterdam
+   (run node %{dep:./test.bc.js}))))
+
+(rule
+ (alias runtest)
+ (deps ../bin/timmy.bc.js)
+ (enabled_if %{lib-available:js_of_ocaml})
+ (action
+  (run node %{dep:./test.mjs})))
