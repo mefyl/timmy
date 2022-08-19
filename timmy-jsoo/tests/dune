@@ -16,8 +16,15 @@
    (run node %{dep:./test.bc.js}))))
 
 (rule
- (alias runtest)
- (deps ../bin/timmy.bc.js)
+ (target test.js)
+ (deps ../bin/timmy.d.ts)
  (enabled_if %{lib-available:js_of_ocaml})
  (action
-  (run node %{dep:./test.mjs})))
+  (run npx tsc --module commonjs --esModuleInterop %{dep:test.ts})))
+
+(rule
+ (alias runtest)
+ (deps ../bin/timmy.js)
+ (enabled_if %{lib-available:js_of_ocaml})
+ (action
+  (run node %{dep:./test.js})))

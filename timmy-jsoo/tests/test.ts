@@ -1,7 +1,5 @@
 import assert from "assert"
-
-import timmy from "../bin/timmy.bc.js"
-const { Daytime } = timmy
+import { Daytime } from "../bin/timmy.js"
 
 const midnight = new Daytime()
 const noon = new Daytime (12, 0, 0)

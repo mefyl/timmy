@@ -4,3 +4,6 @@
  (libraries timmy-jsoo)
  (preprocess
   (pps js_of_ocaml-ppx)))
+
+(rule
+ (copy timmy.bc.js timmy.js))
