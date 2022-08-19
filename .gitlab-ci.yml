@@ -23,6 +23,7 @@ toolchain:no-jsoo:
     OCAML_VERSION: "4.12.0"
     OPAM_PACKAGES: "schematic"
     OPAM_WITHOUT_PACKAGES: "js_of_ocaml"
+    DUNE_PACKAGES: "timmy"
     VARIANT: "-no-jsoo"
     PACKAGES: "nodejs npm"
 
@@ -35,6 +36,9 @@ build:
 
 build:no-schematic:
   extends: .ocaml-build
+  before_script:
+    # Dune can't selectively disable an executable
+    - echo '(dirs lib)' > 'timmy-jsoo/dune'
   dependencies:
     - toolchain:no-schematic
   needs:
@@ -62,6 +66,9 @@ check:
 
 check:no-schematic:
   extends: .ocaml-check
+  before_script:
+    # Dune can't selectively disable an executable
+    - echo '(dirs lib)' > 'timmy-jsoo/dune'
   dependencies:
     - build:no-schematic
   needs:
