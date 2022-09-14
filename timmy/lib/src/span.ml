@@ -8,6 +8,7 @@ module T = struct
 end
 
 include T
+include Type_js.Span
 
 module O = struct
   include Comparable.Make (T)
