@@ -1,10 +1,14 @@
 #!/bin/sh
 
+staged () {
+    git show ":$1"
+}
+
 VERSION=$(sed -n 's/(version \(.*\))/\1/p' dune-project)
 VERSION="V${VERSION//./_}"
 
 check () {
-    if ! grep -q "$VERSION" "$1"; then
+    if ! staged "$1" | grep -q "$VERSION"; then
         echo "missing module $VERSION in $1" 1>&2
         exit 1
     fi
