@@ -5,6 +5,8 @@
 (** @inline *)
 include Type.WEEKDAY
 
+include module type of Type_js.Weekday
+
 (** {2 Integer} *)
 
 (** [to_int ~base weekday] is the number of days from [base] to the next
