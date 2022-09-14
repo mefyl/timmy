@@ -21,3 +21,7 @@ module Week = struct
     ; year : Js_of_ocaml.Js.number Js_of_ocaml.Js.readonly_prop >
     Js_of_ocaml.Js.t
 end
+
+module Weekday = struct
+  type js = int
+end
