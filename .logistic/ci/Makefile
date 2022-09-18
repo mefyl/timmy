@@ -3,7 +3,7 @@ DIR=$(patsubst %/,%,$(dir $(MAKEFILE)))
 OCAML_VERSION ?= $(shell ocamlc --version)
 DUNE=opam exec -- dune
 
-build: lint
+build:
 	if test -d /root/node_modules; then ln -s /root/node_modules; fi
 	$(DUNE) subst
 	$(DUNE) build --ignore-promoted-rules $(if ${DUNE_PACKAGES},--only-packages="${DUNE_PACKAGES}") @install

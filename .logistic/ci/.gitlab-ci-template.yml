@@ -38,6 +38,7 @@ variables:
   stage: build
   script:
     - make -f .logistic/ci/Makefile build
+    - make -f .logistic/ci/Makefile lint
   artifacts:
     expire_in: 10 days
     paths:
