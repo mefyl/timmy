@@ -1,6 +1,7 @@
 open Base
 
 module Month = struct
+  (** @canonical Timmy.Month.t *)
   type t =
     | January
     | February
@@ -66,7 +67,9 @@ module type MONTH = sig
 end
 
 module Date = struct
-  (** A date. *)
+  (** A date.
+
+      @canonical Timmy.Date.t *)
   type t = {
     day : int;  (** The day of the month. *)
     month : Month.t;  (** The month of the year. *)
@@ -87,7 +90,9 @@ module Date = struct
 end
 
 module type DATE = sig
-  (** A date. *)
+  (** A date.
+
+      @canonical Timmy.Date.t *)
   type t = private {
     day : int;  (** The day of the month. *)
     month : Month.t;  (** The month of the year. *)
@@ -96,6 +101,7 @@ module type DATE = sig
 end
 
 module Daytime = struct
+  (** @canonical Timmy.Daytime.t *)
   type t = {
     hours : int;
     minutes : int;
@@ -123,7 +129,9 @@ module Daytime = struct
 end
 
 module type DAYTIME = sig
-  (** A time of the day. *)
+  (** A time of the day.
+
+      @canonical Timmy.Daytime.t *)
   type t = private {
     hours : int;
     minutes : int;
@@ -132,26 +140,33 @@ module type DAYTIME = sig
 end
 
 module Span = struct
+  (** @canonical Timmy.Span.t *)
   type t = Ptime.Span.t
 end
 
 module type SPAN = sig
   (** A duration.
 
-      Spans may be negative. *)
+      Spans may be negative.
+
+      @canonical Timmy.Span.t *)
   type t
 end
 
 module Time = struct
+  (** @canonical Timmy.Time.t *)
   type t = Ptime.t
 end
 
 module type TIME = sig
-  (** A point in time. *)
+  (** A point in time.
+
+      @canonical Timmy.Time.t *)
   type t
 end
 
 module Week = struct
+  (** @canonical Timmy.Week.t *)
   type t = {
     n : int;
     year : int;
@@ -162,7 +177,9 @@ module type WEEK = sig
   (** A week of a year.
 
       Per ISO 8601 week date system, a week is attributed to the year its
-      Thursday is in.*)
+      Thursday is in.
+
+      @canonical Timmy.Week.t *)
   type t = private {
     n : int;
     year : int;
@@ -170,6 +187,7 @@ module type WEEK = sig
 end
 
 module Weekday = struct
+  (** @canonical Timmy.Weekday.t *)
   type t =
     | Monday
     | Tuesday
@@ -182,7 +200,9 @@ module Weekday = struct
 end
 
 module type WEEKDAY = sig
-  (** A day of the week. *)
+  (** A day of the week.
+
+      @canonical Timmy.Weekday.t *)
   type t =
     | Monday
     | Tuesday
