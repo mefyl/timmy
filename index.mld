@@ -19,7 +19,7 @@ We describe here the main rationale for such an additional layer.
 
 {2 Advanced calendar features}
 
-[Ptime] made its intention clear to {em not} be a calendar library,
+[Ptime] made its intention clear to {i not} be a calendar library,
 and offers limited calendaring support. [Timmy] offers advanced
 calendaring features such as computations over dates, weekdays, ISO
 8601 weeks, ...

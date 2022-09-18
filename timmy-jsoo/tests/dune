@@ -8,6 +8,7 @@
 
 (rule
  (alias runtest)
+ (package timmy-jsoo)
  (enabled_if %{lib-available:js_of_ocaml})
  (action
   (setenv
@@ -24,6 +25,7 @@
 
 (rule
  (alias runtest)
+ (package timmy-jsoo)
  (deps ../bin/timmy.js)
  (enabled_if %{lib-available:js_of_ocaml})
  (action
