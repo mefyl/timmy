@@ -9,8 +9,8 @@ on:
 
 jobs:
 
-  setup-environment:
-    name: Setup environment
+  build-and-check:
+    name: Build and check
     strategy:
       fail-fast: false
       matrix:
@@ -31,36 +31,31 @@ jobs:
           dune-cache: true
       - name: Install dependencies
         run: opam install . --deps-only --with-test
-
-  build:
-    name: Build and check
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-          - macos-latest
-          - ubuntu-latest
-          - windows-latest
-        ocaml-compiler:
-          - 4.14.x
-    runs-on: ${{ matrix.os }}
-    needs: setup-environment
-    steps:
       - name: Build
         run: make -f .logistic/ci/Makefile DUNE_PACKAGES=timmy build
       - name: Check
         run: make -f .logistic/ci/Makefile DUNE_PACKAGES=timmy check
-
-  lint-and-doc:
-    name: Lint and deploy documentation
-    runs-on: ubuntu-latest
-    needs: setup-environment
-    steps:
-      - name: Lint opam
-        uses: ocaml/setup-ocaml/lint-opam@v2
-      - name: Lint doc
-        uses: ocaml/setup-ocaml/lint-doc@v2
+      # Fails because this dune construct is rejected:
+      # File "timmy-jsoo/tests/dune", line 12, characters 15-41:
+      # 12 |  (enabled_if %{lib-available:js_of_ocaml})
+      #                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+      # - name: Lint opam
+      #   uses: ocaml/setup-ocaml/lint-opam@v2
       - name: Lint fmt
         uses: ocaml/setup-ocaml/lint-fmt@v2
+
+  documentation:
+    name: Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup OCaml
+        uses: ocaml/setup-ocaml@v2
+        with:
+          ocaml-compiler: 4.14.x
+          dune-cache: true
+      - name: Lint doc
+        uses: ocaml/setup-ocaml/lint-doc@v2
       - name: Deploy odoc to GitHub Pages
         uses: ocaml/setup-ocaml/deploy-doc@v2
