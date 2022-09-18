@@ -1,12 +1,12 @@
 MAKEFILE=$(abspath $(lastword $(MAKEFILE_LIST)))
 DIR=$(patsubst %/,%,$(dir $(MAKEFILE)))
 OCAML_VERSION ?= $(shell ocamlc --version)
-DUNE=opam exec -- dune
+DUNE=opam exec -- dune $(if ${DUNE_PACKAGES},--only-packages="${DUNE_PACKAGES}")
 
 build:
 	if test -d /root/node_modules; then ln -s /root/node_modules; fi
 	$(DUNE) subst
-	$(DUNE) build --ignore-promoted-rules $(if ${DUNE_PACKAGES},--only-packages="${DUNE_PACKAGES}") @install
+	$(DUNE) build --ignore-promoted-rules @install
 
 lint:
 	$(DUNE) build @fmt

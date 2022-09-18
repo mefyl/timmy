@@ -9,8 +9,8 @@ on:
 
 jobs:
 
-  build-and-check:
-    name: Build and check
+  setup-environment:
+    name: Setup environment
     strategy:
       fail-fast: false
       matrix:
@@ -36,6 +36,23 @@ jobs:
       - name: Install dependencies
         run: opam install . --deps-only --with-test
 
+  build:
+    name: Build and check
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos-latest
+          - ubuntu-latest
+          - windows-latest
+        ocaml-compiler:
+          - 4.14.x
+
+    runs-on: ${{ matrix.os }}
+
+    needs: setup-environment
+
+    steps:
       - name: Build
         run: make -f .logistic/ci/Makefile DUNE_PACKAGES=timmy build
 
