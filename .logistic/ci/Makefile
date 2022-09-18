@@ -3,7 +3,7 @@ DIR=$(patsubst %/,%,$(dir $(MAKEFILE)))
 OCAML_VERSION ?= $(shell ocamlc --version)
 
 build: lint
-	test -d /root/node_modules && ln -s /root/node_modules
+	if test -d /root/node_modules; then ln -s /root/node_modules; fi
 	dune subst
 	dune build --ignore-promoted-rules $(if ${DUNE_PACKAGES},--only-packages="${DUNE_PACKAGES}") @install
 
@@ -11,7 +11,7 @@ lint:
 	dune build @fmt
 
 check:
-	test -d /root/node_modules && ln -s /root/node_modules
+	if test -d /root/node_modules; then ln -s /root/node_modules; fi
 	dune subst
 	dune runtest
 
@@ -51,7 +51,7 @@ ci/image:
 		echo "building from scratch"; \
 		CACHE='--no-cache'; \
 	fi; \
-	docker build -f "$(dir $(MAKEFILE_LIST))Dockerfile.ci" . --tag "$(or $(IMAGE_CI)$(VARIANT),ci)" --build-arg OCAML_VERSION=$(OCAML_VERSION) --build-arg DUNE_PACKAGES="$(DUNE_PACKAGES)" --build-arg PACKAGES="$(PACKAGES) $(if $(wildcard package.json),nodejs-current npm)" --build-arg OPAM_PACKAGES="$(OPAM_PACKAGES)" --build-arg OPAM_WITHOUT_PACKAGES="$(OPAM_WITHOUT_PACKAGES)" --build-arg AWS_SECRET_ACCESS_KEY="$(AWS_SECRET_ACCESS_KEY)" $$CACHE
+	docker build -f "$(dir $(MAKEFILE_LIST))Dockerfile.ci" . --tag "$(or $(IMAGE_CI)$(VARIANT),ci)" --build-arg OCAML_VERSION=$(OCAML_VERSION) --build-arg PACKAGES="$(PACKAGES)" --build-arg OPAM_PACKAGES="$(OPAM_PACKAGES)" --build-arg OPAM_WITHOUT_PACKAGES="$(OPAM_WITHOUT_PACKAGES)" --build-arg AWS_SECRET_ACCESS_KEY="$(AWS_SECRET_ACCESS_KEY)" $$CACHE
 
 image/%:
 	if test -e Dockerfile.$*; then cat Dockerfile.$* >> "$(dir $(MAKEFILE_LIST))Dockerfile.$*"; fi
