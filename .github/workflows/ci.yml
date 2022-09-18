@@ -8,7 +8,9 @@ on:
     - cron: 0 1 * * MON
 
 jobs:
-  build:
+
+  build-and-check:
+    name: Build and check
     strategy:
       fail-fast: false
       matrix:
@@ -22,16 +24,45 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Use OCaml ${{ matrix.ocaml-compiler }}
+      - name: Setup OCaml ${{ matrix.ocaml-compiler }}
         uses: ocaml/setup-ocaml@v2
         with:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
+          dune-cache: true
 
-      - run: opam install . --deps-only --with-test
+      - name: Install dependencies
+        run: opam install . --deps-only --with-test
 
-      - run: make -f .logistic/ci/Makefile DUNE_PACKAGES=timmy build
+      - name: Build
+        run: make -f .logistic/ci/Makefile DUNE_PACKAGES=timmy build
 
-      - run: make -f .logistic/ci/Makefile DUNE_PACKAGES=timmy check
+      - name: Check
+        run: make -f .logistic/ci/Makefile DUNE_PACKAGES=timmy check
+
+  lint-and-doc:
+    name: Lint and deploy documentation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Use OCaml 4.14.x
+        uses: ocaml/setup-ocaml@v2
+        with:
+          ocaml-compiler: 4.14.x
+          dune-cache: true
+
+      - name: Lint opam
+        uses: ocaml/setup-ocaml/lint-opam@v2
+
+      - name: Lint doc
+        uses: ocaml/setup-ocaml/lint-doc@v2
+
+      - name: Lint fmt
+        uses: ocaml/setup-ocaml/lint-fmt@v2
+
+      - name: Deploy odoc to GitHub Pages
+        uses: ocaml/setup-ocaml/deploy-doc@v2
