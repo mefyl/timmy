@@ -16,7 +16,8 @@
 
 (bug_reports https://github.com/mefyl/timmy/issues)
 
-(source (github mefyl/timmy))
+(source
+ (github mefyl/timmy))
 
 (package
  (name timmy)
@@ -43,9 +44,10 @@
   fmt
   js_of_ocaml
   js_of_ocaml-ppx
+  (timmy
+   (= :version)))
+ (depopts
   (schematic-jsoo
    (and
     (>= 0.14.0)
-    (< 0.15.0)))
-  (timmy
-   (= :version))))
+    (< 0.15.0)))))
