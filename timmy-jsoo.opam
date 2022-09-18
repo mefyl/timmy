@@ -5,8 +5,8 @@ synopsis: "Js_of_ocaml bindings for Timmy"
 maintainer: ["mefyl <mefyl@gruntech.org>"]
 authors: ["mefyl <mefyl@gruntech.org>"]
 license: "LGPL-3.0-or-later"
-homepage: "https://gitlab.routine.co/routine/timmy"
-bug-reports: "https://gitlab.routine.co/routine/timmy/-/issues"
+homepage: "https://github.com/mefyl/timmy"
+bug-reports: "https://github.com/mefyl/timmy/issues"
 depends: [
   "dune" {>= "2.8"}
   "alcotest" {with-test}
@@ -31,3 +31,4 @@ build: [
     "@doc" {with-doc}
   ]
 ]
+dev-repo: "git+https://github.com/mefyl/timmy.git"

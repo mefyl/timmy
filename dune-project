@@ -12,13 +12,15 @@
 
 (authors "mefyl <mefyl@gruntech.org>")
 
-(homepage https://gitlab.routine.co/routine/timmy)
+(homepage https://github.com/mefyl/timmy)
 
-(bug_reports https://gitlab.routine.co/routine/timmy/-/issues)
+(bug_reports https://github.com/mefyl/timmy/issues)
+
+(source (github mefyl/timmy))
 
 (package
  (name timmy)
- (synopsis "Time library")
+ (synopsis "Time and calendar library")
  (depends
   (alcotest :with-test)
   base
