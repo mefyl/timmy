@@ -13,9 +13,11 @@ depends: [
   "fmt"
   "js_of_ocaml"
   "js_of_ocaml-ppx"
-  "schematic-jsoo" {>= "0.14.0" & < "0.15.0"}
   "timmy" {= version}
   "odoc" {with-doc}
+]
+depopts: [
+  "schematic-jsoo" {>= "0.14.0" & < "0.15.0"}
 ]
 build: [
   ["dune" "subst"] {dev}
