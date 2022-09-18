@@ -15,16 +15,56 @@ complete calendar-wise layer, while certainly not being as lean and as
 battle-tested.  Interoperability exists for all relevant objects so
 both can easily be mixed if needed.
 
-We describe here the main rationale for such a wrapper.
-
-{2 Timezone safety}
-
-
-
-{2 Static guarantees of operation correctness}
+We describe here the main rationale for such an additional layer.
 
 {2 Advanced calendar features}
 
+[Ptime] made its intention clear to {em not} be a calendar library,
+and offers limited calendaring support. [Timmy] offers advanced
+calendaring features such as computations over dates, weekdays, ISO
+8601 weeks, ...
+
+{2 Timezone safety}
+
+While [Ptime] has timezone support, many operation don't explicitely
+require a timezone and will default to UTC - eg. [Ptime.to_date_time]
+takes the timezone as an optional argument. If an application handles
+timezone, it is pretty much never correct to omit the timezone in any
+such conversion call and a single omission can introduce hard to track
+bugs.
+
+[Timmy] takes a zero compromise approach on this, all calls converting
+between dates and points in time have a mandatory timezone parameter.
+
+{2 Support for daylight saving timezones}
+
+[Ptime] supports only fixed timezone, ie. GMT+X. However many
+real-life timezone are not a fixed offset because of daylight saving
+time. Because of this, no [Ptime] timezone can convert correctly dates
+both in August and Decemebr in Paris because the first is GMT+2 and
+the latter GMT+1.
+
+[Timmy.Timezone.t] supports such varying timezones and offers
+out-of-the-box implementation for both javascript and Unix.
+
+{2 Static guarantees of operation correctness}
+
+Because [Ptime] uses tuples to represent dates and daytimes,
+operations on these objects can fail because there are no guarantees a
+tuple is a valid date or datetime. [Timmy] introduces private record
+types that are guaranteed to be valid dates and daytimes, while still
+allowing destructuring, thus avoiding potential runtime assertions.
+
+{[
+let at_daytime_ptime (t : Ptime.t) (daytime : Ptime.time) =
+  let (date, _) = Ptime.to_date_time t in
+  (* Runtime assertion required *)
+  Ptime.of_date_time (date, time) |> Option.value_exn
+
+let at_daytime_timmy (t : Timmy.Time.t) (daytime : Timmy.Daytime.t) =
+  let date = Timmy.Date.of_time t in
+  Timmy.Date.to_time date time
+]}
 
 {1 Concepts}
 
