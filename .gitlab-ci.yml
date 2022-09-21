@@ -5,7 +5,7 @@ toolchain:
   extends: .ocaml-toolchain
   variables:
     OCAML_VERSION: "4.12.0"
-    OPAM_PACKAGES: "js_of_ocaml schematic"
+    OPAM_PACKAGES: "js_of_ocaml schematic-jsoo"
     PACKAGES: "nodejs npm"
 
 toolchain:no-schematic:
@@ -54,6 +54,7 @@ build:no-jsoo:
   needs:
     - toolchain:no-jsoo
   variables:
+    DUNE_PACKAGES: "timmy"
     OCAML_VERSION: "4.12.0"
     VARIANT: "-no-jsoo"
 
