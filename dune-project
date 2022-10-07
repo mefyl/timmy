@@ -33,8 +33,8 @@
   js_of_ocaml
   (schematic
    (and
-    (>= 0.14.0)
-    (< 0.15.0)))))
+    (>= 0.15.0)
+    (< 0.16.0)))))
 
 (package
  (name timmy-jsoo)
@@ -49,5 +49,5 @@
  (depopts
   (schematic-jsoo
    (and
-    (>= 0.14.0)
-    (< 0.15.0)))))
+    (>= 0.15.0)
+    (< 0.16.0)))))
