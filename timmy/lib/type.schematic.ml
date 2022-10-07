@@ -2,10 +2,10 @@ module type DATE = sig
   (** @inline *)
   include Types_bare.DATE with type t = Types_bare.Date.t
 
-  val schema_versioned : Schematic.Schema.version -> t Schematic.schema
+  val schema_versioned : Schematic.Schema.version -> t Schematic.Schema.t
 
   (** [schema] maps dates to [(year, month, day)] triplets. *)
-  val schema : t Schematic.schema
+  val schema : t Schematic.Schema.t
 end
 
 module Date = struct
@@ -33,64 +33,63 @@ module Daytime = struct
   let schema_versioned _ =
     let open Schematic.Schemas in
     let descriptor =
-      Schema.Map
+      Schema.Object
         {
           decode =
-            (fun (hours, (minutes, (seconds, ()))) ->
-              Result.Ok ({ hours; minutes; seconds } : t));
+            (fun (hours, (minutes, (seconds, ()))) : t ->
+              { hours; minutes; seconds });
           encode =
             (fun ({ hours; minutes; seconds } : t) ->
               (hours, (minutes, (seconds, ()))));
-          descriptor =
-            Object
-              (Field
-                 {
-                   field =
-                     {
-                       description = None;
-                       examples = [];
-                       name = "hours";
-                       maximum = None;
-                       minimum = None;
-                       omit = false;
-                       requirement = Required;
-                       schema = Outline int_schema;
-                       title = None;
-                     };
-                   rest =
-                     Field
-                       {
-                         field =
-                           {
-                             description = None;
-                             examples = [];
-                             name = "minutes";
-                             maximum = None;
-                             minimum = None;
-                             omit = false;
-                             requirement = Default 0;
-                             schema = Outline int_schema;
-                             title = None;
-                           };
-                         rest =
-                           Field
-                             {
-                               field =
-                                 {
-                                   description = None;
-                                   examples = [];
-                                   name = "seconds";
-                                   maximum = None;
-                                   minimum = None;
-                                   omit = false;
-                                   requirement = Default 0;
-                                   schema = Outline int_schema;
-                                   title = None;
-                                 };
-                               rest = FieldEnd;
-                             };
-                       };
-                 });
+          fields =
+            Field
+              {
+                field =
+                  {
+                    description = None;
+                    examples = [];
+                    name = "hours";
+                    maximum = None;
+                    minimum = None;
+                    omit = false;
+                    requirement = Required;
+                    schema = Outline int_schema;
+                    title = None;
+                  };
+                rest =
+                  Field
+                    {
+                      field =
+                        {
+                          description = None;
+                          examples = [];
+                          name = "minutes";
+                          maximum = None;
+                          minimum = None;
+                          omit = false;
+                          requirement = Default 0;
+                          schema = Outline int_schema;
+                          title = None;
+                        };
+                      rest =
+                        Field
+                          {
+                            field =
+                              {
+                                description = None;
+                                examples = [];
+                                name = "seconds";
+                                maximum = None;
+                                minimum = None;
+                                omit = false;
+                                requirement = Default 0;
+                                schema = Outline int_schema;
+                                title = None;
+                              };
+                            rest = FieldEnd;
+                          };
+                    };
+              };
         }
     and id = "daytime" in
     let open Schema in
@@ -128,6 +127,7 @@ module Month = struct
               Schema.Case
                 {
                   name = "january";
+                  raw_name = "January";
                   schema =
                     (let open Schema in
                     {
@@ -141,6 +141,7 @@ module Month = struct
               Schema.Case
                 {
                   name = "february";
+                  raw_name = "February";
                   schema =
                     (let open Schema in
                     {
@@ -154,6 +155,7 @@ module Month = struct
               Schema.Case
                 {
                   name = "march";
+                  raw_name = "March";
                   schema =
                     (let open Schema in
                     {
@@ -167,6 +169,7 @@ module Month = struct
               Schema.Case
                 {
                   name = "april";
+                  raw_name = "April";
                   schema =
                     (let open Schema in
                     {
@@ -180,6 +183,7 @@ module Month = struct
               Schema.Case
                 {
                   name = "may";
+                  raw_name = "May";
                   schema =
                     (let open Schema in
                     {
@@ -193,6 +197,7 @@ module Month = struct
               Schema.Case
                 {
                   name = "june";
+                  raw_name = "June";
                   schema =
                     (let open Schema in
                     {
@@ -206,6 +211,7 @@ module Month = struct
               Schema.Case
                 {
                   name = "july";
+                  raw_name = "July";
                   schema =
                     (let open Schema in
                     {
@@ -219,6 +225,7 @@ module Month = struct
               Schema.Case
                 {
                   name = "august";
+                  raw_name = "August";
                   schema =
                     (let open Schema in
                     {
@@ -232,6 +239,7 @@ module Month = struct
               Schema.Case
                 {
                   name = "september";
+                  raw_name = "September";
                   schema =
                     (let open Schema in
                     {
@@ -245,6 +253,7 @@ module Month = struct
               Schema.Case
                 {
                   name = "october";
+                  raw_name = "October";
                   schema =
                     (let open Schema in
                     {
@@ -258,6 +267,7 @@ module Month = struct
               Schema.Case
                 {
                   name = "november";
+                  raw_name = "November";
                   schema =
                     (let open Schema in
                     {
@@ -271,6 +281,7 @@ module Month = struct
               Schema.Case
                 {
                   name = "december";
+                  raw_name = "December";
                   schema =
                     (let open Schema in
                     {
@@ -283,6 +294,7 @@ module Month = struct
                 };
             ];
           key = None;
+          polymorphic = false;
         }
     and id = "month" in
     let open Schematic.Schema in
@@ -355,44 +367,43 @@ module Week = struct
   let schema_versioned _ =
     let open Schematic.Schemas in
     let descriptor =
-      Schema.Map
+      Schema.Object
         {
-          decode = (fun (n, (year, ())) -> Result.Ok ({ n; year } : t));
+          decode = (fun (n, (year, ())) : t -> { n; year });
           encode = (fun ({ n; year } : t) -> (n, (year, ())));
-          descriptor =
-            Object
-              (Field
-                 {
-                   field =
-                     {
-                       description = None;
-                       examples = [];
-                       name = "n";
-                       maximum = None;
-                       minimum = None;
-                       omit = false;
-                       requirement = Required;
-                       schema = Outline int_schema;
-                       title = None;
-                     };
-                   rest =
-                     Field
-                       {
-                         field =
-                           {
-                             description = None;
-                             examples = [];
-                             name = "year";
-                             maximum = None;
-                             minimum = None;
-                             omit = false;
-                             requirement = Required;
-                             schema = Outline int_schema;
-                             title = None;
-                           };
-                         rest = FieldEnd;
-                       };
-                 });
+          fields =
+            Field
+              {
+                field =
+                  {
+                    description = None;
+                    examples = [];
+                    name = "n";
+                    maximum = None;
+                    minimum = None;
+                    omit = false;
+                    requirement = Required;
+                    schema = Outline int_schema;
+                    title = None;
+                  };
+                rest =
+                  Field
+                    {
+                      field =
+                        {
+                          description = None;
+                          examples = [];
+                          name = "year";
+                          maximum = None;
+                          minimum = None;
+                          omit = false;
+                          requirement = Required;
+                          schema = Outline int_schema;
+                          title = None;
+                        };
+                      rest = FieldEnd;
+                    };
+              };
         }
     and id = "week" in
     let open Schema in
@@ -428,6 +439,7 @@ module Weekday = struct
               Schema.Case
                 {
                   name = "monday";
+                  raw_name = "Monday";
                   schema =
                     (let open Schema in
                     {
@@ -441,6 +453,7 @@ module Weekday = struct
               Schema.Case
                 {
                   name = "tuesday";
+                  raw_name = "Tuesday";
                   schema =
                     (let open Schema in
                     {
@@ -454,6 +467,7 @@ module Weekday = struct
               Schema.Case
                 {
                   name = "wednesday";
+                  raw_name = "Wednesday";
                   schema =
                     (let open Schema in
                     {
@@ -467,6 +481,7 @@ module Weekday = struct
               Schema.Case
                 {
                   name = "thursday";
+                  raw_name = "Thursday";
                   schema =
                     (let open Schema in
                     {
@@ -480,6 +495,7 @@ module Weekday = struct
               Schema.Case
                 {
                   name = "friday";
+                  raw_name = "Friday";
                   schema =
                     (let open Schema in
                     {
@@ -493,6 +509,7 @@ module Weekday = struct
               Schema.Case
                 {
                   name = "saturday";
+                  raw_name = "Saturday";
                   schema =
                     (let open Schema in
                     {
@@ -506,6 +523,7 @@ module Weekday = struct
               Schema.Case
                 {
                   name = "sunday";
+                  raw_name = "Sunday";
                   schema =
                     (let open Schema in
                     {
@@ -518,6 +536,7 @@ module Weekday = struct
                 };
             ];
           key = None;
+          polymorphic = false;
         }
     and id = "weekday" in
     Schema.{ descriptor; id = Some id; parametric = None }

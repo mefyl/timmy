@@ -19,7 +19,7 @@ depends: [
 ]
 depopts: [
   "js_of_ocaml"
-  "schematic" {>= "0.14.0" & < "0.15.0"}
+  "schematic" {>= "0.15.0" & < "0.16.0"}
 ]
 build: [
   ["dune" "subst"] {dev}
