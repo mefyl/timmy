@@ -33,63 +33,72 @@ module Daytime = struct
   let schema_versioned _ =
     let open Schematic.Schemas in
     let descriptor =
-      Schema.Object
+      let obj =
+        Schema.Object
+          {
+            decode = Base.Fn.id;
+            encode = Base.Fn.id;
+            fields =
+              Field
+                {
+                  field =
+                    {
+                      description = None;
+                      examples = [];
+                      name = "hours";
+                      maximum = Some 24;
+                      minimum = Some 0;
+                      omit = false;
+                      requirement = Required;
+                      schema = Outline int_schema;
+                      title = None;
+                    };
+                  rest =
+                    Field
+                      {
+                        field =
+                          {
+                            description = None;
+                            examples = [];
+                            name = "minutes";
+                            maximum = Some 60;
+                            minimum = Some 0;
+                            omit = false;
+                            requirement = Default 0;
+                            schema = Outline int_schema;
+                            title = None;
+                          };
+                        rest =
+                          Field
+                            {
+                              field =
+                                {
+                                  description = None;
+                                  examples = [];
+                                  name = "seconds";
+                                  maximum = Some 60;
+                                  minimum = Some 0;
+                                  omit = false;
+                                  requirement = Default 0;
+                                  schema = Outline int_schema;
+                                  title = None;
+                                };
+                              rest = FieldEnd;
+                            };
+                      };
+                };
+          }
+      in
+      Schema.Map
         {
           decode =
-            (fun (hours, (minutes, (seconds, ()))) : t ->
-              { hours; minutes; seconds });
+            (* Reject invalid ranges *)
+            (fun (hours, (minutes, (seconds, ()))) ->
+              make ~hours ~minutes ~seconds);
           encode =
-            (fun ({ hours; minutes; seconds } : t) ->
+            (fun { hours; minutes; seconds } ->
               (hours, (minutes, (seconds, ()))));
-          fields =
-            Field
-              {
-                field =
-                  {
-                    description = None;
-                    examples = [];
-                    name = "hours";
-                    maximum = None;
-                    minimum = None;
-                    omit = false;
-                    requirement = Required;
-                    schema = Outline int_schema;
-                    title = None;
-                  };
-                rest =
-                  Field
-                    {
-                      field =
-                        {
-                          description = None;
-                          examples = [];
-                          name = "minutes";
-                          maximum = None;
-                          minimum = None;
-                          omit = false;
-                          requirement = Default 0;
-                          schema = Outline int_schema;
-                          title = None;
-                        };
-                      rest =
-                        Field
-                          {
-                            field =
-                              {
-                                description = None;
-                                examples = [];
-                                name = "seconds";
-                                maximum = None;
-                                minimum = None;
-                                omit = false;
-                                requirement = Default 0;
-                                schema = Outline int_schema;
-                                title = None;
-                              };
-                            rest = FieldEnd;
-                          };
-                    };
-              };
+          descriptor = obj;
         }
     and id = "daytime" in
     let open Schema in
