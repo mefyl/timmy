@@ -1,3 +1,5 @@
+[@@@warning "-unused-value-declaration"]
+
 module type DATE = Types_bare.DATE with type t = Types_bare.Date.t
 
 module Date = Types_bare.Date
@@ -20,7 +22,10 @@ module Time = Types_bare.Time
 
 module type WEEK = Types_bare.WEEK
 
-module Week (Make : sig end) = Types_bare.Week
+module Week (Make : sig
+  val make : year:int -> int -> (Types_bare.Week.t, string) Result.t
+end) =
+  Types_bare.Week
 
 module type WEEKDAY = Types_bare.WEEKDAY
 
