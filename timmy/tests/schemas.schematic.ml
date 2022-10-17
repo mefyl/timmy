@@ -3,6 +3,9 @@ open Testable
 
 let json = Alcotest.testable Schematic.Json.pp Schematic.Json.equal
 
+let decoding_error =
+  Alcotest.testable Schematic.Error.pp_decoding Schematic.Error.equal_decoding
+
 let roundtrip ~here test schema v expected =
   let j = Schematic.Json.encode schema v in
   let () = Alcotest.(check ~here json "JSON representation" expected j) in
