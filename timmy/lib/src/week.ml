@@ -1,17 +1,5 @@
 open Base
-
-module T = struct
-  include Type.Week
-
-  let sexp_of_t { n; year } =
-    Sexp.List [ Sexp.Atom (Int.to_string year); Sexp.Atom (Int.to_string n) ]
-
-  let compare (l : t) (r : t) =
-    match Int.compare l.year r.year with 0 -> Int.compare l.n r.n | ord -> ord
-end
-
-include T
-include Type_js.Week
+include Types_bare.Week
 
 let to_date { n; year } =
   let first = Month.to_date ~year January in
@@ -28,6 +16,21 @@ let make ~year n =
   else if n > 53 then Result.failf "week %i is greater than 53" n
   else if _year res <> year then Result.failf "year %i has no week 53" year
   else Result.return res
+
+module T = struct
+  include Type.Week (struct
+    let make = make
+  end)
+
+  let sexp_of_t { n; year } =
+    Sexp.List [ Sexp.Atom (Int.to_string year); Sexp.Atom (Int.to_string n) ]
+
+  let compare (l : t) (r : t) =
+    match Int.compare l.year r.year with 0 -> Int.compare l.n r.n | ord -> ord
+end
+
+include T
+include Type_js.Week
 
 let of_monday jd =
   let Date.{ day; month; year } = Date.of_int jd in

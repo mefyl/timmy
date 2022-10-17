@@ -60,8 +60,34 @@ let daytime () =
   in
   ()
 
+let week () =
+  let () =
+    roundtrip ~here:[%here] week Timmy.Week.schema
+      (Result.ok_or_failwith @@ Timmy.Week.make ~year:2022 42)
+      (`O [ ("year", `Float 2022.); ("n", `Float 42.) ])
+  and () =
+    let res =
+      Schematic.Json.decode Timmy.Week.schema
+        (`O [ ("year", `Float 2022.); ("n", `Float 53.) ])
+    in
+    Alcotest.(
+      check ~here:[%here]
+        (result week decoding_error)
+        "invalid daytime"
+        (Result.Error
+           Schematic.Error.
+             {
+               schema = Some "week";
+               path = [];
+               reason = "year 2022 has no week 53";
+             })
+        res)
+  in
+  ()
+
 let tests =
   [
     Alcotest.test_case "json" `Quick json;
     Alcotest.test_case "daytime" `Quick daytime;
+    Alcotest.test_case "week" `Quick week;
   ]
