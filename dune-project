@@ -1,10 +1,12 @@
-(lang dune 2.8)
+(lang dune 2.9)
 
 (name timmy)
 
 (version 0.14.0)
 
 (generate_opam_files true)
+
+(executables_implicit_empty_intf true)
 
 (license LGPL-3.0-or-later)
 
