@@ -1,23 +1,24 @@
 MAKEFILE=$(abspath $(lastword $(MAKEFILE_LIST)))
 DIR=$(patsubst %/,%,$(dir $(MAKEFILE)))
 OCAML_VERSION ?= $(shell ocamlc --version)
+DUNE=opam exec -- dune
 
-build: lint
+build:
 	if test -d /root/node_modules; then ln -s /root/node_modules; fi
-	dune subst
-	dune build --ignore-promoted-rules @install
+	$(DUNE) subst
+	$(DUNE) build $(if ${DUNE_PACKAGES},--only-packages="${DUNE_PACKAGES}") --ignore-promoted-rules @install
 
 lint:
-	dune build @fmt
+	$(DUNE) build @fmt
 
 check:
 	if test -d /root/node_modules; then ln -s /root/node_modules; fi
-	dune subst
-	dune runtest
+	$(DUNE) subst
+	$(DUNE) runtest $(if ${DUNE_PACKAGES},--only-packages="${DUNE_PACKAGES}")
 
 package:
-	dune subst
-	dune install --prefix=_install
+	$(DUNE) subst
+	$(DUNE) install $(if ${DUNE_PACKAGES},--only-packages="${DUNE_PACKAGES}") --prefix=_install
 	if ! test -e Dockerfile; then echo "FROM alpine" > Dockerfile; fi
 	sed '1aADD _install/ /usr/' Dockerfile > Dockerfile.package
 	docker build -f "Dockerfile.package" . -t "$(IMAGE):$$(git describe --always)"
