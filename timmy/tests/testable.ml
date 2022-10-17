@@ -1,3 +1,8 @@
-let date = Alcotest.testable Timmy.Date.pp Timmy.Date.equal
-let daytime = Alcotest.testable Timmy.Daytime.pp Timmy.Daytime.equal
-let time = Alcotest.testable Timmy.Time.pp Timmy.Time.equal
+let make (type t) (module O : Alcotest.TESTABLE with type t = t) :
+    O.t Alcotest.testable =
+  Alcotest.testable O.pp O.equal
+
+let date = make (module Timmy.Date)
+let daytime = make (module Timmy.Daytime)
+let time = make (module Timmy.Time)
+let week = make (module Timmy.Week)

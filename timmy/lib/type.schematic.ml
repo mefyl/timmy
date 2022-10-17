@@ -370,49 +370,60 @@ module type WEEK = sig
   val schema : t Schematic.Schema.t
 end
 
-module Week = struct
+module Week (Make : sig
+  val make : year:int -> int -> (Types_bare.Week.t, string) Result.t
+end) =
+struct
   include Types_bare.Week
 
   let schema_versioned _ =
     let open Schematic.Schemas in
     let descriptor =
-      Schema.Object
-        {
-          decode = (fun (n, (year, ())) : t -> { n; year });
-          encode = (fun ({ n; year } : t) -> (n, (year, ())));
-          fields =
-            Field
-              {
-                field =
-                  {
-                    description = None;
-                    examples = [];
-                    name = "n";
-                    maximum = None;
-                    minimum = None;
-                    omit = false;
-                    requirement = Required;
-                    schema = Outline int_schema;
-                    title = None;
-                  };
-                rest =
-                  Field
+      let obj =
+        Schema.Object
+          {
+            decode = Base.Fn.id;
+            encode = Base.Fn.id;
+            fields =
+              Field
+                {
+                  field =
                     {
-                      field =
-                        {
-                          description = None;
-                          examples = [];
-                          name = "year";
-                          maximum = None;
-                          minimum = None;
-                          omit = false;
-                          requirement = Required;
-                          schema = Outline int_schema;
-                          title = None;
-                        };
-                      rest = FieldEnd;
+                      description = None;
+                      examples = [];
+                      name = "n";
+                      maximum = None;
+                      minimum = None;
+                      omit = false;
+                      requirement = Required;
+                      schema = Outline int_schema;
+                      title = None;
                     };
-              };
+                  rest =
+                    Field
+                      {
+                        field =
+                          {
+                            description = None;
+                            examples = [];
+                            name = "year";
+                            maximum = None;
+                            minimum = None;
+                            omit = false;
+                            requirement = Required;
+                            schema = Outline int_schema;
+                            title = None;
+                          };
+                        rest = FieldEnd;
+                      };
+                };
+          }
+      in
+      Schema.Map
+        {
+          decode = (fun (n, (year, ())) -> Make.make ~year n);
+          encode = (fun { n; year } -> (n, (year, ())));
+          descriptor = obj;
         }
     and id = "week" in
     let open Schema in
