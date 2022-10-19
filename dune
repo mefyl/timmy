@@ -6,8 +6,7 @@
   timmy.opam
   timmy-jsoo.opam
   (alias_rec timmy/all)
-  (alias_rec timmy-jsoo/all)
-  (alias_rec runtest)))
+  (alias_rec timmy-jsoo/all)))
 
 (rule
  (target timmy.%{version:timmy}.opam)
