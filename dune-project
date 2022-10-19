@@ -30,7 +30,8 @@
   fmt
   ppx_here
   ppx_deriving
-  ptime)
+  ptime
+  (odoc (and :with-doc (= 2.0.2))))
  (depopts
   js_of_ocaml
   (schematic
