@@ -17,7 +17,9 @@ jobs:
         os:
           - macos-latest
           - ubuntu-latest
-          - windows-latest
+          # Absolutely nothing is found in the path in the windows
+          # environment once forked in make or dune.
+          # - windows-latest
         ocaml-compiler:
           - 4.14.x
     runs-on: ${{ matrix.os }}
@@ -55,7 +57,9 @@ jobs:
         with:
           ocaml-compiler: 4.14.x
           dune-cache: true
-      - name: Lint doc
-        uses: ocaml/setup-ocaml/lint-doc@v2
+      # Odoc currently crashes if this is enabled:
+      # File "src/loader/cmi.ml", line 933, characters 21-27: Assertion failed
+      # - name: Lint doc
+      #   uses: ocaml/setup-ocaml/lint-doc@v2
       - name: Deploy odoc to GitHub Pages
         uses: ocaml/setup-ocaml/deploy-doc@v2
