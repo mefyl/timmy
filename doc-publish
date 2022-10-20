@@ -1,0 +1,14 @@
+#!/bin/sh -xe
+
+git clone --depth 1 --single-branch --branch gh-pages https://mefyl:$GITHUB_TOKEN@github.com/mefyl/timmy /tmp/pages
+export VERSION=$(git describe)
+export GIT_DIR=/tmp/pages/.git
+git rm --cached $(git ls-files)
+rm -rf /tmp/pages/*
+cp -ar _build/default/_doc/_html/* /tmp/pages
+cd /tmp/pages
+git add -A .
+git config --global user.email "mefyl@gruntech.org"
+git config --global user.name "mefyl"
+git commit -m "Documentation for $VERSION."
+git push origin HEAD:gh-pages
