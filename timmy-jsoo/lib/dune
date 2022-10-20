@@ -7,6 +7,7 @@
   fmt
   js_of_ocaml
   timmy
+  timmy-jsoo.clock
   (select
    js_decode.ml
    from

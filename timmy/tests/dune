@@ -17,3 +17,10 @@
  (alias runtest)
  (action
   (run ./test.exe)))
+
+(library
+ (name clock_tests)
+ (libraries alcotest timmy timmy.clock)
+ (modules clock_tests)
+ (preprocess
+  (pps ppx_here)))

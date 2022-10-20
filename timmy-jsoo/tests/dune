@@ -2,7 +2,7 @@
  (name test)
  (modules test)
  (modes js)
- (libraries alcotest js_of_ocaml timmy-jsoo)
+ (libraries alcotest clock_tests js_of_ocaml timmy-jsoo.clock)
  (preprocess
   (pps ppx_here js_of_ocaml-ppx)))
 

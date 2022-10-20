@@ -1,4 +1,4 @@
-(dirs timmy timmy-jsoo .logistic)
+(dirs timmy timmy-clock timmy-jsoo .logistic)
 
 (alias
  (name default)
