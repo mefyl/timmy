@@ -1,4 +1,4 @@
-(dirs timmy timmy-clock timmy-jsoo .logistic)
+(dirs timmy timmy-clock timmy-jsoo timmy-unix .logistic)
 
 (alias
  (name default)
@@ -31,6 +31,18 @@
     (echo
      "url {\n  src: \"git://git@gitlab.routine.co:routine/timmy#%{version:timmy-jsoo}\"\n}\n")))))
 
+(rule
+ (target timmy-unix.%{version:timmy-unix}.opam)
+ (deps
+  (:opam timmy-unix.opam))
+ (action
+  (with-stdout-to
+   %{target}
+   (progn
+    (cat %{opam})
+    (echo
+     "url {\n  src: \"git://git@gitlab.routine.co:routine/timmy#%{version:timmy-unix}\"\n}\n")))))
+
 (documentation
  (package timmy)
  (mld_files "index"))
@@ -46,7 +58,7 @@
     %{dep:.logistic/dune/extdeps/extdeps.exe}
     generate
     --packages
-    timmy,timmy-jsoo
+    timmy,timmy-jsoo,timmy-unix
     --exclude
     schematic,schematic-jsoo))))
 

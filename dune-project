@@ -54,3 +54,12 @@
    (and
     (>= 0.15.0)
     (< 0.16.0)))))
+
+(package
+ (name timmy-unix)
+ (synopsis "Unix clock implementation for Timmy")
+ (depends
+  (alcotest :with-test)
+  fmt
+  (timmy
+   (= :version))))

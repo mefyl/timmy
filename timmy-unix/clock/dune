@@ -1,0 +1,8 @@
+(library
+ (name clock_unix)
+ (public_name timmy-unix.clock)
+ (libraries fmt ptime.clock.os timmy)
+ (foreign_stubs
+  (language c)
+  (names timezone))
+ (implements clock))
