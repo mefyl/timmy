@@ -5,8 +5,7 @@
  (deps
   timmy.opam
   timmy-jsoo.opam
-  (alias_rec timmy/all)
-  (alias_rec timmy-jsoo/all)))
+  (alias install)))
 
 (rule
  (target timmy.%{version:timmy}.opam)
