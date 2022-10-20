@@ -22,6 +22,7 @@ depends: [
   "camlp-streams" {= "5.0.1" & with-doc}
   "cmdliner" {= "1.1.1"}
   "conf-pkg-config" {= "2"}
+  "conf-tzdata" {= "1" & with-test}
   "cppo" {= "1.6.9"}
   "csexp" {= "1.5.1"}
   "cstruct" {= "6.1.1"}
@@ -34,6 +35,7 @@ depends: [
   "js_of_ocaml" {= "4.0.0"}
   "js_of_ocaml-compiler" {= "4.0.0"}
   "jsonm" {= "1.0.1"}
+  "logs" {= "0.7.0" & with-doc}
   "menhir" {= "20220210"}
   "menhirLib" {= "20220210"}
   "menhirSdk" {= "20220210"}
@@ -41,11 +43,12 @@ depends: [
   "ocaml-base-compiler" {= "4.14.0"}
   "ocaml-compiler-libs" {= "v0.12.4"}
   "ocaml-config" {= "2"}
+  "ocaml-migrate-parsetree" {= "2.4.0" & with-doc}
   "ocaml-options-vanilla" {= "1"}
   "ocaml-syntax-shims" {= "1.0.0"}
   "ocamlbuild" {= "0.14.2"}
   "ocamlfind" {= "1.9.5"}
-  "odoc" {= "2.1.1" & with-doc}
+  "odoc" {= "2.0.2" & with-doc}
   "odoc-parser" {= "1.0.1" & with-doc}
   "ppx_derivers" {= "1.2.1"}
   "ppx_deriving" {= "5.2.1"}

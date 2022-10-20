@@ -31,7 +31,10 @@
   ppx_here
   ppx_deriving
   ptime
-  (odoc (and :with-doc (= 2.0.2))))
+  (odoc
+   (and
+    :with-doc
+    (= 2.0.2))))
  (depopts
   js_of_ocaml
   (schematic
@@ -60,6 +63,7 @@
  (synopsis "Unix clock implementation for Timmy")
  (depends
   (alcotest :with-test)
+  (conf-tzdata :with-test)
   fmt
   (timmy
    (= :version))))

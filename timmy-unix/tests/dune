@@ -1,3 +1,12 @@
-(test
+(executable
  (name test)
  (libraries alcotest clock_tests timmy timmy-unix.clock))
+
+(rule
+ (alias runtest)
+ (package timmy-unix)
+ (action
+  (setenv
+   TZ
+   Europe/Amsterdam
+   (run %{dep:./test.exe}))))
