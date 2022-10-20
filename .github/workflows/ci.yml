@@ -45,21 +45,3 @@ jobs:
       #   uses: ocaml/setup-ocaml/lint-opam@v2
       - name: Lint fmt
         uses: ocaml/setup-ocaml/lint-fmt@v2
-
-  documentation:
-    name: Documentation
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup OCaml
-        uses: ocaml/setup-ocaml@v2
-        with:
-          ocaml-compiler: 4.14.x
-          dune-cache: true
-      # Odoc currently crashes if this is enabled:
-      # File "src/loader/cmi.ml", line 933, characters 21-27: Assertion failed
-      # - name: Lint doc
-      #   uses: ocaml/setup-ocaml/lint-doc@v2
-      - name: Deploy odoc to GitHub Pages
-        uses: ocaml/setup-ocaml/deploy-doc@v2
