@@ -15,7 +15,7 @@ depends: [
   "ppx_here"
   "ppx_deriving"
   "ptime"
-  "odoc" {with-doc & = "2.0.2"}
+  "odoc" {with-doc}
 ]
 depopts: [
   "js_of_ocaml"

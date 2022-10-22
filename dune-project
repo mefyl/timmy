@@ -31,10 +31,7 @@
   ppx_here
   ppx_deriving
   ptime
-  (odoc
-   (and
-    :with-doc
-    (= 2.0.2))))
+  (odoc :with-doc))
  (depopts
   js_of_ocaml
   (schematic
