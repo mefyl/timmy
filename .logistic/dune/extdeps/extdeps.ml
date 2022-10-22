@@ -18,7 +18,41 @@ let () =
     let generate exclude packages =
       let generate package =
         let open Sexplib.Sexp in
-        [
+        let opam_rule =
+          List
+            [
+              Atom "rule";
+              List
+                [
+                  Atom "target";
+                  Atom (package ^ ".%{version:" ^ package ^ "}.opam");
+                ];
+              List
+                [ Atom "deps"; List [ Atom ":opam"; Atom (package ^ ".opam") ] ];
+              List
+                [
+                  Atom "action";
+                  List
+                    [
+                      Atom "with-stdout-to";
+                      Atom "%{target}";
+                      List
+                        [
+                          Atom "progn";
+                          List [ Atom "cat"; Atom "%{opam}" ];
+                          List
+                            [
+                              Atom "echo";
+                              Atom
+                                ("url { src: \
+                                  \"git://git@gitlab.routine.co:routine/"
+                               ^ package ^ "#%{version:" ^ package ^ "}\"");
+                            ];
+                        ];
+                    ];
+                ];
+            ]
+        and locked_rule =
           List
             [
               Atom "rule";
@@ -32,7 +66,8 @@ let () =
                       Atom "run"; Atom "%{bin:opam}"; Atom "lock"; Atom package;
                     ];
                 ];
-            ];
+            ]
+        and extdeps_rule =
           List
             [
               Atom "rule";
@@ -62,8 +97,9 @@ let () =
                         ];
                     ];
                 ];
-            ];
-        ]
+            ]
+        in
+        [ opam_rule; locked_rule; extdeps_rule ]
       in
       List.map ~f:generate packages
       |> List.concat
