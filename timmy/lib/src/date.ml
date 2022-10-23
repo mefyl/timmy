@@ -26,10 +26,10 @@ module T = struct
       of_tuple (y, m, d)
     | _ -> Result.fail Fmt.(str "invalid date: %s" s)
 
-  let of_tuple_exn ~here date =
+  let of_tuple_exn ?here date =
     match of_tuple date with
     | Result.Error _ ->
-      Error.raise (Error.create ~here "invalid date" date to_sexp_tuple)
+      Error.raise (Error.create ?here "invalid date" date to_sexp_tuple)
     | Result.Ok d -> d
 
   let to_sexp date = to_sexp_tuple @@ to_tuple date

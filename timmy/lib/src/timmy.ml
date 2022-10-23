@@ -1,9 +1,5 @@
-(** Timmy is a time manipulation library aiming at correctness and convenience. *)
-
-(** {1 Concepts}
-
-    {!Timmy} strictly separate abstract points in time ({!Timmy.Time.t}) from
-    calendar dates and related notions such as week days. *)
+(** Timmy is a time and calendar manipulation library aiming at correctness,
+    completeness and convenience. *)
 
 (** {1 API} *)
 

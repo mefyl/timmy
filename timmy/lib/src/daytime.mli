@@ -111,4 +111,4 @@ val of_tuple : int * int * int -> (t, string) Result.t
 (** [of_tuple (hours, minutes, seconds)] is the corresponding time of the day
 
     @raise Failure if the time of the day is invalid. *)
-val of_tuple_exn : here:Base.Source_code_position.t -> int * int * int -> t
+val of_tuple_exn : ?here:Base.Source_code_position.t -> int * int * int -> t

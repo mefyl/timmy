@@ -120,7 +120,7 @@ val of_tuple : int * int * int -> (t, string) Result.t
 (** [of_tuple (year, month, day)] is the corresponding date.
 
     @raise Failure if the date is invalid. *)
-val of_tuple_exn : here:Base.Source_code_position.t -> int * int * int -> t
+val of_tuple_exn : ?here:Base.Source_code_position.t -> int * int * int -> t
 
 (** {2 S-expression} *)
 

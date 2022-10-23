@@ -88,11 +88,11 @@ let to_time ~timezone date t =
 
 let of_tuple (hours, minutes, seconds) = make ~hours ~minutes ~seconds
 
-let of_tuple_exn ~here t =
+let of_tuple_exn ?here t =
   match of_tuple t with
   | Result.Ok r -> r
   | Result.Error _ ->
-    Error.raise (Error.create ~here "invalid daytime" t T.sexp_of_tuple)
+    Error.raise (Error.create ?here "invalid daytime" t T.sexp_of_tuple)
 
 let with_daytime ~timezone daytime time =
   let date = Date.of_time ~timezone time in
