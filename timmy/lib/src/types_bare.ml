@@ -1,5 +1,3 @@
-open Base
-
 module Month = struct
   (** @canonical Timmy.Month.t *)
   type t =
@@ -18,19 +16,19 @@ module Month = struct
   [@@deriving ord]
 
   let of_int = function
-    | 1 -> Result.return January
-    | 2 -> Result.return February
-    | 3 -> Result.return March
-    | 4 -> Result.return April
-    | 5 -> Result.return May
-    | 6 -> Result.return June
-    | 7 -> Result.return July
-    | 8 -> Result.return August
-    | 9 -> Result.return September
-    | 10 -> Result.return October
-    | 11 -> Result.return November
-    | 12 -> Result.return December
-    | d -> Result.fail (Fmt.str "invalid month: %i" d)
+    | 1 -> Result.Ok January
+    | 2 -> Result.Ok February
+    | 3 -> Result.Ok March
+    | 4 -> Result.Ok April
+    | 5 -> Result.Ok May
+    | 6 -> Result.Ok June
+    | 7 -> Result.Ok July
+    | 8 -> Result.Ok August
+    | 9 -> Result.Ok September
+    | 10 -> Result.Ok October
+    | 11 -> Result.Ok November
+    | 12 -> Result.Ok December
+    | d -> Base.Result.failf "invalid month: %i" d
 
   let to_int = function
     | January -> 1
@@ -82,7 +80,7 @@ module Date = struct
   let to_tuple { day; month; year } = (year, Month.to_int month, day)
 
   let of_tuple ((year, month, day) as date) =
-    let ( let* ) = Result.( >>= ) in
+    let ( let* ) = Base.Result.( >>= ) in
     let* month = Month.of_int month in
     match Ptime.of_date date with
     | Some _ -> Result.Ok { year; month; day }
@@ -110,20 +108,20 @@ module Daytime = struct
   [@@deriving ord]
 
   let make ~hours ~minutes ~seconds =
-    let ( let* ) = Result.( >>= ) in
+    let ( let* ) = Base.Result.( >>= ) in
     let* () =
-      if hours >= 0 && hours < 24 then Result.return ()
-      else Result.failf "invalid hours: %i" hours
+      if hours >= 0 && hours < 24 then Result.Ok ()
+      else Base.Result.failf "invalid hours: %i" hours
     in
     let* () =
-      if minutes >= 0 && minutes < 60 then Result.return ()
-      else Result.failf "invalid minutes: %i" hours
+      if minutes >= 0 && minutes < 60 then Result.Ok ()
+      else Base.Result.failf "invalid minutes: %i" hours
     in
     let* () =
-      if seconds >= 0 && seconds < 60 then Result.return ()
-      else Result.failf "invalid seconds: %i" hours
+      if seconds >= 0 && seconds < 60 then Result.Ok ()
+      else Base.Result.failf "invalid seconds: %i" hours
     in
-    Result.return { hours; minutes; seconds }
+    Result.Ok { hours; minutes; seconds }
 
   let to_tuple { hours; minutes; seconds } = (hours, minutes, seconds)
 end

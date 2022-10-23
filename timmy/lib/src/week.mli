@@ -1,5 +1,3 @@
-open Base
-
 (** {1 Type} *)
 
 (** @inline *)
@@ -32,13 +30,13 @@ val of_date : Date.t -> t
 
 (** {2 Comparison} *)
 
-include Comparable.S with type t := t
+include Base.Comparable.S with type t := t
 
 (** {2 Operators} *)
 
 (** Convenience module to only pull operators. *)
 module O : sig
-  include Comparable.Infix with type t := t
+  include Base.Comparable.Infix with type t := t
 
   (** [time + span] is the time point [span] after [time]. *)
   val ( + ) : t -> int -> t

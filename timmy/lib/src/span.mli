@@ -1,5 +1,3 @@
-open Base
-
 (** {1 Type} *)
 
 include Type.SPAN
@@ -29,13 +27,13 @@ val to_seconds : t -> int
 
 (** {2 Comparison} *)
 
-include Comparable.S with type t := t
+include Base.Comparable.S with type t := t
 
 (** {2 Operators} *)
 
 (** Convenience module to only pull operators. *)
 module O : sig
-  include Comparable.Infix with type t := t
+  include Base.Comparable.Infix with type t := t
 
   (** [-span] is the opposite of [span]. *)
   val ( ~- ) : t -> t

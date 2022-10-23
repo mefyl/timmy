@@ -1,5 +1,3 @@
-open Base
-
 (** {1 Type} *)
 
 (** @inline *)
@@ -51,13 +49,13 @@ val to_time : timezone:Timezone.t -> Date.t -> t -> Time.t
 
 (** {2 Comparison} *)
 
-include Comparable.S with type t := t
+include Base.Comparable.S with type t := t
 
 (** {2 Operators} *)
 
 (** Convenience module to only pull operators. *)
 module O : sig
-  include Comparable.Infix with type t := t
+  include Base.Comparable.Infix with type t := t
 
   (** [daytime + span] is the daytime after [span] has elapsed, or a relevant
       error message if the result is out of bounds. *)
@@ -113,4 +111,4 @@ val of_tuple : int * int * int -> (t, string) Result.t
 (** [of_tuple (hours, minutes, seconds)] is the corresponding time of the day
 
     @raise Failure if the time of the day is invalid. *)
-val of_tuple_exn : here:Source_code_position.t -> int * int * int -> t
+val of_tuple_exn : here:Base.Source_code_position.t -> int * int * int -> t

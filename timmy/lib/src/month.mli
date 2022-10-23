@@ -1,5 +1,3 @@
-open Base
-
 (** {1 Type} *)
 
 (** @inline *)
@@ -46,13 +44,13 @@ val of_string : string -> (t, string) Result.t
 
 (** {2 Comparison} *)
 
-include Comparable.S with type t := t
+include Base.Comparable.S with type t := t
 
 (** {2 Operators} *)
 
 (** Convenience module to only pull operators. *)
 module O : sig
-  include Comparable.Infix with type t := t
+  include Base.Comparable.Infix with type t := t
 
   (** [month + n] is [add_months month n] *)
   val ( + ) : t -> int -> t

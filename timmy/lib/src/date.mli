@@ -1,5 +1,3 @@
-open Base
-
 (** {1 Type} *)
 
 (** @inline *)
@@ -71,7 +69,7 @@ include Base.Comparable.S with type t := t
 
 (** Convenience module to only pull operators. *)
 module O : sig
-  include Comparable.Infix with type t := t
+  include Base.Comparable.Infix with type t := t
 
   (** [date + n] is [add_days date n]. *)
   val ( + ) : t -> int -> t
@@ -122,12 +120,12 @@ val of_tuple : int * int * int -> (t, string) Result.t
 (** [of_tuple (year, month, day)] is the corresponding date.
 
     @raise Failure if the date is invalid. *)
-val of_tuple_exn : here:Source_code_position.t -> int * int * int -> t
+val of_tuple_exn : here:Base.Source_code_position.t -> int * int * int -> t
 
 (** {2 S-expression} *)
 
 (** [to_sexp date] is a s-expression representing [date]. *)
-val to_sexp : t -> Sexp.t
+val to_sexp : t -> Base.Sexp.t
 
 (** {2 Integer} *)
 

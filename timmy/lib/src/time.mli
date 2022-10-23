@@ -1,5 +1,3 @@
-open Base
-
 (** {1 Type} *)
 
 (** @inline *)
@@ -29,7 +27,7 @@ include Base.Comparable.S with type t := t
 
 (** Convenience module to only pull operators. *)
 module O : sig
-  include Comparable.Infix with type t := t
+  include Base.Comparable.Infix with type t := t
 
   (** [time + span] is the time point [span] after [time]. *)
   val ( + ) : t -> Span.t -> t
