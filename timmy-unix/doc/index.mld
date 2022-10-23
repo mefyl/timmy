@@ -1,0 +1,6 @@
+{0 Timmy for Unix}
+
+{1 Contents}
+
+The [timmy-unix.clock] library is an implementation of {!Clock} for
+Unix systems.

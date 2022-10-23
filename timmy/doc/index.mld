@@ -4,7 +4,10 @@ Timmy is a general-purpose time and calendar library.
 
 {1 Contents}
 
-The entry point of this library is the module: {!Timmy}.
+The entry point of the main library is the module: {!Timmy}.
+
+An virtual library that exposes system-dependent clock and current
+timezone is provided as {!Clock}.
 
 {1 Rationale and relation to [Ptime]}
 

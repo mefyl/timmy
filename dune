@@ -8,10 +8,6 @@
   timmy-unix.opam
   (alias install)))
 
-(documentation
- (package timmy)
- (mld_files "index"))
-
 (rule
  (target dune.extdeps.inc)
  (alias extdeps)
