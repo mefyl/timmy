@@ -12,7 +12,7 @@ timezone is provided as {!Clock}.
 {1 Rationale and relation to [Ptime]}
 
 [Timmy] is built on top of the widely used [Ptime] library which does
-most of the underlying heavy lifting.  It does not intended as a
+most of the underlying heavy lifting.  It is not intended as a
 replacement for it but as an (arguably) higher level, safer and more
 complete calendar-wise layer, while certainly not being as lean and as
 battle-tested.  Interoperability exists for all relevant objects so
