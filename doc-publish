@@ -1,5 +1,10 @@
 #!/bin/sh -xe
 
+if test -z "$GITHUB_TOKEN"; then
+	echo 1>&2 "$0: this is not a protected tag or branch, unable to push documentation"
+        exit 1
+fi
+
 git clone --depth 1 --single-branch --branch gh-pages https://mefyl:$GITHUB_TOKEN@github.com/mefyl/timmy /tmp/pages
 export VERSION=$(git describe)
 export GIT_DIR=/tmp/pages/.git
