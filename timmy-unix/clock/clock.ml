@@ -14,3 +14,5 @@ let timezone_local =
     offset_timestamp_s unix_timestamp
   in
   Timmy.Timezone.of_implementation ~offset_calendar_time_s ~offset_timestamp_s
+
+let today () = Timmy.Date.of_time ~timezone:timezone_local @@ now ()
