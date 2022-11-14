@@ -1,7 +1,9 @@
 (executable
  (name timmy)
+ (enabled_if
+  (= %{profile} "dev"))
  (modes js)
- (libraries timmy-jsoo)
+ (libraries schematic-jsoo timmy-jsoo)
  (preprocess
   (pps js_of_ocaml-ppx)))
 

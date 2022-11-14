@@ -23,6 +23,9 @@ toolchain:no-jsoo:
 
 build:
   extends: .ocaml-build
+  before_script:
+    # Dune can't selectively disable an executable
+    - echo '(dirs bin lib)' > 'timmy-jsoo/dune'
   dependencies:
     - toolchain
   needs:
@@ -42,6 +45,9 @@ build:no-schematic:
 
 build:no-jsoo:
   extends: .ocaml-build
+  before_script:
+    # Dune can't selectively disable an executable
+    - echo '(dirs bin lib)' > 'timmy-jsoo/dune'
   dependencies:
     - toolchain:no-jsoo
   needs:
