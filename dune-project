@@ -44,6 +44,7 @@
  (synopsis "Js_of_ocaml bindings for Timmy")
  (depends
   (alcotest :with-test)
+  (conf-npm :with-test)
   fmt
   js_of_ocaml
   js_of_ocaml-ppx
