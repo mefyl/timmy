@@ -59,18 +59,6 @@
     (< 0.16.0)))))
 
 (package
- (name timmy-js)
- (synopsis "Javascript binding of Timmy")
- (depends
-  (conf-tzdata :with-test)
-  (schematic-jsoo
-   (and
-    (>= 0.15.0)
-    (< 0.16.0)))
-  (timmy-jsoo
-   (= :version))))
-
-(package
  (name timmy-unix)
  (synopsis "Unix clock implementation for Timmy")
  (depends
@@ -79,3 +67,16 @@
   fmt
   (timmy
    (= :version))))
+
+; Timmy-js won't build on OCaml-CI as schematic is not available.
+; (package
+;  (name timmy-js)
+;  (synopsis "Javascript binding of Timmy")
+;  (depends
+;   (conf-tzdata :with-test)
+;   (schematic-jsoo
+;    (and
+;     (>= 0.15.0)
+;     (< 0.16.0)))
+;   (timmy-jsoo
+;    (= :version))))
