@@ -15,18 +15,3 @@
    TZ
    Europe/Amsterdam
    (run node %{dep:./test.bc.js}))))
-
-(rule
- (target test.js)
- (deps ../bin/timmy.d.ts)
- (enabled_if %{lib-available:js_of_ocaml})
- (action
-  (run npx tsc --module commonjs --esModuleInterop %{dep:test.ts})))
-
-(rule
- (alias runtest)
- (package timmy-jsoo)
- (deps ../bin/timmy.js)
- (enabled_if %{lib-available:js_of_ocaml})
- (action
-  (run node %{dep:./test.js})))

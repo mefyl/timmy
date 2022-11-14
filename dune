@@ -1,4 +1,4 @@
-(dirs timmy timmy-clock timmy-jsoo timmy-unix .logistic)
+(dirs timmy timmy-clock timmy-js timmy-jsoo timmy-unix .logistic)
 
 (alias
  (name default)

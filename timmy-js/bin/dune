@@ -1,18 +1,17 @@
 (executable
  (name timmy)
- (enabled_if
-  (= %{profile} "dev"))
  (modes js)
  (libraries schematic-jsoo timmy-jsoo)
  (preprocess
   (pps js_of_ocaml-ppx)))
 
 (rule
- (copy timmy.bc.js timmy.js))
+ (action
+  (copy timmy.bc.js timmy.js)))
 
 (install
  (files
   (timmy.js as node_modules/timmy/index.js)
   (timmy.d.ts as node_modules/timmy/index.d.ts))
  (section share_root)
- (package timmy-jsoo))
+ (package timmy-js))

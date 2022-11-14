@@ -59,6 +59,18 @@
     (< 0.16.0)))))
 
 (package
+ (name timmy-js)
+ (synopsis "Javascript binding of Timmy")
+ (depends
+  (conf-tzdata :with-test)
+  (schematic-jsoo
+   (and
+    (>= 0.15.0)
+    (< 0.16.0)))
+  (timmy-jsoo
+   (= :version))))
+
+(package
  (name timmy-unix)
  (synopsis "Unix clock implementation for Timmy")
  (depends

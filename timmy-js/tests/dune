@@ -1,0 +1,16 @@
+(rule
+ (target test.js)
+ (deps ../bin/timmy.d.ts)
+ (enabled_if
+  (and %{lib-available:js_of_ocaml} %{lib-available:schematic-jsoo}))
+ (action
+  (run npx tsc --module commonjs --esModuleInterop %{dep:test.ts})))
+
+(rule
+ (alias runtest)
+ (package timmy-js)
+ (deps ../bin/timmy.js)
+ (enabled_if
+  (and %{lib-available:js_of_ocaml} %{lib-available:schematic-jsoo}))
+ (action
+  (run node %{dep:./test.js})))

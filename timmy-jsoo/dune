@@ -1,3 +1,0 @@
-; Do not break OCaml-CI since it has no access to schematic-jsoo
-
-(dirs lib)
