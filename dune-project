@@ -28,6 +28,8 @@
   (alcotest :with-test)
   base
   fmt
+  (ocaml
+   (>= 4.08.0))
   ppx_here
   ppx_deriving
   ptime
