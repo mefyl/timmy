@@ -36,7 +36,7 @@ value
 ocaml_timmy_offset_timestamp_s(value datetime)
 {
   CAMLparam1(datetime);
-  const time_t time = check_int(datetime);
+  const time_t time = Int64_val(datetime);
 
   CAMLreturn(Val_int (offset(time)));
 }

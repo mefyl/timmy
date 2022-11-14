@@ -26,10 +26,11 @@ let timezone_local =
     js_date##getTimezoneOffset * 60 * -1
   and offset_timestamp_s ~unix_timestamp =
     let () =
-      if unix_timestamp < 0 then Fmt.failwith "Given timestamp is negative"
+      if Int64.compare 0L unix_timestamp > 0 then
+        Fmt.failwith "Given timestamp is negative"
     in
     let js_date =
-      new%js Js.date_fromTimeValue (float_of_int unix_timestamp *. 1000.0)
+      new%js Js.date_fromTimeValue (Int64.to_float unix_timestamp *. 1000.0)
     in
     js_date##getTimezoneOffset * 60 * -1
   in

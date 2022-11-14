@@ -18,7 +18,7 @@ val of_gmt_offset_seconds : int -> t
     a date and a timestamp (in seconds). *)
 val of_implementation :
   offset_calendar_time_s:(date:int * int * int -> time:int * int * int -> int) ->
-  offset_timestamp_s:(unix_timestamp:int -> int) ->
+  offset_timestamp_s:(unix_timestamp:Int64.t -> int) ->
   t
 
 (** [utc] is the UTC timezone.*)

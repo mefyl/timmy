@@ -5,12 +5,14 @@ let timezone = Clock.timezone_local
 
 let daylight_savings () =
   let test date ((_, h, m) as time) =
+    let date_t = Timmy.Date.of_tuple_exn ~here:[%here] date
+    and time_t = Timmy.Daytime.of_tuple_exn ~here:[%here] time in
+    Fmt.epr "@.TEST %a %a@." Timmy.Date.pp date_t Timmy.Daytime.pp time_t;
     let shift =
       Timmy.Timezone.gmt_offset_seconds_at_datetime ~date ~time timezone
       / 60 / 60
     in
-    let date_t = Timmy.Date.of_tuple_exn ~here:[%here] date
-    and time_t = Timmy.Daytime.of_tuple_exn ~here:[%here] time in
+    Fmt.epr "SHIFT: %i@." shift;
     let timestamp = Timmy.Daytime.to_time ~timezone date_t time_t in
     let _, h_shifted, m_shifted =
       Timmy.Daytime.of_time ~timezone timestamp |> Timmy.Daytime.to_tuple
