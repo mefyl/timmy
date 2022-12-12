@@ -26,6 +26,7 @@ RUN opam update && \
     opam clean --switch=/root -a -c -s --logs -r && \
     rm -rf /root/.cache/dune
 ENV OPAMSWITCH=/root
+
 ARG OPAM_PACKAGES OPAM_WITHOUT_PACKAGES
 ADD .exists *.opam /root/
 RUN opam repository add --all routine git@gitlab.routine.co:routine/opam && \
