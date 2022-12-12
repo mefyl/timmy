@@ -46,7 +46,7 @@ let () =
                               Atom
                                 ("url { src: \
                                   \"git://git@gitlab.routine.co:routine/"
-                               ^ package ^ "#%{version:" ^ package ^ "}\"");
+                               ^ package ^ "#%{version:" ^ package ^ "}\" }");
                             ];
                         ];
                     ];
