@@ -1,6 +1,6 @@
 (** Backward compatibility versions *)
 
-module V0_14_2 = struct
+module V0_15_0 = struct
   (** {1 Data types} *)
 
   (** A day of a month of a year. *)
@@ -27,21 +27,3 @@ module V0_14_2 = struct
   (** A day of the week. *)
   module Weekday = Weekday
 end
-
-module V0_14_1 = struct
-  include V0_14_2
-
-  module Date = struct
-    include Date
-
-    let of_tuple_exn ~here = of_tuple_exn ~here
-  end
-
-  module Daytime = struct
-    include Daytime
-
-    let of_tuple_exn ~here = of_tuple_exn ~here
-  end
-end
-
-module V0_14_0 = V0_14_1
