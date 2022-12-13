@@ -20,8 +20,6 @@
    (run
     %{dep:.logistic/dune/extdeps/extdeps.exe}
     generate
-    --packages
-    timmy,timmy-jsoo,timmy-unix
     --exclude
     schematic,schematic-jsoo))))
 

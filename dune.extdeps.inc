@@ -19,7 +19,7 @@
   (with-stdout-to %{target}
    (progn (cat %{opam})
     (echo
-     "url { src: \"git://git@gitlab.routine.co:routine/timmy-jsoo#%{version:timmy-jsoo}\" }")))))
+     "url { src: \"git://git@gitlab.routine.co:routine/timmy#%{version:timmy-jsoo}\" }")))))
 (rule (deps (universe)) (target timmy-jsoo.opam.locked)
  (action (run %{bin:opam} lock timmy-jsoo)))
 (rule (alias extdeps) (mode (promote (until-clean)))
@@ -35,7 +35,7 @@
   (with-stdout-to %{target}
    (progn (cat %{opam})
     (echo
-     "url { src: \"git://git@gitlab.routine.co:routine/timmy-unix#%{version:timmy-unix}\" }")))))
+     "url { src: \"git://git@gitlab.routine.co:routine/timmy#%{version:timmy-unix}\" }")))))
 (rule (deps (universe)) (target timmy-unix.opam.locked)
  (action (run %{bin:opam} lock timmy-unix)))
 (rule (alias extdeps) (mode (promote (until-clean)))
