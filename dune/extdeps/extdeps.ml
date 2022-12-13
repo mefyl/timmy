@@ -1,5 +1,7 @@
 open Base
+open Result
 
+let ( let* ) = Result.( >>= )
 let ( let+ ) = Option.( >>| )
 
 let parse path =
@@ -10,12 +12,46 @@ let parse path =
 let pp_file = OpamPrinter.FullPos.format_opamfile
 let input = Cmdliner.Arg.(opt (some string) None & info [ "i"; "input" ])
 let exclude = Cmdliner.Arg.(opt (list string) [] & info [ "e"; "exclude" ])
-let packages = Cmdliner.Arg.(opt (list string) [] & info [ "p"; "packages" ])
 
 let () =
   let open Cmdliner in
   let generate =
-    let generate exclude packages =
+    let generate exclude =
+      let* repository, packages =
+        let (status, stdout), stderr =
+          Shexp_process.(
+            run_exit_status "dune" [ "describe"; "opam-files" ]
+            |> capture [ Stdout ]
+            |> capture [ Stderr ]
+            |> eval)
+        in
+        match status with
+        | Exited 0 -> (
+          match Sexplib.Sexp.parse stdout with
+          | Done (List files, _) -> (
+            List.map files ~f:(function
+              | List [ Atom name; _ ] ->
+                Result.return
+                  (String.chop_suffix_if_exists ~suffix:".opam" name)
+              | sexp ->
+                Result.fail
+                  (Caml.Format.asprintf
+                     "dune describe opam-files yielded invalid entry:@ @[%a@]"
+                     Sexplib.Sexp.pp sexp))
+            |> Result.all
+            >>= function
+            | hd :: _ as packages -> Result.return (hd, packages)
+            | [] -> Result.fail "dune describe opam-files yielded no entries")
+          | _ ->
+            Result.fail
+              (Caml.Format.asprintf
+                 "dune describe opam-files yielded invalid sexp:@ @[%s@]" stdout)
+          )
+        | _ ->
+          Result.fail
+            (Caml.Format.asprintf "dune describe opam-files failed:@ @[%s@]"
+               stderr)
+      in
       let generate package =
         let open Sexplib.Sexp in
         let opam_rule =
@@ -46,7 +82,8 @@ let () =
                               Atom
                                 ("url { src: \
                                   \"git://git@gitlab.routine.co:routine/"
-                               ^ package ^ "#%{version:" ^ package ^ "}\" }");
+                               ^ repository ^ "#%{version:" ^ package ^ "}\" }"
+                                );
                             ];
                         ];
                     ];
@@ -104,9 +141,9 @@ let () =
       List.map ~f:generate packages
       |> List.concat
       |> List.iter ~f:(Caml.Format.printf "@[%a@]@." Sexplib.Sexp.pp_hum)
+      |> Result.return
     in
-    Term.(const generate $ Arg.value exclude $ Arg.value packages)
-    |> Cmd.(v (info "generate"))
+    Term.(const generate $ Arg.value exclude) |> Cmd.(v (info "generate"))
   and rewrite =
     let open OpamParserTypes.FullPos in
     let pos f ({ pelem; _ } as pos) =
@@ -189,9 +226,10 @@ let () =
       in
       Caml.Format.printf "@[%a@]" pp_file
         { file with file_contents = rewrite_contents file.file_contents }
+      |> Result.return
     in
     Term.(const rewrite $ Arg.value exclude $ Arg.required input)
     |> Cmd.(v (info "rewrite"))
   in
-  Cmdliner.Cmd.(eval (group (info "extdeps") [ generate; rewrite ]))
+  Cmdliner.Cmd.(eval_result (group (info "extdeps") [ generate; rewrite ]))
   |> Caml.exit
