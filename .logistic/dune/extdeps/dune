@@ -4,4 +4,4 @@
  (enabled_if
   (= %{profile} "release"))
  (optional)
- (libraries cmdliner opam-file-format sexplib stdio))
+ (libraries cmdliner opam-file-format sexplib shexp.process stdio))
