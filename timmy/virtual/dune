@@ -1,0 +1,4 @@
+(library
+ (name clock_virtual)
+ (public_name timmy.clock-virtual)
+ (libraries fmt timmy))

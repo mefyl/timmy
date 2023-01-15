@@ -1,0 +1,5 @@
+(library
+ (name clock_virtual_impl)
+ (public_name timmy.clock.virtual)
+ (libraries clock_virtual fmt timmy)
+ (implements clock))
