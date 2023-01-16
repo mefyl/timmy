@@ -21,9 +21,7 @@ let () =
         let (status, stdout), stderr =
           Shexp_process.(
             run_exit_status "dune" [ "describe"; "opam-files" ]
-            |> capture [ Stdout ]
-            |> capture [ Stderr ]
-            |> eval)
+            |> capture [ Stdout ] |> capture [ Stderr ] |> eval)
         in
         match status with
         | Exited 0 -> (
@@ -181,32 +179,30 @@ let () =
           match List.filter_map ~f:(pos f) items with
           | [] -> None
           | { pos; _ } :: _ as l ->
+            let pin_depend package version =
+              {
+                pelem =
+                  Option
+                    ( { pelem = String package; pos },
+                      {
+                        pelem =
+                          [
+                            {
+                              pelem =
+                                Prefix_relop
+                                  ( { pelem = `Eq; pos },
+                                    { pelem = String version; pos } );
+                              pos;
+                            };
+                          ];
+                        pos;
+                      } );
+                pos;
+              }
+            in
             Some
               (List
-                 {
-                   value with
-                   pelem =
-                     {
-                       pelem =
-                         Option
-                           ( { pelem = String "ocamlformat"; pos },
-                             {
-                               pelem =
-                                 [
-                                   {
-                                     pelem =
-                                       Prefix_relop
-                                         ( { pelem = `Eq; pos },
-                                           { pelem = String "0.20.1"; pos } );
-                                     pos;
-                                   };
-                                 ];
-                               pos;
-                             } );
-                       pos;
-                     }
-                     :: l;
-                 }))
+                 { value with pelem = pin_depend "ocamlformat" "0.24.1" :: l }))
         | _ -> failwith "pin-depends expects a list"
       and rewrite_pin_depends = function
         | List { pelem = [ { pelem = String name; _ }; _ ]; _ } as pin ->
