@@ -1,6 +1,6 @@
 opam-version: "2.0"
 name: "timmy"
-version: "0.15.0"
+version: "0.15.1"
 synopsis: "Time and calendar library"
 maintainer: "mefyl <mefyl@gruntech.org>"
 authors: "mefyl <mefyl@gruntech.org>"
@@ -8,11 +8,11 @@ license: "LGPL-3.0-or-later"
 homepage: "https://github.com/mefyl/timmy"
 bug-reports: "https://github.com/mefyl/timmy/issues"
 depends: [
-  "ocamlformat" {= "0.20.1"}
+  "ocamlformat" {= "0.24.1"}
   "alcotest" {= "1.6.0" & with-test}
   "angstrom" {= "0.15.0"}
   "astring" {= "0.8.5" & with-test}
-  "base" {= "v0.14.3"}
+  "base" {= "v0.15.1"}
   "base-bigarray" {= "base"}
   "base-bytes" {= "base"}
   "base-threads" {= "base"}
@@ -31,32 +31,32 @@ depends: [
   "fmt" {= "0.9.0"}
   "fpath" {= "0.7.3" & with-doc}
   "hex" {= "1.5.0"}
-  "js_of_ocaml" {= "4.1.0"}
-  "js_of_ocaml-compiler" {= "4.1.0"}
+  "js_of_ocaml" {= "5.0.1"}
+  "js_of_ocaml-compiler" {= "5.0.1"}
   "jsonm" {= "1.0.1"}
   "menhir" {= "20220210"}
   "menhirLib" {= "20220210"}
   "menhirSdk" {= "20220210"}
-  "ocaml" {= "4.14.0"}
-  "ocaml-base-compiler" {= "4.14.0"}
+  "ocaml" {= "4.14.1"}
+  "ocaml-base-compiler" {= "4.14.1"}
   "ocaml-compiler-libs" {= "v0.12.4"}
   "ocaml-config" {= "2"}
   "ocaml-options-vanilla" {= "1"}
   "ocaml-syntax-shims" {= "1.0.0"}
   "ocamlbuild" {= "0.14.2"}
   "ocamlfind" {= "1.9.5"}
-  "odoc" {= "2.1.1" & with-doc}
-  "odoc-parser" {= "1.0.1" & with-doc}
+  "odoc" {= "2.2.0" & with-doc}
+  "odoc-parser" {= "2.0.0" & with-doc}
   "ppx_derivers" {= "1.2.1"}
   "ppx_deriving" {= "5.2.1"}
-  "ppx_here" {= "v0.14.0"}
-  "ppxlib" {= "0.25.1"}
+  "ppx_here" {= "v0.15.0"}
+  "ppxlib" {= "0.28.0"}
   "ptime" {= "1.1.0"}
   "re" {= "1.10.4" & with-test}
   "result" {= "1.5"}
   "semver2" {= "1.2.0"}
   "seq" {= "base"}
-  "sexplib0" {= "v0.14.0"}
+  "sexplib0" {= "v0.15.1"}
   "stdlib-shims" {= "0.3.0"}
   "stringext" {= "1.6.0"}
   "topkg" {= "1.0.6"}
