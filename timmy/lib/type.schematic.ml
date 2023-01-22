@@ -93,11 +93,10 @@ module Daytime = struct
         {
           decode =
             (* Reject invalid ranges *)
-            (fun (hours, (minutes, (seconds, ()))) ->
+            (fun Hlist.[ hours; minutes; seconds ] ->
               make ~hours ~minutes ~seconds);
           encode =
-            (fun { hours; minutes; seconds } ->
-              (hours, (minutes, (seconds, ()))));
+            (fun { hours; minutes; seconds } -> [ hours; minutes; seconds ]);
           descriptor = obj;
         }
     and id = "daytime" in
@@ -421,8 +420,8 @@ struct
       in
       Schema.Map
         {
-          decode = (fun (n, (year, ())) -> Make.make ~year n);
-          encode = (fun { n; year } -> (n, (year, ())));
+          decode = (fun Hlist.[ n; year ] -> Make.make ~year n);
+          encode = (fun { n; year } -> [ n; year ]);
           descriptor = obj;
         }
     and id = "week" in

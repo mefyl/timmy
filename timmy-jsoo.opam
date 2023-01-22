@@ -18,7 +18,7 @@ depends: [
   "odoc" {with-doc}
 ]
 depopts: [
-  "schematic-jsoo" {>= "0.16.0" & < "0.17.0"}
+  "schematic-jsoo" {>= "0.17.0" & < "0.18.0"}
 ]
 build: [
   ["dune" "subst"] {dev}
