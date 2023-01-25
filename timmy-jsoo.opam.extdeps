@@ -1,6 +1,6 @@
 opam-version: "2.0"
 name: "timmy-jsoo"
-version: "0.15.1"
+version: "0.16.0"
 synopsis: "Js_of_ocaml bindings for Timmy"
 maintainer: "mefyl <mefyl@gruntech.org>"
 authors: "mefyl <mefyl@gruntech.org>"
@@ -39,6 +39,7 @@ depends: [
   "menhir" {= "20220210"}
   "menhirLib" {= "20220210"}
   "menhirSdk" {= "20220210"}
+  "metapp" {= "0.4.4"}
   "ocaml" {= "4.14.1"}
   "ocaml-base-compiler" {= "4.14.1"}
   "ocaml-compiler-libs" {= "v0.12.4"}
@@ -59,6 +60,7 @@ depends: [
   "semver2" {= "1.2.0"}
   "seq" {= "base"}
   "sexplib0" {= "v0.15.1"}
+  "stdcompat" {= "19"}
   "stdlib-shims" {= "0.3.0"}
   "stringext" {= "1.6.0"}
   "topkg" {= "1.0.6"}

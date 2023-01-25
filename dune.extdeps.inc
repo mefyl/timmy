@@ -12,7 +12,7 @@
   (with-stdout-to %{target}
    (run %{dep:.logistic/dune/extdeps/extdeps.exe} rewrite --input
     %{dep:timmy.opam.locked} --exclude
-    timmy,timmy-jsoo,timmy-unix,schematic,schematic-jsoo))))
+    timmy,timmy-jsoo,timmy-unix,hlist,schematic,schematic-jsoo))))
 (rule (target timmy-jsoo.%{version:timmy-jsoo}.opam)
  (deps (:opam timmy-jsoo.opam))
  (action
@@ -28,7 +28,7 @@
   (with-stdout-to %{target}
    (run %{dep:.logistic/dune/extdeps/extdeps.exe} rewrite --input
     %{dep:timmy-jsoo.opam.locked} --exclude
-    timmy,timmy-jsoo,timmy-unix,schematic,schematic-jsoo))))
+    timmy,timmy-jsoo,timmy-unix,hlist,schematic,schematic-jsoo))))
 (rule (target timmy-unix.%{version:timmy-unix}.opam)
  (deps (:opam timmy-unix.opam))
  (action
@@ -44,4 +44,4 @@
   (with-stdout-to %{target}
    (run %{dep:.logistic/dune/extdeps/extdeps.exe} rewrite --input
     %{dep:timmy-unix.opam.locked} --exclude
-    timmy,timmy-jsoo,timmy-unix,schematic,schematic-jsoo))))
+    timmy,timmy-jsoo,timmy-unix,hlist,schematic,schematic-jsoo))))
