@@ -12,7 +12,7 @@
   (with-stdout-to %{target}
    (run %{dep:.logistic/dune/extdeps/extdeps.exe} rewrite --input
     %{dep:timmy.opam.locked} --exclude
-    timmy,timmy-jsoo,timmy-unix,hlist,schematic,schematic-jsoo))))
+    timmy,timmy-jsoo,timmy-lwt,timmy-unix,hlist,schematic,schematic-jsoo))))
 (rule (target timmy-jsoo.%{version:timmy-jsoo}.opam)
  (deps (:opam timmy-jsoo.opam))
  (action
@@ -28,7 +28,23 @@
   (with-stdout-to %{target}
    (run %{dep:.logistic/dune/extdeps/extdeps.exe} rewrite --input
     %{dep:timmy-jsoo.opam.locked} --exclude
-    timmy,timmy-jsoo,timmy-unix,hlist,schematic,schematic-jsoo))))
+    timmy,timmy-jsoo,timmy-lwt,timmy-unix,hlist,schematic,schematic-jsoo))))
+(rule (target timmy-lwt.%{version:timmy-lwt}.opam)
+ (deps (:opam timmy-lwt.opam))
+ (action
+  (with-stdout-to %{target}
+   (progn (cat %{opam})
+    (echo
+     "url { src: \"git://git@gitlab.routine.co:routine/timmy#%{version:timmy-lwt}\" }")))))
+(rule (deps (universe)) (target timmy-lwt.opam.locked)
+ (action (run %{bin:opam} lock timmy-lwt)))
+(rule (alias extdeps) (mode (promote (until-clean)))
+ (target timmy-lwt.opam.extdeps)
+ (action
+  (with-stdout-to %{target}
+   (run %{dep:.logistic/dune/extdeps/extdeps.exe} rewrite --input
+    %{dep:timmy-lwt.opam.locked} --exclude
+    timmy,timmy-jsoo,timmy-lwt,timmy-unix,hlist,schematic,schematic-jsoo))))
 (rule (target timmy-unix.%{version:timmy-unix}.opam)
  (deps (:opam timmy-unix.opam))
  (action
@@ -44,4 +60,4 @@
   (with-stdout-to %{target}
    (run %{dep:.logistic/dune/extdeps/extdeps.exe} rewrite --input
     %{dep:timmy-unix.opam.locked} --exclude
-    timmy,timmy-jsoo,timmy-unix,hlist,schematic,schematic-jsoo))))
+    timmy,timmy-jsoo,timmy-lwt,timmy-unix,hlist,schematic,schematic-jsoo))))

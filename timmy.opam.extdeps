@@ -1,6 +1,6 @@
 opam-version: "2.0"
 name: "timmy"
-version: "0.16.0"
+version: "0.16.1"
 synopsis: "Time and calendar library"
 maintainer: "mefyl <mefyl@gruntech.org>"
 authors: "mefyl <mefyl@gruntech.org>"
@@ -9,7 +9,7 @@ homepage: "https://github.com/mefyl/timmy"
 bug-reports: "https://github.com/mefyl/timmy/issues"
 depends: [
   "ocamlformat" {= "0.24.1"}
-  "alcotest" {= "1.6.0" & with-test}
+  "alcotest" {= "1.7.0" & with-test}
   "angstrom" {= "0.15.0"}
   "astring" {= "0.8.5" & with-test}
   "base" {= "v0.15.1"}

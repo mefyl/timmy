@@ -1,7 +1,7 @@
 opam-version: "2.0"
-name: "timmy-unix"
+name: "timmy-lwt"
 version: "0.16.1"
-synopsis: "Unix clock implementation for Timmy"
+synopsis: "Lwt utilities based on Timmy"
 maintainer: "mefyl <mefyl@gruntech.org>"
 authors: "mefyl <mefyl@gruntech.org>"
 license: "LGPL-3.0-or-later"
@@ -10,6 +10,7 @@ bug-reports: "https://github.com/mefyl/timmy/issues"
 depends: [
   "ocamlformat" {= "0.24.1"}
   "alcotest" {= "1.7.0" & with-test}
+  "alcotest-lwt" {= "1.7.0" & with-test}
   "angstrom" {= "0.15.0"}
   "astring" {= "0.8.5" & with-test}
   "base" {= "v0.15.1"}
@@ -22,7 +23,6 @@ depends: [
   "camlp-streams" {= "5.0.1" & with-doc}
   "cmdliner" {= "1.1.1"}
   "conf-pkg-config" {= "2"}
-  "conf-tzdata" {= "1" & with-test}
   "cppo" {= "1.6.9"}
   "csexp" {= "1.5.1"}
   "cstruct" {= "6.1.1"}
@@ -34,7 +34,11 @@ depends: [
   "hex" {= "1.5.0"}
   "js_of_ocaml" {= "5.0.1"}
   "js_of_ocaml-compiler" {= "5.0.1"}
+  "js_of_ocaml-lwt" {= "5.0.1"}
+  "js_of_ocaml-ppx" {= "5.0.1"}
   "jsonm" {= "1.0.1"}
+  "logs" {= "0.7.0" & with-test}
+  "lwt" {= "5.6.1"}
   "menhir" {= "20220210"}
   "menhirLib" {= "20220210"}
   "menhirSdk" {= "20220210"}
@@ -47,6 +51,7 @@ depends: [
   "ocaml-syntax-shims" {= "1.0.0"}
   "ocamlbuild" {= "0.14.2"}
   "ocamlfind" {= "1.9.5"}
+  "ocplib-endian" {= "1.2"}
   "odoc" {= "2.2.0" & with-doc}
   "odoc-parser" {= "2.0.0" & with-doc}
   "ppx_derivers" {= "1.2.1"}
