@@ -15,6 +15,7 @@ depends: [
   "timmy" {= version}
   "odoc" {with-doc}
 ]
+depopts: ["js_of_ocaml-lwt"]
 build: [
   ["dune" "subst"] {dev}
   [
