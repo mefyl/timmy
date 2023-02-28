@@ -1,6 +1,6 @@
 (** Backward compatibility versions *)
 
-module V0_16_0 = struct
+module V0_16_1 = struct
   (** {1 Data types} *)
 
   (** A day of a month of a year. *)
@@ -27,3 +27,5 @@ module V0_16_0 = struct
   (** A day of the week. *)
   module Weekday = Weekday
 end
+
+module V0_16_0 = V0_16_1
