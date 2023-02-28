@@ -10,20 +10,28 @@ end
 include T
 include Type_js.Span
 
-module O = struct
-  include Comparable.Make (T)
-
-  let ( ~- ) = Ptime.Span.neg
-end
-
-include O
-
 let days s = Option.value_exn ~here:[%here] (Ptime.Span.of_d_ps (s, 0L))
 let hours s = Ptime.Span.of_int_s (s * 60 * 60)
 let minutes s = Ptime.Span.of_int_s (s * 60)
 let seconds s = Ptime.Span.of_int_s s
 let to_days s = Ptime.Span.to_d_ps s |> fst
 let to_seconds s = Option.value_exn ~here:[%here] (Ptime.Span.to_int_s s)
+
+module O = struct
+  include Comparable.Make (T)
+
+  let ( / ) l r = to_seconds l / to_seconds r
+  let ( + ) = Ptime.Span.add
+  let ( - ) = Ptime.Span.sub
+  let ( ~- ) = Ptime.Span.neg
+
+  let ( *. ) span m =
+    (span |> Ptime.Span.to_float_s) *. m
+    |> Ptime.Span.of_float_s
+    |> Base.Option.value_exn ~here:[%here]
+
+  let ( * ) span m = span *. Int.to_float m
+end
 
 let pp f span =
   let span = to_seconds span in
@@ -53,6 +61,8 @@ let pp f span =
       const seconds s;
     ]
     f ()
+
+include O
 
 let of_ptime s = s
 let to_ptime s = s

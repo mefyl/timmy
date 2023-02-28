@@ -35,8 +35,25 @@ include Base.Comparable.S with type t := t
 module O : sig
   include Base.Comparable.Infix with type t := t
 
-  (** [-span] is the opposite of [span]. *)
+  (** [-span]'s duration is the opposite of [span]'s duration. *)
   val ( ~- ) : t -> t
+
+  (** [l + r]'s duration is the sum of [l]'s duration and [r]'s duration. *)
+  val ( + ) : t -> t -> t
+
+  (** [l + r]'s duration is the difference between [l]'s duration and [r]'s
+      duration. *)
+  val ( - ) : t -> t -> t
+
+  (** [span * f]'s duration is [f] times [span]'s duration. *)
+  val ( *. ) : t -> float -> t
+
+  (** [span * i]'s duration is [i] times [span]'s duration. *)
+  val ( * ) : t -> int -> t
+
+  (** [l / r] is [l]'s duration divedid by [r]'s duration, with the semantics of
+      [Caml.( / )]. *)
+  val ( / ) : t -> t -> int
 end
 
 include module type of O
