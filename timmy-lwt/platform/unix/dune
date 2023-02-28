@@ -1,0 +1,7 @@
+(include_subdirs no)
+
+(library
+ (name timmy_lwt_platform_unix)
+ (public_name timmy-lwt.unix)
+ (implements timmy-lwt.platform)
+ (libraries lwt.unix))

@@ -1,0 +1,5 @@
+(library
+ (name timmy_lwt_platform)
+ (public_name timmy-lwt.platform)
+ (libraries clock lwt)
+ (virtual_modules timmy_lwt_platform))

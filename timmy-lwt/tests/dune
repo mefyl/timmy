@@ -1,0 +1,13 @@
+(tests
+ (names engine_virtual ticker)
+ (libraries
+  alcotest-lwt
+  clock_virtual
+  lwt
+  lwt.unix
+  timmy
+  timmy-lwt
+  timmy-lwt.unix
+  timmy-lwt.virtual)
+ (preprocess
+  (pps ppx_here)))

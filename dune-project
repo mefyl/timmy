@@ -68,6 +68,16 @@
   (timmy
    (= :version))))
 
+(package
+ (name timmy-lwt)
+ (synopsis "Lwt utilities based on Timmy")
+ (depends
+  (alcotest :with-test)
+  (alcotest-lwt :with-test)
+  lwt
+  (timmy
+   (= :version))))
+
 ; Timmy-js won't build on OCaml-CI as schematic is not available.
 ; (package
 ;  (name timmy-js)

@@ -1,6 +1,6 @@
 ; Timmy-js won't build on OCaml-CI as schematic is not available.
 
-(dirs timmy timmy-clock timmy-jsoo timmy-unix .logistic)
+(dirs timmy timmy-clock timmy-jsoo timmy-lwt timmy-unix .logistic)
 
 (alias
  (name default)

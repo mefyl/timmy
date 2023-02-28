@@ -1,0 +1,8 @@
+(include_subdirs unqualified)
+
+(library
+ (name timmy_lwt)
+ (public_name timmy-lwt)
+ (libraries clock lwt timmy timmy-lwt.platform)
+ (preprocess
+  (pps ppx_here ppx_deriving.eq ppx_deriving.ord)))
