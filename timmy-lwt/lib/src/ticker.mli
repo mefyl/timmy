@@ -6,8 +6,14 @@ type t
 (** [make ?immediate ?start ~period f] ticks every [period] and calls [f] on
     every tick.
 
-    [start] indicates whether the ticker should start immediately, and if so
-    when first tick should happen. Defaults to [Some (Clock.now ())].
+    [start] determines whether the ticker should start immediately, and if so
+    when first tick should happen. Defaults to [Some
+   (Clock.now ())].
+
+    [skip] determines whether to drop duplicate ticks if multiple are due upon
+    scheduling time, which can easily happen if the host is put to sleep for
+    long enough. In such case, only the most recent tick is run. Defaults to
+    [true].
 
     If [immediate], [f] will be called on the first tick (ie. immediately when
     the ticker is started), otherwise it will wait for the second tick. Defaults
