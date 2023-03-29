@@ -11,7 +11,7 @@
   (alias install)))
 
 (rule
- (target dune.extdeps.inc)
+ (target dune.inc)
  (alias extdeps)
  (mode (promote))
  (action
@@ -20,7 +20,15 @@
    (run
     %{dep:.logistic/dune/extdeps/extdeps.exe}
     generate
-    --exclude
+    --cross
+    base,fmt,lwt,ptime
+    --cross-both
+    ; FIXME: dune need the native timmy to be install to be able to
+    ; reimplement clock. Remove when dune is fixed.
+    timmy,ppx_here,ppx_deriving
+    --cross-exclude
+    js_of_ocaml
+    --local
     hlist,schematic,schematic-jsoo))))
 
-(include dune.extdeps.inc)
+(include dune.inc)

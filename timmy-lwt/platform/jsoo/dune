@@ -2,6 +2,7 @@
 
 (library
  (name timmy_lwt_platform_jsoo)
+ (optional)
  (public_name timmy-lwt.jsoo)
  (implements timmy-lwt.platform)
  (libraries js_of_ocaml-lwt))
