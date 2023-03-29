@@ -1,7 +1,4 @@
 (executable
  (name extdeps)
- ; Do not break OCaml-CI
- (enabled_if
-  (= %{profile} "release"))
  (optional)
  (libraries cmdliner opam-file-format sexplib shexp.process stdio))
