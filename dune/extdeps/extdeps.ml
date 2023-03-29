@@ -12,11 +12,26 @@ let parse path =
 let pp_file = OpamPrinter.FullPos.format_opamfile
 let input = Cmdliner.Arg.(opt (some string) None & info [ "i"; "input" ])
 let exclude = Cmdliner.Arg.(opt (list string) [] & info [ "e"; "exclude" ])
+let repo_name = Cmdliner.Arg.(opt (some string) None & info [ "n"; "name" ])
+let cross_both = Cmdliner.Arg.(opt (list string) [] & info [ "both" ])
+let cross = Cmdliner.Arg.(opt (list string) [] & info [ "cross" ])
+
+let pp_pos fmt
+    {
+      OpamParserTypes.FullPos.filename;
+      start = start_line, start_col;
+      stop = stop_line, stop_col;
+    } =
+  if start_line <> stop_line then
+    Caml.Format.fprintf fmt "%s:%d.%d-%d.%d" filename start_line start_col
+      stop_line stop_col
+  else
+    Caml.Format.fprintf fmt "%s:%d.%d-%d" filename start_line start_col stop_col
 
 let () =
   let open Cmdliner in
   let generate =
-    let generate exclude =
+    let generate name exclude both cross =
       let* repository, packages =
         let (status, stdout), stderr =
           Shexp_process.(
@@ -38,7 +53,10 @@ let () =
                      Sexplib.Sexp.pp sexp))
             |> Result.all
             >>= function
-            | hd :: _ as packages -> Result.return (hd, packages)
+            | hd :: _ as packages -> (
+              match name with
+              | Some name -> Result.return (name, packages)
+              | None -> Result.return (hd, packages))
             | [] -> Result.fail "dune describe opam-files yielded no entries")
           | _ ->
             Result.fail
@@ -52,17 +70,20 @@ let () =
       in
       let generate package =
         let open Sexplib.Sexp in
-        let opam_rule =
+        let opam_rule suffix =
           List
             [
               Atom "rule";
               List
                 [
                   Atom "target";
-                  Atom (package ^ ".%{version:" ^ package ^ "}.opam");
+                  Atom (package ^ suffix ^ ".%{version:" ^ package ^ "}.opam");
                 ];
               List
-                [ Atom "deps"; List [ Atom ":opam"; Atom (package ^ ".opam") ] ];
+                [
+                  Atom "deps";
+                  List [ Atom ":opam"; Atom (package ^ suffix ^ ".opam") ];
+                ];
               List
                 [
                   Atom "action";
@@ -133,15 +154,48 @@ let () =
                     ];
                 ];
             ]
+        and ios_rule =
+          List
+            [
+              Atom "rule";
+              List [ Atom "alias"; Atom "default" ];
+              List [ Atom "target"; Atom (package ^ "-ios.opam") ];
+              List
+                [
+                  Atom "action";
+                  List
+                    [
+                      Atom "with-stdout-to";
+                      Atom "%{target}";
+                      List
+                        [
+                          Atom "run";
+                          Atom "%{dep:.logistic/dune/extdeps/extdeps.exe}";
+                          Atom "rewrite-ios";
+                          Atom "--input";
+                          Atom ("%{dep:" ^ package ^ ".opam}");
+                          Atom "--both";
+                          Atom (String.concat ~sep:"," both);
+                          Atom "--cross";
+                          Atom
+                            (String.concat ~sep:","
+                               (packages @ exclude @ cross));
+                        ];
+                    ];
+                ];
+            ]
         in
-        [ opam_rule; locked_rule; extdeps_rule ]
+        [ opam_rule ""; ios_rule; opam_rule "-ios"; locked_rule; extdeps_rule ]
       in
       List.map ~f:generate packages
       |> List.concat
       |> List.iter ~f:(Caml.Format.printf "@[%a@]@." Sexplib.Sexp.pp_hum)
       |> Result.return
     in
-    Term.(const generate $ Arg.value exclude) |> Cmd.(v (info "generate"))
+    Term.(
+      const generate $ Arg.value repo_name $ Arg.value exclude
+      $ Arg.value cross_both $ Arg.value cross)
+    |> Cmd.(v (info "generate"))
   and rewrite =
     let open OpamParserTypes.FullPos in
     let pos f ({ pelem; _ } as pos) =
@@ -202,7 +256,15 @@ let () =
             in
             Some
               (List
-                 { value with pelem = pin_depend "ocamlformat" "0.24.1" :: l }))
+                 {
+                   value with
+                   pelem =
+                     pin_depend "ocamlformat" "0.24.1"
+                     :: { pelem = String "opam-file-format"; pos }
+                     :: { pelem = String "sexplib"; pos }
+                     :: { pelem = String "shexp"; pos }
+                     :: l;
+                 }))
         | _ -> failwith "pin-depends expects a list"
       and rewrite_pin_depends = function
         | List { pelem = [ { pelem = String name; _ }; _ ]; _ } as pin ->
@@ -226,6 +288,135 @@ let () =
     in
     Term.(const rewrite $ Arg.value exclude $ Arg.required input)
     |> Cmd.(v (info "rewrite"))
+  and rewrite_ios =
+    let open OpamParserTypes.FullPos in
+    let pos f ({ pelem; _ } as pos) =
+      match f pelem with
+      | Result.Ok pelem -> Result.return { pos with pelem }
+      | Result.Error (None, msg) -> Result.Error (Some pos.pos, msg)
+      | Result.Error _ as error -> error
+    in
+    let filter_doc_test =
+      let rec filter_opt = function
+        | Ident "with-doc" | Ident "with-test" -> false
+        | Logop ({ pelem = `And; _ }, { pelem = l; _ }, { pelem = r; _ }) ->
+          filter_opt l && filter_opt r
+        | Logop ({ pelem = `Or; _ }, { pelem = l; _ }, { pelem = r; _ }) ->
+          filter_opt l || filter_opt r
+        | _ -> true
+      in
+      function
+      | Option (_, { pelem = options; _ }) ->
+        List.map ~f:(fun { pelem; _ } -> filter_opt pelem) options
+        |> List.fold ~f:( && ) ~init:true
+      | _ -> true
+    in
+    let rewrite path both cross =
+      let package = String.rsplit2 ~on:'.' path |> Option.value_exn |> fst in
+      let file = parse path in
+      let rec rewrite_contents contents =
+        List.map ~f:(pos rewrite_item) contents |> Result.all
+      and rewrite_item = function
+        | Variable (({ pelem = name; _ } as name_pos), value) as item -> (
+          match name with
+          | "build" ->
+            let* build = pos rewrite_build value in
+            Result.return (Variable (name_pos, build))
+          | "depends" ->
+            let* depends = pos rewrite_depends value in
+            Result.return (Variable (name_pos, depends))
+          | _ -> Result.return item)
+        | Section _ as section -> Result.return section
+      and rewrite_build = function
+        | List commands ->
+          let* commands =
+            pos
+              (fun commands ->
+                let* commands =
+                  List.map ~f:(pos rewrite_command) commands |> Result.all
+                in
+                Result.return commands)
+              commands
+          in
+          Result.return (List commands)
+        | _ -> Result.fail (None, {|expected a list for "build"|})
+      and rewrite_depends = function
+        | List depends ->
+          let rec rewrite ({ pelem = dep; _ } as item) =
+            if filter_doc_test dep then
+              match dep with
+              | String dep when List.mem ~equal:String.equal both dep ->
+                Some
+                  [
+                    { item with pelem = String dep };
+                    { item with pelem = String (dep ^ "-ios") };
+                  ]
+              | String dep
+                when List.mem ~equal:String.equal ("ocaml" :: cross) dep ->
+                Some [ { item with pelem = String (dep ^ "-ios") } ]
+              | Option (value, options) ->
+                let+ values = rewrite value in
+                List.map values ~f:(fun value ->
+                    { item with pelem = Option (value, options) })
+              | _ -> Some [ item ]
+            else None
+          in
+          let* depends =
+            pos
+              (fun depends ->
+                List.filter_map ~f:rewrite depends
+                |> List.concat |> Result.return)
+              depends
+          in
+          Result.return (List depends)
+        | _ -> Result.fail (None, {|expected a list for "build"|})
+      and rewrite_command = function
+        | List
+            ({
+               pelem =
+                 ({ pelem = String "dune"; _ } as dune)
+                 :: ({ pelem = String "build"; _ } as build)
+                 :: { pelem = String "-p"; _ }
+                 :: _ :: tail;
+               _;
+             } as command) ->
+          Result.return
+            (List
+               {
+                 command with
+                 pelem =
+                   dune :: build
+                   :: { pelem = String "-x"; pos = build.pos }
+                   :: { pelem = String "ios"; pos = build.pos }
+                   :: { pelem = String "-p"; pos = build.pos }
+                   :: { pelem = String package; pos = build.pos }
+                   :: List.filter
+                        ~f:(fun { pelem; _ } -> filter_doc_test pelem)
+                        tail;
+               })
+        | List _ as command -> Result.return command
+        | Option (value, options) ->
+          let* value = pos rewrite_command value in
+          Result.return (Option (value, options))
+        | _ -> Result.fail (None, "expected a list for build command")
+      in
+      match rewrite_contents file.file_contents with
+      | Result.Ok contents ->
+        Caml.Format.printf "@[%a@]" pp_file
+          { file with file_contents = contents }
+        |> Result.return
+      | Result.Error (Some pos, msg) ->
+        Result.Error
+          (Caml.Format.asprintf "%a: %s" pp_pos
+             { pos with filename = path }
+             msg)
+      | Result.Error (None, msg) -> Result.Error msg
+    in
+    Term.(
+      const rewrite $ Arg.required input $ Arg.value cross_both
+      $ Arg.value cross)
+    |> Cmd.(v (info "rewrite-ios"))
   in
-  Cmdliner.Cmd.(eval_result (group (info "extdeps") [ generate; rewrite ]))
+  Cmdliner.Cmd.(
+    eval_result (group (info "extdeps") [ generate; rewrite; rewrite_ios ]))
   |> Caml.exit
