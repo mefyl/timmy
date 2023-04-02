@@ -33,23 +33,36 @@ module Daytime = struct
   let schema_versioned _ =
     let open Schematic.Schemas in
     let descriptor =
-      let obj =
-        Schema.Object
+      let decode (* Reject invalid ranges *) Hlist.[ hours; minutes; seconds ] =
+        make ~hours ~minutes ~seconds
+      and encode { hours; minutes; seconds } = Hlist.[ hours; minutes; seconds ]
+      and fields =
+        Schematic.Schema.Field
           {
-            decode = Base.Fn.id;
-            encode = Base.Fn.id;
-            fields =
+            field =
+              {
+                description = None;
+                examples = [];
+                name = "hours";
+                maximum = Some 24;
+                minimum = Some 0;
+                omit = false;
+                requirement = Required;
+                schema = Outline int_schema;
+                title = None;
+              };
+            rest =
               Field
                 {
                   field =
                     {
                       description = None;
                       examples = [];
-                      name = "hours";
-                      maximum = Some 24;
+                      name = "minutes";
+                      maximum = Some 60;
                       minimum = Some 0;
                       omit = false;
-                      requirement = Required;
+                      requirement = Default 0;
                       schema = Outline int_schema;
                       title = None;
                     };
@@ -60,7 +73,7 @@ module Daytime = struct
                           {
                             description = None;
                             examples = [];
-                            name = "minutes";
+                            name = "seconds";
                             maximum = Some 60;
                             minimum = Some 0;
                             omit = false;
@@ -68,37 +81,25 @@ module Daytime = struct
                             schema = Outline int_schema;
                             title = None;
                           };
-                        rest =
-                          Field
-                            {
-                              field =
-                                {
-                                  description = None;
-                                  examples = [];
-                                  name = "seconds";
-                                  maximum = Some 60;
-                                  minimum = Some 0;
-                                  omit = false;
-                                  requirement = Default 0;
-                                  schema = Outline int_schema;
-                                  title = None;
-                                };
-                              rest = FieldEnd;
-                            };
+                        rest = FieldEnd;
                       };
                 };
           }
       in
-      Schema.Map
-        {
-          decode =
-            (* Reject invalid ranges *)
-            (fun Hlist.[ hours; minutes; seconds ] ->
-              make ~hours ~minutes ~seconds);
-          encode =
-            (fun { hours; minutes; seconds } -> [ hours; minutes; seconds ]);
-          descriptor = obj;
-        }
+      if true then
+        (* FIXME: iOS makes the assumption Object schema map to the actual type
+           directly *)
+        Schema.Object
+          {
+            decode = (fun fields -> decode fields |> Result.ok_or_failwith);
+            encode;
+            fields;
+          }
+      else
+        let obj =
+          Schema.Object { decode = Base.Fn.id; encode = Base.Fn.id; fields }
+        in
+        Schema.Map { decode; encode; descriptor = obj }
     in
     Schema.make ~id:"daytime" descriptor
 
@@ -372,19 +373,31 @@ struct
   let schema_versioned _ =
     let open Schematic.Schemas in
     let descriptor =
-      let obj =
-        Schema.Object
+      let decode Hlist.[ n; year ] = Make.make ~year n
+      and encode { n; year } = Hlist.[ n; year ]
+      and fields =
+        Schematic.Schema.Field
           {
-            decode = Base.Fn.id;
-            encode = Base.Fn.id;
-            fields =
+            field =
+              {
+                description = None;
+                examples = [];
+                name = "n";
+                maximum = None;
+                minimum = None;
+                omit = false;
+                requirement = Required;
+                schema = Outline int_schema;
+                title = None;
+              };
+            rest =
               Field
                 {
                   field =
                     {
                       description = None;
                       examples = [];
-                      name = "n";
+                      name = "year";
                       maximum = None;
                       minimum = None;
                       omit = false;
@@ -392,32 +405,24 @@ struct
                       schema = Outline int_schema;
                       title = None;
                     };
-                  rest =
-                    Field
-                      {
-                        field =
-                          {
-                            description = None;
-                            examples = [];
-                            name = "year";
-                            maximum = None;
-                            minimum = None;
-                            omit = false;
-                            requirement = Required;
-                            schema = Outline int_schema;
-                            title = None;
-                          };
-                        rest = FieldEnd;
-                      };
+                  rest = FieldEnd;
                 };
           }
       in
-      Schema.Map
-        {
-          decode = (fun Hlist.[ n; year ] -> Make.make ~year n);
-          encode = (fun { n; year } -> [ n; year ]);
-          descriptor = obj;
-        }
+      if true then
+        (* FIXME: iOS makes the assumption Object schema map to the actual type
+           directly *)
+        Schema.Object
+          {
+            decode = Base.Fn.compose Result.ok_or_failwith decode;
+            encode;
+            fields;
+          }
+      else
+        let obj =
+          Schema.Object { decode = Base.Fn.id; encode = Base.Fn.id; fields }
+        in
+        Schema.Map { decode; encode; descriptor = obj }
     in
     Schema.make ~id:"week" descriptor
 
