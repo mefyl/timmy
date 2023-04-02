@@ -11,10 +11,18 @@ let parse path =
 
 let pp_file = OpamPrinter.FullPos.format_opamfile
 let input = Cmdliner.Arg.(opt (some string) None & info [ "i"; "input" ])
-let exclude = Cmdliner.Arg.(opt (list string) [] & info [ "e"; "exclude" ])
+
+let local =
+  Cmdliner.Arg.(
+    opt (list string) [] & info ~doc:"Routine local packages" [ "local" ])
+
 let repo_name = Cmdliner.Arg.(opt (some string) None & info [ "n"; "name" ])
-let cross_both = Cmdliner.Arg.(opt (list string) [] & info [ "both" ])
-let cross = Cmdliner.Arg.(opt (list string) [] & info [ "cross" ])
+let cross_both = Cmdliner.Arg.(opt (list string) [] & info [ "cross-both" ])
+
+let cross_exclude =
+  Cmdliner.Arg.(opt (list string) [] & info [ "cross-exclude" ])
+
+let cross_only = Cmdliner.Arg.(opt (list string) [] & info [ "cross" ])
 
 let pp_pos fmt
     {
@@ -31,7 +39,7 @@ let pp_pos fmt
 let () =
   let open Cmdliner in
   let generate =
-    let generate name exclude both cross =
+    let generate name local cross_both cross_exclude cross_only =
       let* repository, packages =
         let (status, stdout), stderr =
           Shexp_process.(
@@ -148,8 +156,8 @@ let () =
                           Atom "rewrite";
                           Atom "--input";
                           Atom ("%{dep:" ^ package ^ ".opam.locked}");
-                          Atom "--exclude";
-                          Atom (String.concat ~sep:"," (packages @ exclude));
+                          Atom "--local";
+                          Atom (String.concat ~sep:"," (packages @ local));
                         ];
                     ];
                 ];
@@ -174,12 +182,14 @@ let () =
                           Atom "rewrite-ios";
                           Atom "--input";
                           Atom ("%{dep:" ^ package ^ ".opam}");
-                          Atom "--both";
-                          Atom (String.concat ~sep:"," both);
                           Atom "--cross";
                           Atom
                             (String.concat ~sep:","
-                               (packages @ exclude @ cross));
+                               (packages @ local @ cross_only));
+                          Atom "--cross-both";
+                          Atom (String.concat ~sep:"," cross_both);
+                          Atom "--cross-exclude";
+                          Atom (String.concat ~sep:"," cross_exclude);
                         ];
                     ];
                 ];
@@ -193,8 +203,8 @@ let () =
       |> Result.return
     in
     Term.(
-      const generate $ Arg.value repo_name $ Arg.value exclude
-      $ Arg.value cross_both $ Arg.value cross)
+      const generate $ Arg.value repo_name $ Arg.value local
+      $ Arg.value cross_both $ Arg.value cross_exclude $ Arg.value cross_only)
     |> Cmd.(v (info "generate"))
   and rewrite =
     let open OpamParserTypes.FullPos in
@@ -286,7 +296,7 @@ let () =
         { file with file_contents = rewrite_contents file.file_contents }
       |> Result.return
     in
-    Term.(const rewrite $ Arg.value exclude $ Arg.required input)
+    Term.(const rewrite $ Arg.value local $ Arg.required input)
     |> Cmd.(v (info "rewrite"))
   and rewrite_ios =
     let open OpamParserTypes.FullPos in
@@ -311,7 +321,7 @@ let () =
         |> List.fold ~f:( && ) ~init:true
       | _ -> true
     in
-    let rewrite path both cross =
+    let rewrite path cross cross_both cross_exclude =
       let package = String.rsplit2 ~on:'.' path |> Option.value_exn |> fst in
       let file = parse path in
       let rec rewrite_contents contents =
@@ -322,7 +332,7 @@ let () =
           | "build" ->
             let* build = pos rewrite_build value in
             Result.return (Variable (name_pos, build))
-          | "depends" ->
+          | "depends" | "depopts" ->
             let* depends = pos rewrite_depends value in
             Result.return (Variable (name_pos, depends))
           | _ -> Result.return item)
@@ -345,7 +355,10 @@ let () =
           let rec rewrite ({ pelem = dep; _ } as item) =
             if filter_doc_test dep then
               match dep with
-              | String dep when List.mem ~equal:String.equal both dep ->
+              | String dep when List.mem ~equal:String.equal cross_exclude dep
+                ->
+                None
+              | String dep when List.mem ~equal:String.equal cross_both dep ->
                 Some
                   [
                     { item with pelem = String dep };
@@ -375,25 +388,23 @@ let () =
             ({
                pelem =
                  ({ pelem = String "dune"; _ } as dune)
-                 :: ({ pelem = String "build"; _ } as build)
-                 :: { pelem = String "-p"; _ }
-                 :: _ :: tail;
+                 :: ({ pelem = String "build"; _ } as dune_command)
+                 :: tail;
                _;
              } as command) ->
+          let tail =
+            { pelem = String "-x"; pos = dune_command.pos }
+            :: { pelem = String "ios"; pos = dune_command.pos }
+            :: List.filter_map
+                 ~f:(function
+                   | { pelem = Ident "name"; _ } as item ->
+                     Some { item with pelem = String package }
+                   | { pelem; _ } as item ->
+                     Option.some_if (filter_doc_test pelem) item)
+                 tail
+          in
           Result.return
-            (List
-               {
-                 command with
-                 pelem =
-                   dune :: build
-                   :: { pelem = String "-x"; pos = build.pos }
-                   :: { pelem = String "ios"; pos = build.pos }
-                   :: { pelem = String "-p"; pos = build.pos }
-                   :: { pelem = String package; pos = build.pos }
-                   :: List.filter
-                        ~f:(fun { pelem; _ } -> filter_doc_test pelem)
-                        tail;
-               })
+            (List { command with pelem = dune :: dune_command :: tail })
         | List _ as command -> Result.return command
         | Option (value, options) ->
           let* value = pos rewrite_command value in
@@ -413,8 +424,8 @@ let () =
       | Result.Error (None, msg) -> Result.Error msg
     in
     Term.(
-      const rewrite $ Arg.required input $ Arg.value cross_both
-      $ Arg.value cross)
+      const rewrite $ Arg.required input $ Arg.value cross_only
+      $ Arg.value cross_both $ Arg.value cross_exclude)
     |> Cmd.(v (info "rewrite-ios"))
   in
   Cmdliner.Cmd.(
