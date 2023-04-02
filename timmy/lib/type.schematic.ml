@@ -12,8 +12,8 @@ module Date = struct
   include Types_bare.Date
 
   let schema_versioned _ =
-    Schematic.Schema.(
-      make (Map { decode = of_tuple; encode = to_tuple; descriptor = Date }))
+    Schematic.Schema.make ~id:"date"
+    @@ Map { decode = of_tuple; encode = to_tuple; descriptor = Date }
 
   let schema = schema_versioned None
 end
@@ -99,9 +99,8 @@ module Daytime = struct
             (fun { hours; minutes; seconds } -> [ hours; minutes; seconds ]);
           descriptor = obj;
         }
-    and id = "daytime" in
-    let open Schema in
-    { descriptor; id = Some id; parametric = None }
+    in
+    Schema.make ~id:"daytime" descriptor
 
   let schema = schema_versioned None
 end
@@ -304,20 +303,15 @@ module Month = struct
           key = None;
           polymorphic = false;
         }
-    and id = "month" in
-    let open Schematic.Schema in
-    { descriptor; id = Some id; parametric = None }
+    in
+    Schematic.Schema.make ~id:"month" descriptor
 
   let schema = schema_versioned None
   let schema_string = schema
 
   let schema_int =
-    let open Schematic.Schema in
-    {
-      descriptor = Map { decode = of_int; encode = to_int; descriptor = Int };
-      id = Some "month";
-      parametric = None;
-    }
+    Schematic.Schema.make ~id:"month"
+    @@ Map { decode = of_int; encode = to_int; descriptor = Int }
 end
 
 module type SPAN = sig
@@ -424,9 +418,8 @@ struct
           encode = (fun { n; year } -> [ n; year ]);
           descriptor = obj;
         }
-    and id = "week" in
-    let open Schema in
-    { descriptor; id = Some id; parametric = None }
+    in
+    Schema.make ~id:"week" descriptor
 
   let schema = schema_versioned None
 end
@@ -557,8 +550,8 @@ module Weekday = struct
           key = None;
           polymorphic = false;
         }
-    and id = "weekday" in
-    Schema.{ descriptor; id = Some id; parametric = None }
+    in
+    Schema.make ~id:"weekday" descriptor
 
   let schema = schema_versioned None
   let schema_string = schema
