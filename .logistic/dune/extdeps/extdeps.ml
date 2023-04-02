@@ -355,6 +355,9 @@ let () =
           let rec rewrite ({ pelem = dep; _ } as item) =
             if filter_doc_test dep then
               match dep with
+              | String dep when List.mem ~equal:String.equal cross_exclude dep
+                ->
+                None
               | String dep when List.mem ~equal:String.equal cross_both dep ->
                 Some
                   [
@@ -364,9 +367,6 @@ let () =
               | String dep
                 when List.mem ~equal:String.equal ("ocaml" :: cross) dep ->
                 Some [ { item with pelem = String (dep ^ "-ios") } ]
-              | String dep when List.mem ~equal:String.equal cross_exclude dep
-                ->
-                None
               | Option (value, options) ->
                 let+ values = rewrite value in
                 List.map values ~f:(fun value ->
@@ -393,13 +393,15 @@ let () =
                _;
              } as command) ->
           let tail =
-            List.filter_map
-              ~f:(function
-                | { pelem = Ident "name"; _ } as item ->
-                  Some { item with pelem = String package }
-                | { pelem; _ } as item ->
-                  Option.some_if (filter_doc_test pelem) item)
-              tail
+            { pelem = String "-x"; pos = dune_command.pos }
+            :: { pelem = String "ios"; pos = dune_command.pos }
+            :: List.filter_map
+                 ~f:(function
+                   | { pelem = Ident "name"; _ } as item ->
+                     Some { item with pelem = String package }
+                   | { pelem; _ } as item ->
+                     Option.some_if (filter_doc_test pelem) item)
+                 tail
           in
           Result.return
             (List { command with pelem = dune :: dune_command :: tail })
