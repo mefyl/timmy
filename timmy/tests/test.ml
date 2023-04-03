@@ -13,7 +13,8 @@ module Time = struct
   let birthday = Timmy.Time.of_ptime ptime
 
   let ptime () =
-    Alcotest.check test_ptime "to_ptime" ptime (Timmy.Time.to_ptime birthday)
+    Alcotest.check ~here:[%here] test_ptime "to_ptime" ptime
+      (Timmy.Time.to_ptime birthday)
 
   let rfc3339 () =
     let () =
@@ -521,7 +522,7 @@ module Week = struct
       and exp = Timmy.Week.make ~year:year_exp n_exp |> Result.ok_or_failwith in
       let eff = Timmy.Week.(start + i)
       and name = Fmt.str "%a + %i" Timmy.Week.pp start i in
-      Alcotest.check week name exp eff
+      Alcotest.check ~here:[%here] week name exp eff
     in
     check (2021, 52) 0 (2021, 52);
     check (2021, 52) 1 (2022, 1);
