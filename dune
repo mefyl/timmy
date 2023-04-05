@@ -7,8 +7,12 @@
  (deps
   timmy.opam
   timmy-jsoo.opam
+  timmy-lwt.opam
   timmy-unix.opam
-  (alias install)))
+  (alias_rec timmy/default)
+  (alias_rec timmy-jsoo/default)
+  (alias_rec timmy-lwt/default)
+  (alias_rec timmy-unix/default)))
 
 (rule
  (target dune.inc)
