@@ -166,9 +166,10 @@ end
 module Week = struct
   (** @canonical Timmy.Week.t *)
   type t = {
-    n : int;
     year : int;
+    n : int;
   }
+  [@@deriving ord]
 end
 
 module type WEEK = sig
@@ -179,8 +180,8 @@ module type WEEK = sig
 
       @canonical Timmy.Week.t *)
   type t = private {
-    n : int;
     year : int;
+    n : int;
   }
 end
 
