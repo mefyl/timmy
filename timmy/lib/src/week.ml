@@ -25,8 +25,10 @@ module T = struct
   let sexp_of_t { n; year } =
     Sexp.List [ Sexp.Atom (Int.to_string year); Sexp.Atom (Int.to_string n) ]
 
+(*
   let compare (l : t) (r : t) =
     match Int.compare l.year r.year with 0 -> Int.compare l.n r.n | ord -> ord
+ *)
 end
 
 include T
