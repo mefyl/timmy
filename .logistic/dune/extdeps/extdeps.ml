@@ -44,8 +44,9 @@ let () =
         let (status, stdout), stderr =
           Shexp_process.(
             run_exit_status "dune" [ "describe"; "opam-files" ]
-            |> capture [ Stdout ] |> capture [ Stderr ] |> eval)
+            |> capture [ Stdout ] |> capture [ Stderr ] |> eval ?context:None)
         in
+
         match status with
         | Exited 0 -> (
           match Sexplib.Sexp.parse stdout with
@@ -166,7 +167,6 @@ let () =
           List
             [
               Atom "rule";
-              List [ Atom "alias"; Atom "default" ];
               List [ Atom "target"; Atom (package ^ "-ios.opam") ];
               List
                 [
@@ -322,7 +322,9 @@ let () =
       | _ -> true
     in
     let rewrite path cross cross_both cross_exclude =
-      let package = String.rsplit2 ~on:'.' path |> Option.value_exn |> fst in
+      let package =
+        Option.value_exn ~here:[%here] (String.rsplit2 ~on:'.' path) |> fst
+      in
       let file = parse path in
       let rec rewrite_contents contents =
         List.map ~f:(pos rewrite_item) contents |> Result.all

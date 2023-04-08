@@ -25,7 +25,6 @@
  (name timmy)
  (synopsis "Time and calendar library")
  (depends
-  (alcotest :with-test)
   base
   fmt
   (ocaml
@@ -33,7 +32,16 @@
   ppx_here
   ppx_deriving
   ptime
-  (odoc :with-doc))
+  ; Test
+  (alcotest :with-test)
+  ; Doc
+  (odoc :with-doc)
+  ; Dev
+  (cmdliner :dev)
+  (opam-file-format :dev)
+  (sexplib :dev)
+  (stdio :dev)
+  (shexp :dev))
  (depopts
   js_of_ocaml
   (schematic

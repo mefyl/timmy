@@ -4,7 +4,7 @@
    (progn (cat %{opam})
     (echo
      "url { src: \"git://git@gitlab.routine.co:routine/timmy#%{version:timmy}\" }")))))
-(rule (alias default) (target timmy-ios.opam)
+(rule (target timmy-ios.opam)
  (action
   (with-stdout-to %{target}
    (run %{dep:.logistic/dune/extdeps/extdeps.exe} rewrite-ios --input
@@ -33,7 +33,7 @@
    (progn (cat %{opam})
     (echo
      "url { src: \"git://git@gitlab.routine.co:routine/timmy#%{version:timmy-jsoo}\" }")))))
-(rule (alias default) (target timmy-jsoo-ios.opam)
+(rule (target timmy-jsoo-ios.opam)
  (action
   (with-stdout-to %{target}
    (run %{dep:.logistic/dune/extdeps/extdeps.exe} rewrite-ios --input
@@ -63,7 +63,7 @@
    (progn (cat %{opam})
     (echo
      "url { src: \"git://git@gitlab.routine.co:routine/timmy#%{version:timmy-lwt}\" }")))))
-(rule (alias default) (target timmy-lwt-ios.opam)
+(rule (target timmy-lwt-ios.opam)
  (action
   (with-stdout-to %{target}
    (run %{dep:.logistic/dune/extdeps/extdeps.exe} rewrite-ios --input
@@ -93,7 +93,7 @@
    (progn (cat %{opam})
     (echo
      "url { src: \"git://git@gitlab.routine.co:routine/timmy#%{version:timmy-unix}\" }")))))
-(rule (alias default) (target timmy-unix-ios.opam)
+(rule (target timmy-unix-ios.opam)
  (action
   (with-stdout-to %{target}
    (run %{dep:.logistic/dune/extdeps/extdeps.exe} rewrite-ios --input

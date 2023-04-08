@@ -9,14 +9,19 @@ homepage: "https://github.com/mefyl/timmy"
 bug-reports: "https://github.com/mefyl/timmy/issues"
 depends: [
   "dune" {>= "3.0"}
-  "alcotest" {with-test}
   "base"
   "fmt"
   "ocaml" {>= "4.08.0"}
   "ppx_here"
   "ppx_deriving"
   "ptime"
+  "alcotest" {with-test}
   "odoc" {with-doc}
+  "cmdliner" {dev}
+  "opam-file-format" {dev}
+  "sexplib" {dev}
+  "stdio" {dev}
+  "shexp" {dev}
 ]
 depopts: [
   "js_of_ocaml"

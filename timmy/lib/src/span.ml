@@ -26,9 +26,8 @@ module O = struct
   let ( ~- ) = Ptime.Span.neg
 
   let ( *. ) span m =
-    (span |> Ptime.Span.to_float_s) *. m
-    |> Ptime.Span.of_float_s
-    |> Base.Option.value_exn ~here:[%here]
+    let span = (span |> Ptime.Span.to_float_s) *. m |> Ptime.Span.of_float_s in
+    Base.Option.value_exn ~here:[%here] span
 
   let ( * ) span m = span *. Int.to_float m
 end

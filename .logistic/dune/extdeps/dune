@@ -1,4 +1,6 @@
 (executable
  (name extdeps)
  (optional)
+ (preprocess
+  (pps ppx_here))
  (libraries cmdliner opam-file-format sexplib shexp.process stdio))
