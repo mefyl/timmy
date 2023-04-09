@@ -1,5 +1,6 @@
 (tests
  (names engine_virtual ticker)
+ (package timmy-lwt)
  (libraries
   alcotest-lwt
   clock_virtual
