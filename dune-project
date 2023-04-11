@@ -26,7 +26,8 @@
  (synopsis "Time and calendar library")
  (depends
   base
-  fmt
+  (fmt
+   (>= 0.8.7))
   (ocaml
    (>= 4.08.0))
   ppx_here
@@ -37,17 +38,22 @@
   ; Doc
   (odoc :with-doc)
   ; Dev
-  (cmdliner :dev)
-  (opam-file-format :dev)
-  (sexplib :dev)
-  (stdio :dev)
-  (shexp :dev))
- (depopts
-  js_of_ocaml
+  (cmdliner
+   (and :dev :with-test))
+  (opam-file-format
+   (and :dev :with-test))
+  (sexplib
+   (and :dev :with-test))
+  (stdio
+   (and :dev :with-test))
+  (shexp
+   (and :dev :with-test)))
+ (depopts js_of_ocaml schematic)
+ (conflicts
   (schematic
-   (and
-    (>= 0.17.0)
-    (< 0.18.0)))))
+   (or
+    (< 0.17.0)
+    (>= 0.18.0)))))
 
 (package
  (name timmy-jsoo)
@@ -60,11 +66,12 @@
   js_of_ocaml-ppx
   (timmy
    (= :version)))
- (depopts
+ (depopts schematic-jsoo)
+ (conflicts
   (schematic-jsoo
-   (and
-    (>= 0.17.0)
-    (< 0.18.0)))))
+   (or
+    (< 0.17.0)
+    (>= 0.18.0)))))
 
 (package
  (name timmy-unix)

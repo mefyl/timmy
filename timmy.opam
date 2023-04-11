@@ -10,22 +10,22 @@ bug-reports: "https://github.com/mefyl/timmy/issues"
 depends: [
   "dune" {>= "3.0"}
   "base"
-  "fmt"
+  "fmt" {>= "0.8.7"}
   "ocaml" {>= "4.08.0"}
   "ppx_here"
   "ppx_deriving"
   "ptime"
   "alcotest" {with-test}
   "odoc" {with-doc}
-  "cmdliner" {dev}
-  "opam-file-format" {dev}
-  "sexplib" {dev}
-  "stdio" {dev}
-  "shexp" {dev}
+  "cmdliner" {dev & with-test}
+  "opam-file-format" {dev & with-test}
+  "sexplib" {dev & with-test}
+  "stdio" {dev & with-test}
+  "shexp" {dev & with-test}
 ]
-depopts: [
-  "js_of_ocaml"
-  "schematic" {>= "0.17.0" & < "0.18.0"}
+depopts: ["js_of_ocaml" "schematic"]
+conflicts: [
+  "schematic" {< "0.17.0" | >= "0.18.0"}
 ]
 build: [
   ["dune" "subst"] {dev}
