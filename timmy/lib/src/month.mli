@@ -1,3 +1,5 @@
+open Base
+
 (** {1 Type} *)
 
 (** @inline *)

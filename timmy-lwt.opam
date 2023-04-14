@@ -9,8 +9,8 @@ homepage: "https://github.com/mefyl/timmy"
 bug-reports: "https://github.com/mefyl/timmy/issues"
 depends: [
   "dune" {>= "3.0"}
-  "alcotest" {with-test}
-  "alcotest-lwt" {with-test}
+  "alcotest" {with-test & >= "1.4.0"}
+  "alcotest-lwt" {with-test & >= "1.4.0"}
   "lwt"
   "timmy" {= version}
   "odoc" {with-doc}

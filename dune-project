@@ -31,10 +31,14 @@
   (ocaml
    (>= 4.08.0))
   ppx_here
-  ppx_deriving
+  (ppx_deriving
+   (>= 5.0))
   ptime
   ; Test
-  (alcotest :with-test)
+  (alcotest
+   (and
+    :with-test
+    (>= 1.4.0)))
   ; Doc
   (odoc :with-doc)
   ; Dev
@@ -59,7 +63,10 @@
  (name timmy-jsoo)
  (synopsis "Js_of_ocaml bindings for Timmy")
  (depends
-  (alcotest :with-test)
+  (alcotest
+   (and
+    :with-test
+    (>= 1.4.0)))
   (conf-npm :with-test)
   fmt
   js_of_ocaml
@@ -77,7 +84,10 @@
  (name timmy-unix)
  (synopsis "Unix clock implementation for Timmy")
  (depends
-  (alcotest :with-test)
+  (alcotest
+   (and
+    :with-test
+    (>= 1.4.0)))
   (conf-tzdata :with-test)
   fmt
   (timmy
@@ -87,8 +97,14 @@
  (name timmy-lwt)
  (synopsis "Lwt utilities based on Timmy")
  (depends
-  (alcotest :with-test)
-  (alcotest-lwt :with-test)
+  (alcotest
+   (and
+    :with-test
+    (>= 1.4.0)))
+  (alcotest-lwt
+   (and
+    :with-test
+    (>= 1.4.0)))
   lwt
   (timmy
    (= :version)))

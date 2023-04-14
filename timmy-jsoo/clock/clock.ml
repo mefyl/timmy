@@ -1,3 +1,4 @@
+open Base
 include Timmy.Timezone
 module Js = Js_of_ocaml.Js
 
