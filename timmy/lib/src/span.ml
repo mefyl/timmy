@@ -33,33 +33,35 @@ module O = struct
 end
 
 let pp f span =
-  let span = to_seconds span in
-  let span_abs = Int.abs span in
-  let d = span_abs / (60 * 60 * 24)
-  and h = span_abs / (60 * 60) % 24
-  and m = span_abs / 60 % 60
-  and s = span_abs % 60 in
   let open Fmt in
-  let days f = function
-    | 0 -> ()
-    | 1 -> string f "1 day"
-    | n -> pf f "%i days" n
-  and hours f = function 0 -> () | n -> pf f "%ih" n
-  and minutes f = function 0 -> () | n -> pf f "%im" n
-  and seconds f = function 0 -> () | n -> pf f "%is" n
-  and sp l r = if Int.(l > 0 && r > 0) then const char ' ' else nop in
-  concat ~sep:nop
-    [
-      (if Int.(span < 0) then const char '-' else nop);
-      const days d;
-      sp d h;
-      const hours h;
-      sp h m;
-      const minutes m;
-      sp m s;
-      const seconds s;
-    ]
-    f ()
+  match to_seconds span with
+  | 0 -> string f "0s"
+  | span ->
+    let span_abs = Int.abs span in
+    let d = span_abs / (60 * 60 * 24)
+    and h = span_abs / (60 * 60) % 24
+    and m = span_abs / 60 % 60
+    and s = span_abs % 60 in
+    let days f = function
+      | 0 -> ()
+      | 1 -> string f "1 day"
+      | n -> pf f "%i days" n
+    and hours f = function 0 -> () | n -> pf f "%ih" n
+    and minutes f = function 0 -> () | n -> pf f "%im" n
+    and seconds f = function 0 -> () | n -> pf f "%is" n
+    and sp l r = if Int.(l > 0 && r > 0) then const char ' ' else nop in
+    concat ~sep:nop
+      [
+        (if Int.(span < 0) then const char '-' else nop);
+        const days d;
+        sp d h;
+        const hours h;
+        sp h m;
+        const minutes m;
+        sp m s;
+        const seconds s;
+      ]
+      f ()
 
 include O
 

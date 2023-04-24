@@ -190,22 +190,29 @@ end
 
 module Span = struct
   let pp () =
-    let check name exp seconds =
+    let check ~here ?(opposite = true) name exp seconds =
       Alcotest.(
-        check string name exp
+        check ~here string name exp
           (Fmt.str "%a" Timmy.Span.pp @@ Timmy.Span.seconds seconds));
-      Alcotest.(
-        check string name ("-" ^ exp)
-          (Fmt.str "%a" Timmy.Span.pp @@ Timmy.Span.seconds (-seconds)))
+      if opposite then
+        Alcotest.(
+          check ~here string name ("-" ^ exp)
+            (Fmt.str "%a" Timmy.Span.pp @@ Timmy.Span.seconds (-seconds)))
     in
-    let () = check "Seconds are printed correctly" "45s" 45
-    and () = check "Minutes are printed correctly" "12m" (60 * 12)
-    and () = check "Hours are printed correctly" "3h" (60 * 60 * 3)
-    and () = check "One day is printed correctly" "1 day" (60 * 60 * 24)
-    and () = check "Days are printed correctly" "7 days" (60 * 60 * 24 * 7)
+    let () = check ~here:[%here] "Seconds are printed correctly" "45s" 45
+    and () = check ~here:[%here] "Minutes are printed correctly" "12m" (60 * 12)
+    and () = check ~here:[%here] "Hours are printed correctly" "3h" (60 * 60 * 3)
     and () =
-      check "A composite duration is printed correctly" "100 days 3h 58m 41s"
-        8654321
+      check ~here:[%here] "One day is printed correctly" "1 day" (60 * 60 * 24)
+    and () =
+      check ~here:[%here] "Days are printed correctly" "7 days"
+        (60 * 60 * 24 * 7)
+    and () =
+      check ~here:[%here] "A composite duration is printed correctly"
+        "100 days 3h 58m 41s" 8654321
+    and () =
+      check ~here:[%here] ~opposite:false "Null span is printed correctly" "0s"
+        0
     in
     ()
 end
