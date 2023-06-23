@@ -131,10 +131,10 @@ val to_sexp : t -> Base.Sexp.t
 
 (** {2 Integer} *)
 
-(** [to_int date] is the {{:https://en.wikipedia.org/wiki/Julian_day} Julian
-    day} of [date]. *)
+(** [to_int date] is the
+    {{:https://en.wikipedia.org/wiki/Julian_day} Julian day} of [date]. *)
 val to_int : t -> int
 
-(** [of_int jd] is the date of the {{:https://en.wikipedia.org/wiki/Julian_day}
-    Julian day} [jd]. *)
+(** [of_int jd] is the date of the
+    {{:https://en.wikipedia.org/wiki/Julian_day} Julian day} [jd]. *)
 val of_int : int -> t
