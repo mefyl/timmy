@@ -56,8 +56,8 @@
  (conflicts
   (schematic
    (or
-    (< 0.17.0)
-    (>= 0.18.0)))))
+    (< 0.18.2)
+    (>= 0.19.0)))))
 
 (package
  (name timmy-jsoo)
@@ -77,8 +77,8 @@
  (conflicts
   (schematic-jsoo
    (or
-    (< 0.17.0)
-    (>= 0.18.0)))))
+    (< 0.18.2)
+    (>= 0.19.0)))))
 
 (package
  (name timmy-unix)
@@ -118,7 +118,7 @@
 ;   (conf-tzdata :with-test)
 ;   (schematic-jsoo
 ;    (and
-;     (>= 0.17.0)
-;     (< 0.18.0)))
+;     (>= 0.18.2)
+;     (< 0.19.0)))
 ;   (timmy-jsoo
 ;    (= :version))))

@@ -62,10 +62,10 @@ let pp_opt ?(format = `_24) ?(precision = `Seconds) ?(size = `Short) () f
     | `Hours, _, _, _ | `Minutes, `Short, 0, _ | `Seconds, `Short, 0, 0 ->
       Fmt.pf f (hours_format ()) hours_formatted
     | `Minutes, _, _, _ | `Seconds, `Short, _, 0 ->
-      Fmt.pf f Caml.(hours_format () ^^ ":%02i") hours_formatted minutes
+      Fmt.pf f Stdlib.(hours_format () ^^ ":%02i") hours_formatted minutes
     | `Seconds, _, _, _ ->
       Fmt.pf f
-        Caml.(hours_format () ^^ ":%02i:%02i")
+        Stdlib.(hours_format () ^^ ":%02i:%02i")
         hours_formatted minutes seconds
   in
   match format with
