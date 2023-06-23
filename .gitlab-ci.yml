@@ -2,12 +2,12 @@ include:
   - local: "/.logistic/ci/.gitlab-ci-template.yml"
 
 toolchain:
-  extends: .ocaml-toolchain
+  extends: .toolchain
   variables:
     OPAM_PACKAGES: "js_of_ocaml.5.0.1 schematic-jsoo"
 
 toolchain:no-schematic:
-  extends: .ocaml-toolchain
+  extends: .toolchain
   variables:
     DUNE_PACKAGES: "timmy,timmy-jsoo,timmy-lwt,timmy-unix"
     OPAM_PACKAGES: "js_of_ocaml.5.0.1"
@@ -15,7 +15,7 @@ toolchain:no-schematic:
     VARIANT: "-no-schematic"
 
 toolchain:no-jsoo:
-  extends: .ocaml-toolchain
+  extends: .toolchain
   variables:
     DUNE_PACKAGES: "timmy,timmy-lwt,timmy-unix"
     OPAM_PACKAGES: "schematic"
