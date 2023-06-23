@@ -2,6 +2,11 @@
 
 (dirs timmy timmy-clock timmy-jsoo timmy-lwt timmy-unix .logistic)
 
+(env
+ (dev
+  (flags
+   (:standard -warn-error -A))))
+
 (alias
  (name default)
  (deps
