@@ -125,6 +125,20 @@ end
 module Month = struct
   include Types_bare.Month
 
+  let make_case name raw_name encoder decoder =
+    let open Schematic in
+    Schema.Case
+      {
+        name;
+        raw_name;
+        schema =
+          Schema.
+            { descriptor = String_const name; id = None; parametric = None };
+        encoder;
+        decoder;
+        inline = false;
+      }
+
   let schema_versioned _ =
     let open Schematic in
     let descriptor =
@@ -132,174 +146,42 @@ module Month = struct
         {
           cases =
             [
-              Schema.Case
-                {
-                  name = "january";
-                  raw_name = "January";
-                  schema =
-                    (let open Schema in
-                    {
-                      descriptor = String_const "january";
-                      id = None;
-                      parametric = None;
-                    });
-                  encoder = (function January -> Some () | _ -> None);
-                  decoder = (function () -> January);
-                };
-              Schema.Case
-                {
-                  name = "february";
-                  raw_name = "February";
-                  schema =
-                    (let open Schema in
-                    {
-                      descriptor = String_const "february";
-                      id = None;
-                      parametric = None;
-                    });
-                  encoder = (function February -> Some () | _ -> None);
-                  decoder = (function () -> February);
-                };
-              Schema.Case
-                {
-                  name = "march";
-                  raw_name = "March";
-                  schema =
-                    (let open Schema in
-                    {
-                      descriptor = String_const "march";
-                      id = None;
-                      parametric = None;
-                    });
-                  encoder = (function March -> Some () | _ -> None);
-                  decoder = (function () -> March);
-                };
-              Schema.Case
-                {
-                  name = "april";
-                  raw_name = "April";
-                  schema =
-                    (let open Schema in
-                    {
-                      descriptor = String_const "april";
-                      id = None;
-                      parametric = None;
-                    });
-                  encoder = (function April -> Some () | _ -> None);
-                  decoder = (function () -> April);
-                };
-              Schema.Case
-                {
-                  name = "may";
-                  raw_name = "May";
-                  schema =
-                    (let open Schema in
-                    {
-                      descriptor = String_const "may";
-                      id = None;
-                      parametric = None;
-                    });
-                  encoder = (function May -> Some () | _ -> None);
-                  decoder = (function () -> May);
-                };
-              Schema.Case
-                {
-                  name = "june";
-                  raw_name = "June";
-                  schema =
-                    (let open Schema in
-                    {
-                      descriptor = String_const "june";
-                      id = None;
-                      parametric = None;
-                    });
-                  encoder = (function June -> Some () | _ -> None);
-                  decoder = (function () -> June);
-                };
-              Schema.Case
-                {
-                  name = "july";
-                  raw_name = "July";
-                  schema =
-                    (let open Schema in
-                    {
-                      descriptor = String_const "july";
-                      id = None;
-                      parametric = None;
-                    });
-                  encoder = (function July -> Some () | _ -> None);
-                  decoder = (function () -> July);
-                };
-              Schema.Case
-                {
-                  name = "august";
-                  raw_name = "August";
-                  schema =
-                    (let open Schema in
-                    {
-                      descriptor = String_const "august";
-                      id = None;
-                      parametric = None;
-                    });
-                  encoder = (function August -> Some () | _ -> None);
-                  decoder = (function () -> August);
-                };
-              Schema.Case
-                {
-                  name = "september";
-                  raw_name = "September";
-                  schema =
-                    (let open Schema in
-                    {
-                      descriptor = String_const "september";
-                      id = None;
-                      parametric = None;
-                    });
-                  encoder = (function September -> Some () | _ -> None);
-                  decoder = (function () -> September);
-                };
-              Schema.Case
-                {
-                  name = "october";
-                  raw_name = "October";
-                  schema =
-                    (let open Schema in
-                    {
-                      descriptor = String_const "october";
-                      id = None;
-                      parametric = None;
-                    });
-                  encoder = (function October -> Some () | _ -> None);
-                  decoder = (function () -> October);
-                };
-              Schema.Case
-                {
-                  name = "november";
-                  raw_name = "November";
-                  schema =
-                    (let open Schema in
-                    {
-                      descriptor = String_const "november";
-                      id = None;
-                      parametric = None;
-                    });
-                  encoder = (function November -> Some () | _ -> None);
-                  decoder = (function () -> November);
-                };
-              Schema.Case
-                {
-                  name = "december";
-                  raw_name = "December";
-                  schema =
-                    (let open Schema in
-                    {
-                      descriptor = String_const "december";
-                      id = None;
-                      parametric = None;
-                    });
-                  encoder = (function December -> Some () | _ -> None);
-                  decoder = (function () -> December);
-                };
+              make_case "january" "January"
+                (function January -> Some () | _ -> None)
+                (function () -> January);
+              make_case "february" "February"
+                (function February -> Some () | _ -> None)
+                (function () -> February);
+              make_case "march" "March"
+                (function March -> Some () | _ -> None)
+                (function () -> March);
+              make_case "april" "April"
+                (function April -> Some () | _ -> None)
+                (function () -> April);
+              make_case "may" "May"
+                (function May -> Some () | _ -> None)
+                (function () -> May);
+              make_case "june" "June"
+                (function June -> Some () | _ -> None)
+                (function () -> June);
+              make_case "july" "July"
+                (function July -> Some () | _ -> None)
+                (function () -> July);
+              make_case "august" "August"
+                (function August -> Some () | _ -> None)
+                (function () -> August);
+              make_case "september" "September"
+                (function September -> Some () | _ -> None)
+                (function () -> September);
+              make_case "october" "October"
+                (function October -> Some () | _ -> None)
+                (function () -> October);
+              make_case "november" "November"
+                (function November -> Some () | _ -> None)
+                (function () -> November);
+              make_case "december" "December"
+                (function December -> Some () | _ -> None)
+                (function () -> December);
             ];
           key = None;
           polymorphic = false;
@@ -446,6 +328,20 @@ end
 module Weekday = struct
   include Types_bare.Weekday
 
+  let make_case name raw_name encoder decoder =
+    let open Schematic in
+    Schema.Case
+      {
+        name;
+        raw_name;
+        schema =
+          Schema.
+            { descriptor = String_const name; id = None; parametric = None };
+        encoder;
+        decoder;
+        inline = false;
+      }
+
   let schema_versioned _ =
     let open Schematic in
     let descriptor =
@@ -453,104 +349,27 @@ module Weekday = struct
         {
           cases =
             [
-              Schema.Case
-                {
-                  name = "monday";
-                  raw_name = "Monday";
-                  schema =
-                    (let open Schema in
-                    {
-                      descriptor = String_const "monday";
-                      id = None;
-                      parametric = None;
-                    });
-                  encoder = (function Monday -> Some () | _ -> None);
-                  decoder = (function () -> Monday);
-                };
-              Schema.Case
-                {
-                  name = "tuesday";
-                  raw_name = "Tuesday";
-                  schema =
-                    (let open Schema in
-                    {
-                      descriptor = String_const "tuesday";
-                      id = None;
-                      parametric = None;
-                    });
-                  encoder = (function Tuesday -> Some () | _ -> None);
-                  decoder = (function () -> Tuesday);
-                };
-              Schema.Case
-                {
-                  name = "wednesday";
-                  raw_name = "Wednesday";
-                  schema =
-                    (let open Schema in
-                    {
-                      descriptor = String_const "wednesday";
-                      id = None;
-                      parametric = None;
-                    });
-                  encoder = (function Wednesday -> Some () | _ -> None);
-                  decoder = (function () -> Wednesday);
-                };
-              Schema.Case
-                {
-                  name = "thursday";
-                  raw_name = "Thursday";
-                  schema =
-                    (let open Schema in
-                    {
-                      descriptor = String_const "thursday";
-                      id = None;
-                      parametric = None;
-                    });
-                  encoder = (function Thursday -> Some () | _ -> None);
-                  decoder = (function () -> Thursday);
-                };
-              Schema.Case
-                {
-                  name = "friday";
-                  raw_name = "Friday";
-                  schema =
-                    (let open Schema in
-                    {
-                      descriptor = String_const "friday";
-                      id = None;
-                      parametric = None;
-                    });
-                  encoder = (function Friday -> Some () | _ -> None);
-                  decoder = (function () -> Friday);
-                };
-              Schema.Case
-                {
-                  name = "saturday";
-                  raw_name = "Saturday";
-                  schema =
-                    (let open Schema in
-                    {
-                      descriptor = String_const "saturday";
-                      id = None;
-                      parametric = None;
-                    });
-                  encoder = (function Saturday -> Some () | _ -> None);
-                  decoder = (function () -> Saturday);
-                };
-              Schema.Case
-                {
-                  name = "sunday";
-                  raw_name = "Sunday";
-                  schema =
-                    (let open Schema in
-                    {
-                      descriptor = String_const "sunday";
-                      id = None;
-                      parametric = None;
-                    });
-                  encoder = (function Sunday -> Some () | _ -> None);
-                  decoder = (function () -> Sunday);
-                };
+              make_case "monday" "Monday"
+                (function Monday -> Some () | _ -> None)
+                (function () -> Monday);
+              make_case "tuesday" "Tuesday"
+                (function Tuesday -> Some () | _ -> None)
+                (function () -> Tuesday);
+              make_case "wednesday" "Wednesday"
+                (function Wednesday -> Some () | _ -> None)
+                (function () -> Wednesday);
+              make_case "thursday" "Thursday"
+                (function Thursday -> Some () | _ -> None)
+                (function () -> Thursday);
+              make_case "friday" "Friday"
+                (function Friday -> Some () | _ -> None)
+                (function () -> Friday);
+              make_case "saturday" "Saturday"
+                (function Saturday -> Some () | _ -> None)
+                (function () -> Saturday);
+              make_case "sunday" "Sunday"
+                (function Sunday -> Some () | _ -> None)
+                (function () -> Sunday);
             ];
           key = None;
           polymorphic = false;

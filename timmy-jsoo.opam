@@ -19,7 +19,7 @@ depends: [
 ]
 depopts: ["schematic-jsoo"]
 conflicts: [
-  "schematic-jsoo" {< "0.17.0" | >= "0.18.0"}
+  "schematic-jsoo" {< "0.18.2" | >= "0.19.0"}
 ]
 build: [
   ["dune" "subst"] {dev}
@@ -36,3 +36,7 @@ build: [
   ]
 ]
 dev-repo: "git+https://github.com/mefyl/timmy.git"
+pin-depends: [
+  [ "landmarks.1.4" "git+https://github.com/routineco/landmarks.git#js" ]
+  [ "landmarks-ppx.1.4" "git+https://github.com/routineco/landmarks.git#js" ]
+]
