@@ -255,8 +255,8 @@ struct
   let schema_versioned _ =
     let open Schematic.Schemas in
     let descriptor =
-      let decode Hlist.[ n; year ] = Make.make ~year n
-      and encode { n; year } = Hlist.[ n; year ]
+      let decode Hlist.[ year; n ] = Make.make ~year n
+      and encode { year; n } = Hlist.[ year; n ]
       and fields =
         Schematic.Schema.Field
           {
@@ -264,7 +264,7 @@ struct
               {
                 description = None;
                 examples = [];
-                name = "n";
+                name = "year";
                 maximum = None;
                 minimum = None;
                 omit = false;
@@ -279,7 +279,7 @@ struct
                     {
                       description = None;
                       examples = [];
-                      name = "year";
+                      name = "n";
                       maximum = None;
                       minimum = None;
                       omit = false;
