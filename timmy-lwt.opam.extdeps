@@ -1,6 +1,6 @@
 opam-version: "2.0"
 name: "timmy-lwt"
-version: "1.0.1"
+version: "1.0.2"
 synopsis: "Lwt utilities based on Timmy"
 maintainer: "mefyl <mefyl@gruntech.org>"
 authors: "mefyl <mefyl@gruntech.org>"
@@ -20,15 +20,17 @@ depends: [
   "base-bytes" {= "base"}
   "base-threads" {= "base"}
   "base-unix" {= "base"}
+  "camlp-streams" {= "5.0.1" & with-doc}
   "cmdliner" {= "1.2.0"}
   "cppo" {= "1.6.9"}
   "csexp" {= "1.5.2"}
-  "dune" {= "3.8.2"}
-  "dune-configurator" {= "3.8.2"}
+  "dune" {= "3.9.0"}
+  "dune-configurator" {= "3.9.0"}
   "fmt" {= "0.9.0"}
+  "fpath" {= "0.7.3" & with-doc}
   "gen" {= "1.1"}
-  "js_of_ocaml" {= "5.2.0"}
-  "js_of_ocaml-compiler" {= "5.2.0"}
+  "js_of_ocaml" {= "5.3.0"}
+  "js_of_ocaml-compiler" {= "5.3.0"}
   "logs" {= "0.7.0" & with-test}
   "lwt" {= "5.6.1"}
   "menhir" {= "20230608"}
@@ -52,11 +54,12 @@ depends: [
   "ptime" {= "1.1.0"}
   "re" {= "1.10.4" & with-test}
   "result" {= "1.5"}
-  "sedlex" {= "3.1"}
+  "sedlex" {= "3.2"}
   "seq" {= "base"}
   "sexplib0" {= "v0.16.0"}
   "stdlib-shims" {= "0.3.0"}
   "topkg" {= "1.0.7"}
+  "tyxml" {= "4.5.0" & with-doc}
   "uutf" {= "1.0.3" & with-test}
   "yojson" {= "2.1.0"}
 ]
