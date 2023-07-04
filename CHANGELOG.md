@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.2] - 2023-07-04
+
+### Fixed
+
+- Inverted fields in `Timmy.Week.t` schema.
+
 ## [1.0.1] - 2023-06-23
 
 ### Fixed
