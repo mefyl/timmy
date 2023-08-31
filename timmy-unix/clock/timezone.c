@@ -25,10 +25,9 @@ static
 int
 offset(const time_t time)
 {
-  struct tm gmtime;
-  gmtime_r(&time, &gmtime);
-
-  return time - mktime(&gmtime);
+  struct tm localtime;
+  localtime_r(&time, &localtime);
+  return localtime.tm_gmtoff;
 }
 
 CAMLprim
@@ -56,8 +55,14 @@ ocaml_timmy_offset_calendar_time_s(value date, value daytime)
   const int minutes = check_int(Field(daytime, 1));
   const int seconds = check_int(Field(daytime, 2));
 
-  struct tm datetime = { seconds, minutes, hours, day, month, year };
+  struct tm datetime = {
+    .tm_sec = seconds,
+    .tm_min = minutes,
+    .tm_hour = hours,
+    .tm_mday = day,
+    .tm_mon = month - 1,
+    .tm_year = year - 1900
+  };
   time_t time = mktime(&datetime);
-
-  CAMLreturn(Val_int (offset(time)));
+  CAMLreturn(Val_int(offset(time)));
 }

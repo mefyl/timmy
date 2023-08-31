@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.3] - 2023-08-31
+
+### Fixed
+
+- Timezone offset computation in `timmy-unix`.
+
 ## [1.0.2] - 2023-07-04
 
 ### Fixed
