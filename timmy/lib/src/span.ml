@@ -1,7 +1,7 @@
 open Base
 
 module T = struct
-  include Type.Span
+  include Type_schema.Span
 
   let compare = Ptime.Span.compare
   let sexp_of_t s = Sexp.Atom (Fmt.str "%a" Ptime.Span.pp s)

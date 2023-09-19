@@ -3,7 +3,7 @@
 (** {1 Scalar conversions} *)
 
 (** @inline *)
-include Type.WEEKDAY
+include Type_schema.WEEKDAY
 
 include module type of Type_js.Weekday
 

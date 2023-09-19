@@ -1,7 +1,7 @@
 open Base
 
 module T = struct
-  include Type.Time
+  include Type_schema.Time
   include Type_js.Time
 
   let compare = Ptime.compare

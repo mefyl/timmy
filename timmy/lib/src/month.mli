@@ -3,7 +3,7 @@ open Base
 (** {1 Type} *)
 
 (** @inline *)
-include Type.MONTH with type t = Types_bare.Month.t
+include Type_schema.MONTH with type t = Types_bare.Month.t
 
 include module type of Type_js.Month
 

@@ -1,7 +1,7 @@
 open Base
 
 module T = struct
-  include Type.Daytime
+  include Type_schema.Daytime
 
   let sexp_of_tuple (hours, minutes, seconds) =
     let open Base.Sexp in

@@ -1,5 +1,5 @@
 open Base
-include Type.Weekday
+include Type_schema.Weekday
 include Type_js.Weekday
 
 let to_int ?(base = Monday) weekday =

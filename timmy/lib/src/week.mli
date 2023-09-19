@@ -3,7 +3,7 @@ open Base
 (** {1 Type} *)
 
 (** @inline *)
-include Type.WEEK
+include Type_schema.WEEK
 
 (** @inline *)
 include module type of Type_js.Week

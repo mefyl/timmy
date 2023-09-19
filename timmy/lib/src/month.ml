@@ -1,7 +1,7 @@
 open Base
 
 module Type = struct
-  include Type.Month
+  include Type_schema.Month
 
   let to_string = function
     | January -> "January"

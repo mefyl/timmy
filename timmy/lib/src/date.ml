@@ -1,7 +1,7 @@
 open Base
 
 module T = struct
-  include Type.Date
+  include Type_schema.Date
   include Type_js.Date
 
   let to_sexp_tuple (y, m, d) =

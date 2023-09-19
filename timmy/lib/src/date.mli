@@ -3,7 +3,7 @@ open Base
 (** {1 Type} *)
 
 (** @inline *)
-include Type.DATE
+include Type_schema.DATE
 
 (** @inline *)
 include module type of Type_js.Date

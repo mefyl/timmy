@@ -18,7 +18,7 @@ let make ~year n =
   else Result.return res
 
 module T = struct
-  include Type.Week (struct
+  include Type_schema.Week (struct
     let make = make
   end)
 

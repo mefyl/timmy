@@ -8,10 +8,10 @@
   fmt
   ptime
   (select
-   type.ml
+   type_schema.ml
    from
-   (schematic -> type.schematic.ml)
-   (!schematic -> type.noschematic.ml))
+   (schematic -> type_schema.schematic.ml)
+   (!schematic -> type_schema.noschematic.ml))
   (select
    type_js.ml
    from
