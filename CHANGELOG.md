@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- `Timezone.name` to retrieve IANA timezone names.
+
 ## [1.0.4] - 2023-09-19
 
 ### Fixed

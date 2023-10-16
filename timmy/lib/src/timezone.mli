@@ -19,6 +19,7 @@ val of_gmt_offset_seconds : int -> t
 val of_implementation :
   offset_calendar_time_s:(date:int * int * int -> time:int * int * int -> int) ->
   offset_timestamp_s:(unix_timestamp:Int64.t -> int) ->
+  string ->
   t
 
 (** [utc] is the UTC timezone.*)
@@ -39,3 +40,6 @@ val gmt_offset_seconds_at_datetime :
     offset from UTC, at the time given by a unix timestamp (Ptime.t). In other
     words, [localtime = UTC + offset]. *)
 val gmt_offset_seconds_at_time : t -> Ptime.t -> int
+
+(** [name tz] is the IANA name of [tz], if it could be determined. *)
+val name : t -> string

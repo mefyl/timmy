@@ -66,3 +66,14 @@ ocaml_timmy_offset_calendar_time_s(value date, value daytime)
   time_t time = mktime(&datetime);
   CAMLreturn(Val_int(offset(time)));
 }
+
+CAMLprim
+value
+ocaml_timmy_local_timezone_name()
+{
+  CAMLparam0();
+  const time_t now = time(NULL);
+  struct tm localtime;
+  localtime_r(&now, &localtime);
+  CAMLreturn(caml_copy_string (localtime.tm_zone));
+}

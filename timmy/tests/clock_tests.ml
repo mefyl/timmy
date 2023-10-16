@@ -1,6 +1,8 @@
 (* These tests only make sense if run on a machine that is in CEST/CET timezone.
    Use `env TZ='Europe/Paris' node test.bc.js` *)
 
+module Timmy = Timmy.Versions.V1_1
+
 let timezone = Clock.timezone_local
 
 module Alcotest = struct
@@ -72,3 +74,18 @@ let daylight_savings () =
   test_relaxed (2022, 3, 27) (2, 0, 0);
   test_relaxed (2022, 3, 27) (2, 59, 59);
   ()
+
+let timezone_name () =
+  match Clock.timezone_local |> Timmy.Timezone.name with
+  | "CET" | "CEST" -> ()
+  | name -> Alcotest.(check string "timezone name") "CET" name
+
+let v =
+  [
+    ( "timezone",
+      Alcotest.
+        [
+          test_case "daylight saving" `Quick daylight_savings;
+          test_case "timezone_name" `Quick timezone_name;
+        ] );
+  ]
