@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.1.1] - 2023-10-25
+
+### Fixed
+
+- `Timmy_lwt.Ticker.stop` not actually stopping after the first tick.
+
 ## [1.1.0] - 2023-10-25
 
 ### Added

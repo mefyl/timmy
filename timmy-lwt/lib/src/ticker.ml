@@ -27,6 +27,7 @@ let start ?start ({ f; immediate; period; skip; stop; _ } as t) =
             (Lwt_mvar.take stop >>| fun () -> (false, time));
           ]
       in
+      let* () = if run then Lwt_mvar.put stop () else Lwt.return () in
       if run then
         let time =
           let skipped =

@@ -28,7 +28,34 @@ let skip _ () =
   let () = check ~here:[%here] [ 6; 5; 4; 3; 2; 1; 0 ] [ 6; 1; 0 ] in
   Lwt.return ()
 
+let stop_resume _ () =
+  let count = ref 0 in
+  let ticker =
+    Timmy_lwt.Ticker.make ~period:(Timmy.Span.minutes 1) (fun _ ->
+        let () = count := !count + 1 in
+        true)
+  in
+  let () = Alcotest.(check ~here:[%here] int) "count" 1 !count in
+  let () = Clock_virtual.forward @@ Timmy.Span.seconds 90 in
+  let () = Clock_virtual.forward @@ Timmy.Span.seconds 60 in
+  let () = Alcotest.(check ~here:[%here] int) "count" 3 !count in
+  let () = Timmy_lwt.Ticker.stop ticker in
+  let () = Clock_virtual.forward @@ Timmy.Span.seconds 60 in
+  let () = Alcotest.(check ~here:[%here] int) "count" 3 !count in
+  let () = Timmy_lwt.Ticker.start ticker in
+  let () = Alcotest.(check ~here:[%here] int) "count" 4 !count in
+  let () = Clock_virtual.forward @@ Timmy.Span.seconds 60 in
+  let () = Alcotest.(check ~here:[%here] int) "count" 5 !count in
+  Lwt.return ()
+
 let () =
   Lwt_main.run
-  @@ Alcotest_lwt.run "Picker"
-       [ ("run", [ Alcotest_lwt.test_case "skip" `Quick skip ]) ]
+  @@ Alcotest_lwt.(
+       run "Picker"
+         [
+           ( "run",
+             [
+               test_case "skip" `Quick skip;
+               test_case "stop / resume" `Quick stop_resume;
+             ] );
+         ])
