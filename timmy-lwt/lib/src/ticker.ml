@@ -15,6 +15,7 @@ let start ?start ({ f; immediate; period; skip; stop; _ } as t) =
   let start = match start with None -> Clock.now () | Some start -> start in
   if not t.running then
     let () = t.running <- true in
+    let stop = Lwt_mvar.take stop in
     let rec tick immediate time =
       let now = Clock.now () in
       let* run, time =
@@ -24,10 +25,9 @@ let start ?start ({ f; immediate; period; skip; stop; _ } as t) =
             ( Timmy_lwt_platform.sleep
                 (delay |> Timmy.Span.to_ptime |> Ptime.Span.to_float_s)
             >>| fun () -> (true, time) );
-            (Lwt_mvar.take stop >>| fun () -> (false, time));
+            (stop >>| fun () -> (false, time));
           ]
       in
-      let* () = if run then Lwt_mvar.put stop () else Lwt.return () in
       if run then
         let time =
           let skipped =
