@@ -4,6 +4,7 @@
  (libraries
   alcotest-lwt
   clock_virtual
+  logs.fmt
   lwt
   lwt.unix
   timmy
