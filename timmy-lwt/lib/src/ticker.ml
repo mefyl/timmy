@@ -6,7 +6,7 @@ type state =
   | Paused of { next_tick_at_pause : Timmy.Time.t }
 
 and command =
-  | Finalise
+  | Finalise of { from_gc : bool }
   | Pause
   | Start of Timmy.Time.t option
   | Stop
@@ -19,59 +19,41 @@ type t = {
   skip : bool;
 }
 
-module Weakref : sig
-  type 'a t
-
-  val make : 'a -> 'a t
-  val map : 'a t -> f:('a -> 'b) -> 'b option
-end = struct
-  type 'a t = 'a Stdlib.Weak.t
-
-  let make v =
-    let t = Stdlib.Weak.create 1 in
-    let () = Stdlib.Weak.set t 0 (Some v) in
-    t
-
-  let map t ~f =
-    match Stdlib.Weak.get t 0 with None -> None | Some v -> Some (f v)
-end
-
-let _run ticker =
+let _run ({ command; f; period; skip; _ } as ticker) =
   let finalized, finalize = Lwt.wait () in
   let () =
-    Stdlib.Gc.finalise_last (fun () -> Lwt.wakeup finalize Stop) ticker
+    Stdlib.Gc.finalise_last
+      (fun () -> Lwt.wakeup finalize (Finalise { from_gc = true }))
+      ticker
   in
-  let ticker = Weakref.make ticker in
   let ( >>= ) = Lwt.bind
   and ( >>| ) v f = Lwt.map f v in
-  let warn_not_finalised () =
+  let finalise from_gc =
     let () =
-      Logs.err (fun m ->
-          m "@[<2>%a@]" Fmt.words
-            "Timmy_lwt.Ticker.t was not finalised. While resources are freed \
-             by this fallback upon garbage collection, it is not advised to \
-             rely upon it.")
+      if from_gc then
+        Logs.err (fun m ->
+            m "@[<2>%a@]" Fmt.words
+              "Timmy_lwt.Ticker.t was not finalised. While resources are freed \
+               by this fallback upon garbage collection, it is not advised to \
+               rely upon it.")
     in
     Lwt.return ()
   in
   let rec tick state =
-    match Weakref.map ticker ~f:(fun { command; _ } -> command) with
-    | None -> warn_not_finalised ()
-    | Some command ->
-      let command = Lwt.choose [ Lwt_mvar.take command; finalized ] in
-      tick_with_command command state
+    let command = Lwt.choose [ Lwt_mvar.take command; finalized ] in
+    tick_with_command command state
   and tick_with_command command state =
     match state with
     | Paused { next_tick_at_pause } -> (
       command >>= function
-      | Finalise -> Lwt.return ()
+      | Finalise { from_gc } -> finalise from_gc
       | Stop -> tick Stopped
       | Pause -> tick state
       | Start (Some next_tick) -> tick (Running { next_tick })
       | Start None -> tick (Running { next_tick = next_tick_at_pause }))
     | Stopped -> (
       command >>= function
-      | Finalise -> Lwt.return ()
+      | Finalise { from_gc } -> finalise from_gc
       | Stop | Pause -> tick Stopped
       | Start next_tick ->
         let next_tick =
@@ -91,28 +73,25 @@ let _run ticker =
           ]
       in
       wait >>= function
-      | Some Finalise -> Lwt.return ()
+      | Some (Finalise { from_gc }) -> finalise from_gc
       | Some (Start None) -> tick state
       | Some (Start (Some next_tick)) -> tick (Running { next_tick })
       | Some Pause -> tick (Paused { next_tick_at_pause = next_tick })
       | Some Stop -> tick Stopped
-      | None -> (
-        let tick ticker =
+      | None ->
+        let keep_going, next_tick =
           let tick_time =
             let skipped =
-              Timmy.Span.(Timmy.Time.(Clock.now () - next_tick) / ticker.period)
+              Timmy.Span.(Timmy.Time.(Clock.now () - next_tick) / period)
             in
-            if ticker.skip && Base.Int.(skipped > 0) then
-              Timmy.Time.(next_tick + Timmy.Span.(ticker.period * skipped))
+            if skip && Base.Int.(skipped > 0) then
+              Timmy.Time.(next_tick + Timmy.Span.(period * skipped))
             else next_tick
           in
-          (ticker.f tick_time, Timmy.Time.(tick_time + ticker.period))
+          (f tick_time, Timmy.Time.(tick_time + period))
         in
-        match Weakref.map ticker ~f:tick with
-        | None -> warn_not_finalised ()
-        | Some (true, next_tick) ->
-          tick_with_command command (Running { next_tick })
-        | Some (false, _) -> tick_with_command command Stopped))
+        if keep_going then tick_with_command command (Running { next_tick })
+        else tick_with_command command Stopped)
   in
   Lwt.async (fun () -> tick Stopped)
 
@@ -137,7 +116,8 @@ let make ?(immediate = true) ?(skip = true) ?start:start_time ~period f =
   ticker
 
 let finalise ticker =
-  Lwt.async @@ fun () -> Lwt_mvar.put ticker.command Finalise
+  Lwt.async @@ fun () ->
+  Lwt_mvar.put ticker.command (Finalise { from_gc = false })
 
 let start ?start ticker =
   Lwt.async @@ fun () ->
