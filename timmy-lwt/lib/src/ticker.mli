@@ -56,10 +56,10 @@ val stop : t -> unit
     Noop if [t] was already running. *)
 val start : ?start:Timmy.Time.t -> t -> unit
 
-(** [finalise t] unrevokably stops [t].
+(** [finalize t] unrevokably stops [t].
 
     This must be called to disposes of all of [t]'s ressources. *)
-val finalise : t -> unit
+val finalize : t -> unit
 
 (** [skip t] is whether [t] was created with [skip]. *)
 val skip : t -> bool

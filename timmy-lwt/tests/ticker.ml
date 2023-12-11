@@ -20,7 +20,7 @@ let immediate_on_start _ () =
   let () =
     Alcotest.(check ~here:[%here] int) "ticker ticked twice afterwards" 2 !count
   in
-  let () = Timmy_lwt.Ticker.finalise ticker in
+  let () = Timmy_lwt.Ticker.finalize ticker in
   Lwt.return ()
 
 let skip _ () =
@@ -49,8 +49,8 @@ let skip _ () =
   let () = check ~here:[%here] [ 1; 0 ] [ 1; 0 ] in
   let () = Clock_virtual.forward @@ Timmy.Span.minutes 5 in
   let () = check ~here:[%here] [ 6; 5; 4; 3; 2; 1; 0 ] [ 6; 1; 0 ] in
-  let () = Timmy_lwt.Ticker.finalise ticker
-  and () = Timmy_lwt.Ticker.finalise skip_ticker in
+  let () = Timmy_lwt.Ticker.finalize ticker
+  and () = Timmy_lwt.Ticker.finalize skip_ticker in
   Lwt.return ()
 
 let stop_resume _ () =
@@ -71,10 +71,10 @@ let stop_resume _ () =
   let () = Alcotest.(check ~here:[%here] int) "count" 4 !count in
   let () = Clock_virtual.forward @@ Timmy.Span.seconds 60 in
   let () = Alcotest.(check ~here:[%here] int) "count" 5 !count in
-  let () = Timmy_lwt.Ticker.finalise ticker in
+  let () = Timmy_lwt.Ticker.finalize ticker in
   Lwt.return ()
 
-let forgotten_finalise _ () =
+let forgotten_finalize _ () =
   let errors = Logs.err_count () in
   let () =
     let _ticker =
@@ -97,6 +97,6 @@ let () =
                test_case "not immediate on start" `Quick immediate_on_start;
                test_case "skip" `Quick skip;
                test_case "stop / resume" `Quick stop_resume;
-               test_case "forgotten finalise" `Quick forgotten_finalise;
+               test_case "forgotten finalize" `Quick forgotten_finalize;
              ] );
          ])
