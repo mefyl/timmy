@@ -2,7 +2,28 @@ open Base
 
 let () = Timmy_lwt_virtual.install ()
 
+let immediate_on_start _ () =
+  let count = ref 0 in
+  let ticker =
+    Timmy_lwt.Ticker.make ~immediate:false ~period:(Timmy.Span.minutes 1)
+      (fun _ ->
+        let () = count := !count + 1 in
+        true)
+  in
+  let () =
+    Alcotest.(check ~here:[%here] int)
+      "ticker did not tick immediately" 0 !count
+  in
+  let () = Clock_virtual.forward @@ Timmy.Span.seconds 90 in
+  let () = Clock_virtual.forward @@ Timmy.Span.seconds 60 in
+  let () =
+    Alcotest.(check ~here:[%here] int) "ticker ticked twice afterwards" 2 !count
+  in
+  let () = Timmy_lwt.Ticker.finalise ticker in
+  Lwt.return ()
+
 let skip _ () =
+  let test_start_time = Clock.now () in
   let ticks = ref []
   and ticks_skipped = ref [] in
   let ticker ticks skip =
@@ -11,7 +32,8 @@ let skip _ () =
         true)
   and check ~here exp_ticks exp_ticks_skipped =
     let exp exp =
-      List.map exp ~f:(fun i -> Timmy.Time.(epoch + Timmy.Span.minutes i))
+      List.map exp ~f:(fun i ->
+          Timmy.Time.(test_start_time + Timmy.Span.minutes i))
     in
     Alcotest.(check ~here (list @@ testable Timmy.Time.pp Timmy.Time.equal))
       "ticks" (exp exp_ticks) !ticks;
@@ -55,6 +77,7 @@ let () =
          [
            ( "run",
              [
+               test_case "not immediate on start" `Quick immediate_on_start;
                test_case "skip" `Quick skip;
                test_case "stop / resume" `Quick stop_resume;
              ] );
