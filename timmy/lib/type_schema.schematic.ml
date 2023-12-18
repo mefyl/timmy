@@ -86,7 +86,7 @@ module Daytime = struct
                 };
           }
       in
-      if true then
+      if false then
         (* FIXME: iOS makes the assumption Object schema map to the actual type
            directly *)
         Schema.Object
@@ -291,7 +291,7 @@ struct
                 };
           }
       in
-      if true then
+      if false then
         (* FIXME: iOS makes the assumption Object schema map to the actual type
            directly *)
         Schema.Object
