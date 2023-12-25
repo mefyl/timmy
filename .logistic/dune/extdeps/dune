@@ -3,4 +3,4 @@
  (optional)
  (preprocess
   (pps ppx_here))
- (libraries cmdliner opam-file-format sexplib shexp.process stdio))
+ (libraries cmdliner fmt opam-file-format sexplib stdio unix))

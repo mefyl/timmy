@@ -22,7 +22,6 @@ RUN opam update && \
     fi && \
     opam switch create /root --confirm-level=unsafe-yes --deps-only --with-test --with-doc && \
     opam config --switch=/root set jobs $(nproc) && \
-    opam pin --switch=/root --no-action ocamlformat 0.25.1  && \
     opam clean --switch=/root -a -c -s --logs -r && \
     rm -rf /root/.cache/dune
 ENV OPAMSWITCH=/root
