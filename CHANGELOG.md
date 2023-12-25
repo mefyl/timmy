@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.2] - 2023-12-25
+
+### Added
+
+- `Timmy_lwt.Ticker.finalise`.
+- `Timmy_lwt.Ticker.pause`.
+
+### Fixed
+
+- Schemas of `Date.t` and `Datetime.t` to return `Result.Error`s
+  instead of raising `Failure`s.
+
+
 ## [1.1.1] - 2023-10-25
 
 ### Fixed
