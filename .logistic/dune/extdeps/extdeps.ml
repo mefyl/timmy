@@ -41,9 +41,9 @@ let run command =
   let stdout, stdin, stderr =
     Unix.open_process_args_full command.(0) command (Unix.environment ())
   in
-  let () = Out_channel.close stdin in
-  let output = In_channel.input_all stdout
-  and error = In_channel.input_all stderr in
+  let () = Stdio.Out_channel.close stdin in
+  let output = Stdio.In_channel.input_all stdout
+  and error = Stdio.In_channel.input_all stderr in
   match Unix.close_process_full (stdout, stdin, stderr) with
   | WEXITED 0 -> Result.Ok output
   | _ ->
