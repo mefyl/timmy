@@ -1,6 +1,6 @@
 opam-version: "2.0"
 name: "timmy-lwt"
-version: "1.0.2"
+version: "1.1.2"
 synopsis: "Lwt utilities based on Timmy"
 maintainer: "mefyl <mefyl@gruntech.org>"
 authors: "mefyl <mefyl@gruntech.org>"
@@ -8,51 +8,52 @@ license: "LGPL-3.0-or-later"
 homepage: "https://github.com/mefyl/timmy"
 bug-reports: "https://github.com/mefyl/timmy/issues"
 depends: [
-  "ocamlformat" {= "0.25.1"}
+  "ocamlformat" {= "0.26.1"}
   "opam-file-format"
   "sexplib"
-  "shexp"
   "alcotest" {= "1.7.0" & with-test}
   "alcotest-lwt" {= "1.7.0" & with-test}
   "astring" {= "0.8.5" & with-test}
-  "base" {= "v0.16.1"}
+  "base" {= "v0.16.3"}
   "base-bigarray" {= "base"}
   "base-bytes" {= "base"}
+  "base-domains" {= "base"}
+  "base-nnp" {= "base"}
   "base-threads" {= "base"}
   "base-unix" {= "base"}
   "camlp-streams" {= "5.0.1" & with-doc}
   "cmdliner" {= "1.2.0"}
   "cppo" {= "1.6.9"}
   "csexp" {= "1.5.2"}
-  "dune" {= "3.9.0"}
-  "dune-configurator" {= "3.9.0"}
+  "dune" {= "3.10.0"}
+  "dune-configurator" {= "3.10.0"}
   "fmt" {= "0.9.0"}
   "fpath" {= "0.7.3" & with-doc}
   "gen" {= "1.1"}
-  "js_of_ocaml" {= "5.3.0"}
-  "js_of_ocaml-compiler" {= "5.3.0"}
+  "js_of_ocaml" {= "5.4.0"}
+  "js_of_ocaml-compiler" {= "5.4.0"}
   "logs" {= "0.7.0" & with-test}
-  "lwt" {= "5.6.1"}
+  "lwt" {= "5.7.0"}
   "menhir" {= "20230608"}
   "menhirLib" {= "20230608"}
   "menhirSdk" {= "20230608"}
-  "ocaml" {= "4.14.1"}
-  "ocaml-base-compiler" {= "4.14.1"}
+  "ocaml" {= "5.1.0"}
+  "ocaml-base-compiler" {= "5.1.0"}
   "ocaml-compiler-libs" {= "v0.12.4"}
-  "ocaml-config" {= "2"}
+  "ocaml-config" {= "3"}
   "ocaml-options-vanilla" {= "1"}
   "ocaml-syntax-shims" {= "1.0.0" & with-test}
   "ocamlbuild" {= "0.14.2"}
   "ocamlfind" {= "1.9.6"}
   "ocplib-endian" {= "1.2"}
-  "odoc" {= "2.2.0" & with-doc}
+  "odoc" {= "2.2.1" & with-doc}
   "odoc-parser" {= "2.0.0" & with-doc}
   "ppx_derivers" {= "1.2.1"}
   "ppx_deriving" {= "5.2.1"}
   "ppx_here" {= "v0.16.0"}
   "ppxlib" {= "0.30.0"}
   "ptime" {= "1.1.0"}
-  "re" {= "1.10.4" & with-test}
+  "re" {= "1.11.0" & with-test}
   "result" {= "1.5"}
   "sedlex" {= "3.2"}
   "seq" {= "base"}
