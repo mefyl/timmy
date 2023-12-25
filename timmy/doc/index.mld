@@ -81,7 +81,7 @@ difference between the two here.
 
 A point in time, represented by {!Timmy.Time.t}, is a universal moment
 that occured simultaneously for every human being, no matter where you
-are on earth or in the universe -- as such {Timmy} boldly disregards
+are on earth or in the universe -- as such {!Timmy} boldly disregards
 relativity. "The moon landing" is often taken as an example of point
 in time, because since it didn't happen on earth it emphasizes its
 decorelation from any date: to all of humanity, the instant the lunar
@@ -99,8 +99,8 @@ either on a Monday (1969-07-20) either on a Sunday (1969-07-19).
 {3 Conversions}
 
 Conversions between points in time and calendar representations can
-only happen in the context of a timezone. {Timmy} stricly enforces
-this by always requiring a {Timmy.Timezone.t} when performing such
+only happen in the context of a timezone. {!Timmy} stricly enforces
+this by always requiring a {!Timmy.Timezone.t} when performing such
 conversion.
 
 {3 On the utility of both concepts}
@@ -121,4 +121,4 @@ lunch at 11:55 every day, you should save it as a calendar
 representation: if the user flies to the other side of the world for a
 week, you do not want to wake her up at midnight instead. To find the
 actual time at which you need to send the reminder, you will need the
-user current timezone, which is enforced by {Timmy}'s API.
+user current timezone, which is enforced by {!Timmy}'s API.
