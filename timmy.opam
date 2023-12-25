@@ -43,6 +43,6 @@ build: [
 ]
 dev-repo: "git+https://github.com/mefyl/timmy.git"
 pin-depends: [
-  [ "landmarks.1.4" "git+https://github.com/routineco/landmarks.git#js" ]
-  [ "landmarks-ppx.1.4" "git+https://github.com/routineco/landmarks.git#js" ]
+  [ "landmarks.1.4" "git+https://github.com/LexiFi/landmarks.git#b0c753cd2a4c4aa00dffdd3be187d8ed592fabf7" ]
+  [ "landmarks-ppx.1.4" "git+https://github.com/LexiFi/landmarks.git#b0c753cd2a4c4aa00dffdd3be187d8ed592fabf7" ]
 ]
