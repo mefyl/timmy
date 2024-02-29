@@ -25,7 +25,7 @@ depends: [
 ]
 depopts: ["js_of_ocaml" "schematic"]
 conflicts: [
-  "schematic" {< "0.18.2" | >= "0.20.0"}
+  "schematic" {< "0.18.2" | >= "0.21.0"}
 ]
 build: [
   ["dune" "subst"] {dev}
