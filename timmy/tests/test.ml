@@ -190,29 +190,42 @@ end
 
 module Span = struct
   let pp () =
-    let check ~here ?(opposite = true) name exp seconds =
+    let check ~here name exp span =
       Alcotest.(
-        check ~here string name exp
-          (Fmt.str "%a" Timmy.Span.pp @@ Timmy.Span.seconds seconds));
-      if opposite then
-        Alcotest.(
-          check ~here string name ("-" ^ exp)
-            (Fmt.str "%a" Timmy.Span.pp @@ Timmy.Span.seconds (-seconds)))
+        check ~here string name exp (Fmt.str "%a" Timmy.Span.pp @@ span))
     in
-    let () = check ~here:[%here] "Seconds are printed correctly" "45s" 45
-    and () = check ~here:[%here] "Minutes are printed correctly" "12m" (60 * 12)
-    and () = check ~here:[%here] "Hours are printed correctly" "3h" (60 * 60 * 3)
+    let check_seconds ~here ?(opposite = true) name exp seconds =
+      check ~here name exp (Timmy.Span.seconds seconds);
+      if opposite then
+        check ~here name ("-" ^ exp) (Timmy.Span.seconds (-seconds))
+    in
+    let () =
+      check_seconds ~here:[%here] "Seconds are printed correctly" "45s" 45
     and () =
-      check ~here:[%here] "One day is printed correctly" "1 day" (60 * 60 * 24)
+      check_seconds ~here:[%here] "Minutes are printed correctly" "12m" (60 * 12)
     and () =
-      check ~here:[%here] "Days are printed correctly" "7 days"
+      check_seconds ~here:[%here] "Hours are printed correctly" "3h"
+        (60 * 60 * 3)
+    and () =
+      check_seconds ~here:[%here] "One day is printed correctly" "1 day"
+        (60 * 60 * 24)
+    and () =
+      check_seconds ~here:[%here] "Days are printed correctly" "7 days"
         (60 * 60 * 24 * 7)
     and () =
-      check ~here:[%here] "A composite duration is printed correctly"
+      check_seconds ~here:[%here] "A composite duration is printed correctly"
         "100 days 3h 58m 41s" 8654321
     and () =
-      check ~here:[%here] ~opposite:false "Null span is printed correctly" "0s"
-        0
+      check_seconds ~here:[%here] ~opposite:false
+        "Null span is printed correctly" "0s" 0
+    and () =
+      check ~here:[%here] "Milliseconds are printed correctly" "0.123s"
+      @@ Timmy.Span.of_ptime @@ Option.value_exn
+      @@ Ptime.Span.of_float_s 0.123
+    and () =
+      check ~here:[%here] "Milliseconds are printed correctly" "1.234s"
+      @@ Timmy.Span.of_ptime @@ Option.value_exn
+      @@ Ptime.Span.of_float_s 1.234
     in
     ()
 end

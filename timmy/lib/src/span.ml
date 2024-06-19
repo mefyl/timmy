@@ -32,34 +32,44 @@ module O = struct
   let ( * ) span m = span *. Int.to_float m
 end
 
+let pico = 1000000000000L
+
 let pp f span =
+  let negative, days, ps =
+    let days, ps = Ptime.Span.to_d_ps span in
+    if days >= 0 then (false, days, ps)
+    else if Int64.(ps = 0L) then (true, -days, 0L)
+    else (true, -(days + 1), Int64.(neg @@ (ps - (pico * 60L * 60L * 24L))))
+  in
   let open Fmt in
-  match to_seconds span with
-  | 0 -> string f "0s"
-  | span ->
-    let span_abs = Int.abs span in
-    let d = span_abs / (60 * 60 * 24)
-    and h = span_abs / (60 * 60) % 24
-    and m = span_abs / 60 % 60
-    and s = span_abs % 60 in
+  if days = 0 && Int64.(ps = 0L) then string f "0s"
+  else
+    let d = Int.abs days
+    and h = Int64.(ps / (pico * 60L * 60L) % 24L) |> Int64.to_int_trunc
+    and m = Int64.(ps / (pico * 60L) % 60L) |> Int64.to_int_trunc
+    and s = Int64.(ps / pico % 60L) |> Int64.to_int_trunc
+    and ms = Int64.(ps / 1000000000L % 1000L) |> Int64.to_int_trunc in
     let days f = function
       | 0 -> ()
       | 1 -> string f "1 day"
       | n -> pf f "%i days" n
     and hours f = function 0 -> () | n -> pf f "%ih" n
     and minutes f = function 0 -> () | n -> pf f "%im" n
-    and seconds f = function 0 -> () | n -> pf f "%is" n
-    and sp l r = if Int.(l > 0 && r > 0) then const char ' ' else nop in
+    and seconds f = function
+      | 0, 0 -> ()
+      | s, 0 -> pf f "%is" s
+      | s, ms -> pf f "%d.%ds" s ms
+    and sp c l r = if Int.(l > 0 && r > 0) then const char c else nop in
     concat ~sep:nop
       [
-        (if Int.(span < 0) then const char '-' else nop);
+        (if negative then const char '-' else nop);
         const days d;
-        sp d h;
+        sp ' ' d h;
         const hours h;
-        sp h m;
+        sp ' ' h m;
         const minutes m;
-        sp m s;
-        const seconds s;
+        sp ' ' m s;
+        const seconds (s, ms);
       ]
       f ()
 
