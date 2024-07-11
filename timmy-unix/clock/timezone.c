@@ -6,6 +6,10 @@
 #include <caml/memory.h>
 #include <caml/mlvalues.h>
 
+#ifdef __MINGW32__
+# include <timezoneapi.h>
+#endif
+
 static
 void
 check_tuple(value tuple, int size)
@@ -21,6 +25,8 @@ check_int(value n)
   return Int_val(n);
 }
 
+#ifndef __MINGW32__
+
 static
 int
 offset(const time_t time)
@@ -29,6 +35,31 @@ offset(const time_t time)
   localtime_r(&time, &localtime);
   return localtime.tm_gmtoff;
 }
+
+#else
+
+static
+TIME_ZONE_INFORMATION
+local_timezone()
+{
+  TIME_ZONE_INFORMATION tz;
+  GetTimeZoneInformation(&tz);
+  return tz;
+}
+
+static
+int
+offset(const time_t time)
+{
+  struct tm localtime;
+  localtime_s(&localtime, &time);
+  struct tm* gmt = gmtime(&time);
+  gmt->tm_isdst = localtime.tm_isdst;
+  time_t gmt_time = mktime(gmt);
+  return difftime(time, gmt_time);
+}
+
+#endif
 
 CAMLprim
 value
@@ -67,6 +98,8 @@ ocaml_timmy_offset_calendar_time_s(value date, value daytime)
   CAMLreturn(Val_int(offset(time)));
 }
 
+#ifndef __MINGW32__
+
 CAMLprim
 value
 ocaml_timmy_local_timezone_name()
@@ -77,3 +110,21 @@ ocaml_timmy_local_timezone_name()
   localtime_r(&now, &localtime);
   CAMLreturn(caml_copy_string (localtime.tm_zone));
 }
+
+#else
+
+CAMLprim
+value
+ocaml_timmy_local_timezone_name()
+{
+  CAMLparam0();
+  const TIME_ZONE_INFORMATION tz = local_timezone();
+  char output[512];
+  wcstombs_s(NULL, output, sizeof(output), tz.StandardName, sizeof(output));
+  /* std::wstring_convert<std::codecvt_utf8<wchar_t>> utf8_conv; */
+  /* const auto res = utf8_conv.to_bytes(tz.StandardName); */
+  CAMLreturn(caml_copy_string(output));
+  /* CAMLreturn(caml_copy_string(""));  */
+}
+
+#endif
