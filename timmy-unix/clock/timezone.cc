@@ -9,15 +9,27 @@
 #include <caml/memory.h>
 #include <caml/mlvalues.h>
 
+const std::chrono::time_zone * get_current_zone()
+{
+  // `std::chrono::current_zone` doesn't respect `$TZ`.
+  // Implement it here for backwards-compatibility
+  const std::chrono::time_zone* tz = nullptr;
+  if (auto env = getenv("TZ"))
+    tz = std::chrono::locate_zone(env);
+  if (!tz)
+    tz = std::chrono::current_zone();
+  return tz;
+}
+
 std::string current_zone_name(void)
 {
-  auto current_zone = std::chrono::current_zone();
+  auto current_zone = get_current_zone();
   return std::string(current_zone->name());
 }
 
 int offset(const std::chrono::sys_time<std::chrono::seconds>& tp)
 {
-  auto current_zone = std::chrono::current_zone();
+  auto current_zone = get_current_zone();
   auto sys_info = current_zone->get_info(tp);
   return sys_info.offset.count();
 }
