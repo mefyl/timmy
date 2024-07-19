@@ -4,5 +4,6 @@
  (libraries fmt ptime.clock.os timmy)
  (foreign_stubs
   (language cxx)
+  (flags :standard -std=c++20)
   (names timezone))
  (implements clock))

@@ -76,9 +76,9 @@ let daylight_savings () =
   ()
 
 let timezone_name () =
-  match Clock.timezone_local |> Timmy.Timezone.name with
-  | "CET" | "CEST" -> ()
-  | name -> Alcotest.(check string "timezone name") "CET" name
+  Alcotest.(check string "timezone name")
+    "Europe/Paris"
+    (Clock.timezone_local |> Timmy.Timezone.name)
 
 let v =
   [
