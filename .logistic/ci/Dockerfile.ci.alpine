@@ -2,7 +2,7 @@ FROM alpine:3.18.0 AS opam-base
 
 # No `apk --no-cache` because it makes `conf-pkg-config` fail.
 # See https://github.com/ocaml/opam-repository/issues/22094
-RUN apk add bash clang coreutils docker-cli docker-cli-buildx gcc git linux-headers m4 make musl-dev opam openssh
+RUN apk add bash clang coreutils docker-cli docker-cli-buildx gcc git g++ linux-headers m4 make musl-dev opam openssh
 RUN opam init --bare --disable-sandboxing --dot-profile=/etc/profile.d/opam.sh --shell-setup --verbose --yes
 
 FROM opam-base
