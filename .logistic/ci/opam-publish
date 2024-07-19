@@ -20,6 +20,7 @@ git clone --depth 1 git@gitlab.routine.co:routine/opam /tmp/opam
 for f in *.opam; do
     make_opam "${f%.opam}"
     make_opam "${f%.opam}-ios"
+    make_opam "${f%.opam}-macos"
 done
 
 if test $(git  -C "/tmp/opam" status --porcelain | wc -c) -gt 0; then
