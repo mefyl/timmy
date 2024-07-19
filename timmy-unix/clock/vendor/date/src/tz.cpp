@@ -4131,7 +4131,7 @@ tzdb::current_zone() const
         }
         // Fall through to try other means.
     }
-    throw std::runtime_error("Could not get current timezone");
+    return locate_zone("UTC");
 }
 
 #endif  // !_WIN32
