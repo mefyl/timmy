@@ -466,7 +466,8 @@ discover_tz_dir()
     struct stat sb;
     using namespace std;
 #  ifndef __APPLE__
-    CONSTDATA auto tz_dir_default = "/usr/share/zoneinfo";
+    const auto tz_dir_from_env = std::getenv("TZDIR");
+    const auto tz_dir_default = tz_dir_from_env == nullptr ? "/usr/share/zoneinfo" : tz_dir_from_env;
     CONSTDATA auto tz_dir_buildroot = "/usr/share/zoneinfo/uclibc";
 
     // Check special path which is valid for buildroot with uclibc builds
