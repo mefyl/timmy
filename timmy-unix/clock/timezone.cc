@@ -1,4 +1,4 @@
-#include <chrono>
+#include "date/tz.h"
 
 #include <assert.h>
 #include <string>
@@ -9,15 +9,15 @@
 #include <caml/memory.h>
 #include <caml/mlvalues.h>
 
-const std::chrono::time_zone * get_current_zone()
+const date::time_zone * get_current_zone()
 {
-  // `std::chrono::current_zone` doesn't respect `$TZ`.
+  // `date::current_zone` doesn't respect `$TZ`.
   // Implement it here for backwards-compatibility
-  const std::chrono::time_zone* tz = nullptr;
+  const date::time_zone* tz = nullptr;
   if (auto env = getenv("TZ"))
-    tz = std::chrono::locate_zone(env);
+    tz = date::locate_zone(env);
   if (!tz)
-    tz = std::chrono::current_zone();
+    tz = date::current_zone();
   return tz;
 }
 
@@ -27,7 +27,7 @@ std::string current_zone_name(void)
   return std::string(current_zone->name());
 }
 
-int offset(const std::chrono::sys_time<std::chrono::seconds>& tp)
+int offset(const date::sys_time<std::chrono::seconds>& tp)
 {
   auto current_zone = get_current_zone();
   auto sys_info = current_zone->get_info(tp);
@@ -57,7 +57,7 @@ ocaml_timmy_offset_timestamp_s(value datetime)
 {
   CAMLparam1(datetime);
 
-  const auto utctime = std::chrono::sys_time<std::chrono::seconds>(
+  const auto utctime = date::sys_time<std::chrono::seconds>(
     std::chrono::seconds(Int64_val(datetime))
   );
   CAMLreturn(Val_int (offset(utctime)));
@@ -87,7 +87,7 @@ ocaml_timmy_offset_calendar_time_s(value date, value daytime)
     .tm_year = year - 1900
   };
 
-  const auto time = std::chrono::sys_time<std::chrono::seconds>(
+  const auto time = date::sys_time<std::chrono::seconds>(
     std::chrono::seconds(mktime(&datetime))
   );
   CAMLreturn(Val_int(offset(time)));
