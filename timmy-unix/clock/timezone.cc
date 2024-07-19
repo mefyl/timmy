@@ -10,6 +10,7 @@
 # include <timezoneapi.h>
 #endif
 
+extern "C" {
 static
 void
 check_tuple(value tuple, int size)
@@ -128,3 +129,4 @@ ocaml_timmy_local_timezone_name()
 }
 
 #endif
+}

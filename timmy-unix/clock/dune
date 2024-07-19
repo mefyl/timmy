@@ -3,6 +3,6 @@
  (public_name timmy-unix.clock)
  (libraries fmt ptime.clock.os timmy)
  (foreign_stubs
-  (language c)
+  (language cxx)
   (names timezone))
  (implements clock))
