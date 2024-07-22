@@ -71,7 +71,6 @@
   fmt
   js_of_ocaml
   js_of_ocaml-ppx
-  (logs (>= 0.7.0))
   (timmy
    (= :version)))
  (depopts schematic-jsoo)
