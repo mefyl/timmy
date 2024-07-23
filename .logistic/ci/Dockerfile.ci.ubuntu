@@ -44,7 +44,7 @@ RUN ssh-keyscan gitlab.routine.co > /root/.ssh/known_hosts
 # No recursive lookup available
 ARG PACKAGES
 RUN if test -n "$PACKAGES"; then apt-get install --yes $PACKAGES; fi
-ADD .exists *.opam.extdeps /root/
+ADD .exists opam/*.opam.extdeps /root/
 # Disable automatic depexts because of incompatibility with the latest node package
 RUN apt-get install --yes libgmp-dev nodejs && opam option depext=false
 RUN opam update && \
