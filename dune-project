@@ -105,6 +105,7 @@
    (and
     :with-test
     (>= 1.4.0)))
+  (logs (>= 0.7.0))
   lwt
   (timmy
    (= :version)))
