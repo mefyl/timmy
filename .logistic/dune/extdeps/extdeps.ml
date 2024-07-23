@@ -10,7 +10,20 @@ let parse path =
       OpamParser.FullPos.main OpamLexer.token lexbuf path)
 
 let pp_file = OpamPrinter.FullPos.format_opamfile
-let input = Cmdliner.Arg.(opt (some string) None & info [ "i"; "input" ])
+
+let path =
+  let realpath path =
+    let open Stdlib.Filename in
+    if is_relative path then concat (Stdlib.Sys.getcwd ()) path else path
+  in
+  Cmdliner.Arg.conv (Fn.compose Result.return realpath, Fmt.string)
+
+let input = Cmdliner.Arg.(opt (some path) None & info [ "i"; "input" ])
+
+let toolchain =
+  Cmdliner.Arg.(
+    opt (some string) None
+    & info ~doc:"Cross compilation toolchain" [ "toolchain" ])
 
 let local =
   Cmdliner.Arg.(
@@ -52,6 +65,28 @@ let run command =
          Fmt.(array string)
          command error)
 
+let promote_until_clean =
+  Sexp.List
+    [ Atom "mode"; List [ Atom "promote"; List [ Atom "until-clean" ] ] ]
+
+let cross_toolchains = [ "ios"; "macos"; "windows" ]
+let cross_toolchain_packages = [ "routine-controller-lib" ]
+
+let value_filter_map name value ~f =
+  match value with
+  | { OpamParserTypes.FullPos.pelem = OpamParserTypes.FullPos.List elements; _ }
+    as value ->
+    let* pelem = List.map ~f elements.pelem |> Result.all >>| List.concat in
+    Result.return
+      {
+        value with
+        pelem = OpamParserTypes.FullPos.List { elements with pelem };
+      }
+  | { pos; _ } -> Result.fail (Some pos, Fmt.str {|expected a list for %S|} name)
+
+let value_map name value ~f =
+  value_filter_map name value ~f:(fun v -> f v >>| fun v -> [ v ])
+
 let () =
   let open Cmdliner in
   let generate =
@@ -81,7 +116,7 @@ let () =
       in
       let generate package =
         let open Sexplib.Sexp in
-        let opam_rule suffix =
+        let opam_rule ?(source = "") suffix =
           List
             [
               Atom "rule";
@@ -90,10 +125,12 @@ let () =
                   Atom "target";
                   Atom (package ^ suffix ^ ".%{version:" ^ package ^ "}.opam");
                 ];
+              promote_until_clean;
               List
                 [
                   Atom "deps";
-                  List [ Atom ":opam"; Atom (package ^ suffix ^ ".opam") ];
+                  List
+                    [ Atom ":opam"; Atom (source ^ package ^ suffix ^ ".opam") ];
                 ];
               List
                 [
@@ -119,32 +156,70 @@ let () =
                     ];
                 ];
             ]
-        and locked_rule =
+        and locked_rule suffix =
           List
             [
               Atom "rule";
               List [ Atom "deps"; List [ Atom "universe" ] ];
-              List [ Atom "target"; Atom (package ^ ".opam.locked") ];
+              List [ Atom "target"; Atom (package ^ suffix ^ ".opam.locked") ];
               List
                 [
                   Atom "action";
                   List
                     [
-                      Atom "run"; Atom "%{bin:opam}"; Atom "lock"; Atom package;
+                      Atom "run";
+                      Atom "%{bin:opam}";
+                      Atom "lock";
+                      Atom (package ^ suffix);
                     ];
                 ];
             ]
-        and extdeps_rule =
+        and extdeps_rule toolchain =
+          let suffix =
+            match toolchain with
+            | Some toolchain -> "-" ^ toolchain
+            | None -> ""
+          in
           List
             [
               Atom "rule";
-              List [ Atom "alias"; Atom "extdeps" ];
+              promote_until_clean;
+              List [ Atom "target"; Atom (package ^ ".opam.extdeps" ^ suffix) ];
               List
                 [
-                  Atom "mode";
-                  List [ Atom "promote"; List [ Atom "until-clean" ] ];
+                  Atom "action";
+                  List
+                    [
+                      Atom "with-stdout-to";
+                      Atom "%{target}";
+                      List
+                        ([
+                           Atom "run";
+                           Atom "%{dep:../.logistic/dune/extdeps/extdeps.exe}";
+                           Atom "rewrite";
+                           Atom "--input";
+                           Atom ("%{dep:" ^ package ^ suffix ^ ".opam.locked}");
+                           Atom "--local";
+                           Atom (String.concat ~sep:"," (packages @ local));
+                         ]
+                        @
+                        match toolchain with
+                        | Some toolchain ->
+                          [ Atom "--toolchain"; Atom toolchain ]
+                        | None -> []);
+                    ];
                 ];
-              List [ Atom "target"; Atom (package ^ ".opam.extdeps") ];
+            ]
+        and cross_rule toolchain =
+          List
+            [
+              Atom "rule";
+              List
+                [
+                  Atom "target";
+                  Atom (String.concat [ package; "-"; toolchain; ".opam" ]);
+                ];
+              promote_until_clean;
               List
                 [
                   Atom "action";
@@ -155,35 +230,10 @@ let () =
                       List
                         [
                           Atom "run";
-                          Atom "%{dep:.logistic/dune/extdeps/extdeps.exe}";
-                          Atom "rewrite";
+                          Atom "%{dep:../.logistic/dune/extdeps/extdeps.exe}";
+                          Atom ("rewrite-" ^ toolchain);
                           Atom "--input";
-                          Atom ("%{dep:" ^ package ^ ".opam.locked}");
-                          Atom "--local";
-                          Atom (String.concat ~sep:"," (packages @ local));
-                        ];
-                    ];
-                ];
-            ]
-        and ios_rule =
-          List
-            [
-              Atom "rule";
-              List [ Atom "target"; Atom (package ^ "-ios.opam") ];
-              List
-                [
-                  Atom "action";
-                  List
-                    [
-                      Atom "with-stdout-to";
-                      Atom "%{target}";
-                      List
-                        [
-                          Atom "run";
-                          Atom "%{dep:.logistic/dune/extdeps/extdeps.exe}";
-                          Atom "rewrite-ios";
-                          Atom "--input";
-                          Atom ("%{dep:" ^ package ^ ".opam}");
+                          Atom ("%{dep:../" ^ package ^ ".opam}");
                           Atom "--cross";
                           Atom
                             (String.concat ~sep:","
@@ -197,7 +247,34 @@ let () =
                 ];
             ]
         in
-        [ opam_rule ""; ios_rule; opam_rule "-ios"; locked_rule; extdeps_rule ]
+        [
+          List
+            [
+              Atom "alias";
+              List [ Atom "name"; Atom "extdeps" ];
+              List
+                (Atom "deps"
+                :: Atom ("opam/" ^ package ^ ".opam.extdeps")
+                ::
+                (if
+                   List.mem ~equal:String.equal cross_toolchain_packages package
+                 then
+                   List.map cross_toolchains ~f:(fun toolchain ->
+                       Atom ("opam/" ^ package ^ ".opam.extdeps-" ^ toolchain))
+                 else []));
+            ];
+          List
+            (Atom "subdir" :: Atom "opam"
+            :: List.concat
+                 ([ opam_rule ""; locked_rule ""; extdeps_rule None ]
+                 :: List.map cross_toolchains ~f:(fun toolchain ->
+                        [
+                          cross_rule toolchain;
+                          opam_rule ("-" ^ toolchain);
+                          locked_rule ("-" ^ toolchain);
+                          extdeps_rule (Some toolchain);
+                        ])));
+        ]
       in
       List.map ~f:generate packages
       |> List.concat
@@ -213,7 +290,18 @@ let () =
     let pos f ({ pelem; _ } as pos) =
       match f pelem with Some pelem -> Some { pos with pelem } | None -> None
     in
-    let rewrite exclude path =
+    let rewrite toolchain exclude path =
+      let exclude =
+        match toolchain with
+        | None -> exclude
+        | Some toolchain ->
+          let open Sequence in
+          append
+            (of_list exclude
+            |> map ~f:(fun package -> package ^ "-" ^ toolchain))
+            (of_list exclude)
+          |> to_list
+      in
       let excluded = List.mem ~equal:String.equal exclude in
       let file = parse path in
       let rec rewrite_contents contents =
@@ -297,9 +385,10 @@ let () =
         { file with file_contents = rewrite_contents file.file_contents }
       |> Result.return
     in
-    Term.(const rewrite $ Arg.value local $ Arg.required input)
+    Term.(
+      const rewrite $ Arg.value toolchain $ Arg.value local $ Arg.required input)
     |> Cmd.(v (info "rewrite"))
-  and rewrite_ios =
+  and rewrite_toolchain toolchain =
     let open OpamParserTypes.FullPos in
     let pos f ({ pelem; _ } as pos) =
       match f pelem with
@@ -309,7 +398,7 @@ let () =
     in
     let filter_doc_test =
       let rec filter_opt = function
-        | Ident "with-doc" | Ident "with-test" -> false
+        | Ident "build" | Ident "with-doc" | Ident "with-test" -> false
         | Logop ({ pelem = `And; _ }, { pelem = l; _ }, { pelem = r; _ }) ->
           filter_opt l && filter_opt r
         | Logop ({ pelem = `Or; _ }, { pelem = l; _ }, { pelem = r; _ }) ->
@@ -324,7 +413,9 @@ let () =
     in
     let rewrite path cross cross_both cross_exclude =
       let package =
-        Option.value_exn ~here:[%here] (String.rsplit2 ~on:'.' path) |> fst
+        Option.value_exn ~here:[%here]
+          (String.rsplit2 ~on:'.' (Stdlib.Filename.basename path))
+        |> fst
       in
       let file = parse path in
       let rec rewrite_contents contents =
@@ -333,59 +424,67 @@ let () =
         | Variable (({ pelem = name; _ } as name_pos), value) as item -> (
           match name with
           | "build" ->
-            let* build = pos rewrite_build value in
+            let* build = value_map "build" ~f:(pos rewrite_command) value in
             Result.return (Variable (name_pos, build))
           | "depends" | "depopts" ->
-            let* depends = pos rewrite_depends value in
-            Result.return (Variable (name_pos, depends))
+            let* value =
+              value_filter_map "depends" value
+                ~f:(Fn.compose Result.return rewrite_dependency)
+            in
+            Result.return (Variable (name_pos, value))
+          | "pin-depends" ->
+            let* value =
+              let rewrite_pin = function
+                | { pelem = List ({ pelem = [ package; url ]; _ } as args); _ }
+                  as pin ->
+                  rewrite_dependency package
+                  |> List.map ~f:(fun package ->
+                         {
+                           pin with
+                           pelem = List { args with pelem = [ package; url ] };
+                         })
+                  |> Result.return
+                | { pos; _ } ->
+                  Result.fail (Some pos, "unrecognized pin_depends")
+              in
+              value_filter_map "pin-depends" value ~f:rewrite_pin
+            in
+            Result.return (Variable (name_pos, value))
           | _ -> Result.return item)
         | Section _ as section -> Result.return section
-      and rewrite_build = function
-        | List commands ->
-          let* commands =
-            pos
-              (fun commands ->
-                let* commands =
-                  List.map ~f:(pos rewrite_command) commands |> Result.all
-                in
-                Result.return commands)
-              commands
-          in
-          Result.return (List commands)
-        | _ -> Result.fail (None, {|expected a list for "build"|})
-      and rewrite_depends = function
-        | List depends ->
-          let rec rewrite ({ pelem = dep; _ } as item) =
-            if filter_doc_test dep then
-              match dep with
-              | String dep when List.mem ~equal:String.equal cross_exclude dep
-                ->
-                None
-              | String dep when List.mem ~equal:String.equal cross_both dep ->
-                Some
-                  [
-                    { item with pelem = String dep };
-                    { item with pelem = String (dep ^ "-ios") };
-                  ]
-              | String dep
-                when List.mem ~equal:String.equal ("ocaml" :: cross) dep ->
-                Some [ { item with pelem = String (dep ^ "-ios") } ]
-              | Option (value, options) ->
-                let+ values = rewrite value in
-                List.map values ~f:(fun value ->
-                    { item with pelem = Option (value, options) })
-              | _ -> Some [ item ]
-            else None
-          in
-          let* depends =
-            pos
-              (fun depends ->
-                List.filter_map ~f:rewrite depends
-                |> List.concat |> Result.return)
-              depends
-          in
-          Result.return (List depends)
-        | _ -> Result.fail (None, {|expected a list for "build"|})
+      and rewrite_dependency ({ pelem = dep; _ } as item) =
+        let split_version name =
+          match String.lsplit2 ~on:'.' name with
+          | Some (name, version) -> (name, "." ^ version)
+          | None -> (name, "")
+        in
+        if filter_doc_test dep then
+          match dep with
+          | String dependency ->
+            let package, version = split_version dependency in
+            if List.mem ~equal:String.equal cross_exclude package then []
+            else if List.mem ~equal:String.equal cross_both package then
+              [
+                { item with pelem = String dependency };
+                {
+                  item with
+                  pelem = String (package ^ "-" ^ toolchain ^ version);
+                };
+              ]
+            else if List.mem ~equal:String.equal ("ocaml" :: cross) package then
+              [
+                {
+                  item with
+                  pelem = String (package ^ "-" ^ toolchain ^ version);
+                };
+              ]
+            else [ item ]
+          | Option (value, options) ->
+            rewrite_dependency value
+            |> List.map ~f:(fun value ->
+                   { item with pelem = Option (value, options) })
+          | _ -> [ item ]
+        else []
       and rewrite_command = function
         | List
             ({
@@ -397,7 +496,7 @@ let () =
              } as command) ->
           let tail =
             { pelem = String "-x"; pos = dune_command.pos }
-            :: { pelem = String "ios"; pos = dune_command.pos }
+            :: { pelem = String toolchain; pos = dune_command.pos }
             :: List.filter_map
                  ~f:(function
                    | { pelem = Ident "name"; _ } as item ->
@@ -429,8 +528,16 @@ let () =
     Term.(
       const rewrite $ Arg.required input $ Arg.value cross_only
       $ Arg.value cross_both $ Arg.value cross_exclude)
-    |> Cmd.(v (info "rewrite-ios"))
+    |> Cmd.(v (info ("rewrite-" ^ toolchain)))
   in
   Cmdliner.Cmd.(
-    eval_result (group (info "extdeps") [ generate; rewrite; rewrite_ios ]))
+    eval_result
+      (group (info "extdeps")
+         [
+           generate;
+           rewrite;
+           rewrite_toolchain "ios";
+           rewrite_toolchain "macos";
+           rewrite_toolchain "windows";
+         ]))
   |> Stdlib.exit
