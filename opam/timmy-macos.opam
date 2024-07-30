@@ -1,0 +1,38 @@
+opam-version: "2.0"
+version: "1.1.3"
+synopsis: "Time and calendar library"
+maintainer: ["mefyl <mefyl@gruntech.org>"]
+authors: ["mefyl <mefyl@gruntech.org>"]
+license: "LGPL-3.0-or-later"
+homepage: "https://github.com/mefyl/timmy"
+bug-reports: "https://github.com/mefyl/timmy/issues"
+depends: [
+  "dune" {>= "3.0"}
+  "base-macos"
+  "fmt-macos" {>= "0.8.7"}
+  "ocaml-macos" {>= "4.08.0"}
+  "ppx_here"
+  "ppx_here-macos"
+  "ppx_deriving" {>= "5.0"}
+  "ppx_deriving-macos" {>= "5.0"}
+  "ptime-macos"
+]
+depopts: ["schematic-macos"]
+conflicts: [
+  "schematic" {< "0.18.2" | >= "0.21.0"}
+]
+build: [
+  ["dune" "subst"] {dev}
+  ["dune" "build" "-x" "macos" "-p" "timmy" "-j" jobs "@install"]
+]
+dev-repo: "git+https://github.com/mefyl/timmy.git"
+pin-depends: [
+  [
+    "landmarks.1.4"
+    "git+https://github.com/LexiFi/landmarks.git#b0c753cd2a4c4aa00dffdd3be187d8ed592fabf7"
+  ]
+  [
+    "landmarks-ppx.1.4"
+    "git+https://github.com/LexiFi/landmarks.git#b0c753cd2a4c4aa00dffdd3be187d8ed592fabf7"
+  ]
+]
