@@ -1,4 +1,5 @@
 (lang dune 3.0)
+(using dune_site 0.1)
 
 (name timmy)
 
@@ -91,7 +92,9 @@
   (conf-tzdata :with-test)
   fmt
   (timmy
-   (= :version))))
+   (= :version)) dune-site)
+ (sites
+   (share data)))
 
 (package
  (name timmy-lwt)
