@@ -8,7 +8,7 @@ license: "LGPL-3.0-or-later"
 homepage: "https://github.com/mefyl/timmy"
 bug-reports: "https://github.com/mefyl/timmy/issues"
 depends: [
-  "dune" {>= "3.0"}
+  "dune" {>= "3.11"}
   "base"
   "fmt" {>= "0.8.7"}
   "ocaml" {>= "4.08.0"}

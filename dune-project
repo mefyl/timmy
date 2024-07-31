@@ -1,4 +1,4 @@
-(lang dune 3.0)
+(lang dune 3.11)
 (using dune_site 0.1)
 
 (name timmy)

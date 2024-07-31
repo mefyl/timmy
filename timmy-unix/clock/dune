@@ -20,5 +20,5 @@
  (section
   (site
    (timmy-unix data)))
- (files
+ (source_trees
   (vendor/tzdata as tzdata)))
