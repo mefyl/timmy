@@ -1,7 +1,6 @@
 #include "date/tz.h"
 
 #include <assert.h>
-#include <locale>
 #include <string>
 #include <time.h>
 
@@ -101,15 +100,5 @@ ocaml_timmy_local_timezone_name()
   CAMLparam0();
   auto name = current_zone_name();
   CAMLreturn(caml_copy_string (name.data()));
-}
-
-CAMLprim
-value
-ocaml_timmy_set_install(value install_path)
-{
-  CAMLparam1(install_path);
-  const auto new_install_path = String_val(install_path);
-  date::set_install(new_install_path);
-  CAMLreturn(Val_unit);
 }
 }

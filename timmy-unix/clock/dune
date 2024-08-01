@@ -1,24 +1,12 @@
 (include_subdirs unqualified)
 
-(generate_sites_module
- (module Timmy_unix_sites)
- (sites timmy-unix))
-
 (library
  (name clock_unix)
  (public_name timmy-unix.clock)
- (libraries fmt ptime.clock.os timmy dune-site)
+ (libraries fmt ptime.clock.os timmy)
  (foreign_stubs
   (language cxx)
-  (flags :standard -std=c++20 -DHAS_REMOTE_API=0)
+  (flags :standard -std=c++20 -DHAS_REMOTE_API=0 -DUSE_OS_TZDB=1)
   (include_dirs vendor/date/include)
   (names timezone tz))
  (implements clock))
-
-(install
- (package timmy-unix)
- (section
-  (site
-   (timmy-unix data)))
- (files
-  (vendor/tzdata as tzdata)))
