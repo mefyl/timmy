@@ -7,7 +7,7 @@ license: "LGPL-3.0-or-later"
 homepage: "https://github.com/mefyl/timmy"
 bug-reports: "https://github.com/mefyl/timmy/issues"
 depends: [
-  "dune" {>= "3.11"}
+  "dune" {>= "3.0"}
   "base-macos"
   "fmt-macos" {>= "0.8.7"}
   "ocaml-macos" {>= "4.08.0"}
@@ -23,19 +23,7 @@ conflicts: [
 ]
 build: [
   ["dune" "subst"] {dev}
-  [
-    "dune"
-    "build"
-    "-x"
-    "macos"
-    "-p"
-    "timmy"
-    "-j"
-    jobs
-    "--promote-install-files=false"
-    "@install"
-  ]
-  ["dune" "install" "-p" name "--create-install-files" name]
+  ["dune" "build" "-x" "macos" "-p" "timmy" "-j" jobs "@install"]
 ]
 dev-repo: "git+https://github.com/mefyl/timmy.git"
 pin-depends: [

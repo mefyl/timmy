@@ -10,7 +10,7 @@
  (libraries fmt ptime.clock.os timmy dune-site)
  (foreign_stubs
   (language cxx)
-  (flags -ldopt -lstdc++ -ldopt -Wl,-shared-libgcc -std=c++20 -DHAS_REMOTE_API=0)
+  (flags :standard -std=c++20 -DHAS_REMOTE_API=0)
   (include_dirs vendor/date/include)
   (names timezone tz))
  (implements clock))
