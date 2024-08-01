@@ -21,27 +21,26 @@ let timezone_name_from_link timezone_link =
   with _ -> None
 
 let windows_timezone_mappings () =
-  let get_dict_elt key json =
-    match
-      Map.find (Ezjsonm.get_dict json |> Map.of_alist_exn (module String)) key
-    with
-    | Some v -> v
-    | None ->
-      Fmt.failwith "Key %s not found in document %s" key
-        (Ezjsonm.value_to_string json)
-  in
-  let zone_to_kv zone =
-    let map_zone = get_dict_elt "mapZone" zone in
-    ( get_dict_elt "_other" map_zone |> Ezjsonm.get_string,
-      get_dict_elt "_type" map_zone |> Ezjsonm.get_string )
-  in
-  let mapping_json = Ezjsonm.value_from_string WindowsZones.zone in
-  mapping_json
-  |> get_dict_elt "supplemental"
-  |> get_dict_elt "windowsZones"
-  |> get_dict_elt "mapTimezones"
-  |> Ezjsonm.get_list zone_to_kv
-  |> Map.of_alist_reduce (module String) ~f:Fn.const
+  try
+    let get_dict_elt key json =
+      Map.find_exn
+        (Ezjsonm.get_dict json |> Map.of_alist_exn (module String))
+        key
+    in
+    let zone_to_kv zone =
+      let map_zone = get_dict_elt "mapZone" zone in
+      ( get_dict_elt "_other" map_zone |> Ezjsonm.get_string,
+        get_dict_elt "_type" map_zone |> Ezjsonm.get_string )
+    in
+    let mapping_json = Ezjsonm.value_from_string WindowsZones.zone in
+    mapping_json
+    |> get_dict_elt "supplemental"
+    |> get_dict_elt "windowsZones"
+    |> get_dict_elt "mapTimezones"
+    |> Ezjsonm.get_list zone_to_kv
+    |> Map.of_alist_reduce (module String) ~f:Fn.const
+  with exn ->
+    Exn.reraise exn "timmy-unix: Error parsing the bundled 'windowsZones'"
 
 let timezone_from_windows_name () =
   let windows_timezone = local_timezone_name () in
