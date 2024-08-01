@@ -32,7 +32,7 @@ let windows_timezone_mappings () =
       ( get_dict_elt "_other" map_zone |> Ezjsonm.get_string,
         get_dict_elt "_type" map_zone |> Ezjsonm.get_string )
     in
-    let mapping_json = Ezjsonm.value_from_string WindowsZones.zone in
+    let mapping_json = Ezjsonm.value_from_string Windows_timezones.v in
     mapping_json
     |> get_dict_elt "supplemental"
     |> get_dict_elt "windowsZones"

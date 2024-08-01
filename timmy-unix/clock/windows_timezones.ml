@@ -1,6 +1,6 @@
 (* Imported from
    https://raw.githubusercontent.com/unicode-org/cldr-json/main/cldr-json/cldr-core/supplemental/windowsZones.json *)
-let zone =
+let v =
   {|
 {
   "supplemental": {
