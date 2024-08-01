@@ -51,9 +51,9 @@ let get_timezone_name () =
   List.find_map
     ~f:(fun f -> f ())
     [
-      timezone_from_windows_name;
       (fun () -> Sys.getenv "TZ");
       (fun () -> timezone_name_from_link "/etc/localtime");
+      timezone_from_windows_name;
     ]
   |> Option.value ~default:(local_timezone_name ())
 
