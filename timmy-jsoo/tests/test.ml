@@ -1,1 +1,7 @@
-let () = Alcotest.(run "Timmy-unix" Clock_tests.v)
+let () =
+  Alcotest.(
+    run "Timmy-jsoo"
+      [
+        ( "timezone",
+          [ test_case "daylight saving" `Quick Clock_tests.daylight_savings ] );
+      ])

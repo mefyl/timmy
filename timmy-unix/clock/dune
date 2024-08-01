@@ -1,12 +1,8 @@
-(include_subdirs unqualified)
-
 (library
  (name clock_unix)
  (public_name timmy-unix.clock)
  (libraries fmt ptime.clock.os timmy)
  (foreign_stubs
-  (language cxx)
-  (flags :standard -std=c++20 -DHAS_REMOTE_API=0 -DUSE_OS_TZDB=1)
-  (include_dirs vendor/date/include)
-  (names timezone tz))
+  (language c)
+  (names timezone))
  (implements clock))
