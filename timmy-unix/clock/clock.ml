@@ -20,10 +20,39 @@ let timezone_name_from_link timezone_link =
     | _ -> None
   with _ -> None
 
+let windows_timezone_mappings () =
+  let get_dict_elt key json =
+    match
+      Map.find (Ezjsonm.get_dict json |> Map.of_alist_exn (module String)) key
+    with
+    | Some v -> v
+    | None ->
+      Fmt.failwith "Key %s not found in document %s" key
+        (Ezjsonm.value_to_string json)
+  in
+  let zone_to_kv zone =
+    let map_zone = get_dict_elt "mapZone" zone in
+    ( get_dict_elt "_other" map_zone |> Ezjsonm.get_string,
+      get_dict_elt "_type" map_zone |> Ezjsonm.get_string )
+  in
+  let mapping_json = Ezjsonm.value_from_string WindowsZones.zone in
+  mapping_json
+  |> get_dict_elt "supplemental"
+  |> get_dict_elt "windowsZones"
+  |> get_dict_elt "mapTimezones"
+  |> Ezjsonm.get_list zone_to_kv
+  |> Map.of_alist_reduce (module String) ~f:Fn.const
+
+let timezone_from_windows_name () =
+  let windows_timezone = local_timezone_name () in
+  let mappings = windows_timezone_mappings () in
+  Map.find mappings windows_timezone
+
 let get_timezone_name () =
   List.find_map
     ~f:(fun f -> f ())
     [
+      timezone_from_windows_name;
       (fun () -> Sys.getenv "TZ");
       (fun () -> timezone_name_from_link "/etc/localtime");
     ]

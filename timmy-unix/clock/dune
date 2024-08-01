@@ -1,7 +1,7 @@
 (library
  (name clock_unix)
  (public_name timmy-unix.clock)
- (libraries fmt ptime.clock.os timmy base unix)
+ (libraries fmt ptime.clock.os timmy base unix ezjsonm)
  (foreign_stubs
   (language c)
   (names timezone))

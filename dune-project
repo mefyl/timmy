@@ -88,6 +88,8 @@
    (and
     :with-test
     (>= 1.4.0)))
+  (ezjsonm (= 1.3.0))
+  base
   (conf-tzdata :with-test)
   fmt
   (timmy
