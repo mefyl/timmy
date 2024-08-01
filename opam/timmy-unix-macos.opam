@@ -8,6 +8,8 @@ homepage: "https://github.com/mefyl/timmy"
 bug-reports: "https://github.com/mefyl/timmy/issues"
 depends: [
   "dune" {>= "3.0"}
+  "ezjsonm" {= "1.3.0"}
+  "base-macos"
   "fmt-macos"
   "timmy" {= version}
   "timmy-macos" {= version}

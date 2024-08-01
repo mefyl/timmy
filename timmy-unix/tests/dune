@@ -7,6 +7,8 @@
  (package timmy-unix)
  (action
   (setenv
+   ; XXX: For some reason, setting this cause the tests to fail on Windows .
+   ; But since we don't run the testsuite there, let it be a problem for another time.
    TZ
    Europe/Amsterdam
    (run %{dep:./test.exe}))))
