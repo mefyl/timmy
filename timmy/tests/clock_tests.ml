@@ -76,9 +76,15 @@ let daylight_savings () =
   ()
 
 let timezone_name () =
-  match Clock.timezone_local |> Timmy.Timezone.name with
-  | "CET" | "CEST" -> ()
-  | name -> Alcotest.(check string "timezone name") "CET" name
+  let name = Clock.timezone_local |> Timmy.Timezone.name in
+  (* All these timezones are equivalent, and it's OK for the library to
+     normalize it *)
+  let expecteds = [ "Europe/Brussels"; "Europe/Paris"; "Europe/Amsterdam" ] in
+  if List.exists (String.equal name) expecteds then ()
+  else
+    Alcotest.failf ~here:[%here] "Timezone %s not in %a" name
+      (Fmt.list ~sep:(Fmt.const Fmt.string ", ") Fmt.string)
+      expecteds
 
 let v =
   [
