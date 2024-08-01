@@ -1,5 +1,6 @@
 (lang dune 3.11)
 (using dune_site 0.1)
+(use_standard_c_and_cxx_flags false)
 
 (name timmy)
 

@@ -7,7 +7,7 @@ license: "LGPL-3.0-or-later"
 homepage: "https://github.com/mefyl/timmy"
 bug-reports: "https://github.com/mefyl/timmy/issues"
 depends: [
-  "dune" {>= "3.0"}
+  "dune" {>= "3.11"}
   "base-windows"
   "fmt-windows" {>= "0.8.7"}
   "ocaml-windows" {>= "4.08.0"}
@@ -23,7 +23,19 @@ conflicts: [
 ]
 build: [
   ["dune" "subst"] {dev}
-  ["dune" "build" "-x" "windows" "-p" "timmy" "-j" jobs "@install"]
+  [
+    "dune"
+    "build"
+    "-x"
+    "windows"
+    "-p"
+    "timmy"
+    "-j"
+    jobs
+    "--promote-install-files=false"
+    "@install"
+  ]
+  ["dune" "install" "-p" name "--create-install-files" name]
 ]
 dev-repo: "git+https://github.com/mefyl/timmy.git"
 pin-depends: [
