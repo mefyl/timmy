@@ -39,11 +39,11 @@ offset(const time_t time)
 #else
 
 static
-TIME_ZONE_INFORMATION
+DYNAMIC_TIME_ZONE_INFORMATION
 local_timezone()
 {
-  TIME_ZONE_INFORMATION tz;
-  GetTimeZoneInformation(&tz);
+  DYNAMIC_TIME_ZONE_INFORMATION tz;
+  GetDynamicTimeZoneInformation(&tz);
   return tz;
 }
 
@@ -118,7 +118,7 @@ value
 ocaml_timmy_local_timezone_name()
 {
   CAMLparam0();
-  const TIME_ZONE_INFORMATION tz = local_timezone();
+  const DYNAMIC_TIME_ZONE_INFORMATION tz = local_timezone();
   char output[512];
   wcstombs_s(NULL, output, sizeof(output), tz.StandardName, sizeof(output));
   /* std::wstring_convert<std::codecvt_utf8<wchar_t>> utf8_conv; */
