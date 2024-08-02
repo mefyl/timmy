@@ -1,8 +1,22 @@
 (library
  (name clock_unix)
  (public_name timmy-unix.clock)
- (libraries fmt ptime.clock.os timmy base unix ezjsonm)
+ (libraries fmt ptime.clock.os timmy base unix)
+ (modules clock windows_timezones)
  (foreign_stubs
   (language c)
   (names timezone))
  (implements clock))
+
+(rule
+ (action
+  (with-stdout-to
+   windows_timezones.ml
+   (with-stdin-from
+    windowsZones.json
+    (run ./generate_windows_timezones.exe)))))
+
+(executable
+ (name generate_windows_timezones)
+ (modules generate_windows_timezones)
+ (libraries base ezjsonm fmt))
