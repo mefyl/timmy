@@ -8,6 +8,8 @@
   (names timezone))
  (implements clock))
 
+; Zones mapping imported from https://raw.githubusercontent.com/unicode-org/cldr-json/main/cldr-json/cldr-core/supplemental/windowsZones.json 
+
 (rule
  (action
   (with-stdout-to
