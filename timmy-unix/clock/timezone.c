@@ -120,7 +120,7 @@ ocaml_timmy_local_timezone_name()
   CAMLparam0();
   const DYNAMIC_TIME_ZONE_INFORMATION tz = local_timezone();
   char output[512];
-  wcstombs_s(NULL, output, sizeof(output), tz.StandardName, sizeof(output));
+  wcstombs_s(NULL, output, sizeof(output), tz.TimeZoneKeyName, sizeof(output));
   /* std::wstring_convert<std::codecvt_utf8<wchar_t>> utf8_conv; */
   /* const auto res = utf8_conv.to_bytes(tz.StandardName); */
   CAMLreturn(caml_copy_string(output));
