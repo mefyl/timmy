@@ -88,7 +88,10 @@
    (and
     :with-test
     (>= 1.4.0)))
-  (ezjsonm (= 1.3.0))
+  (ezjsonm
+   (and
+    (= 1.3.0)
+    :build))
   base
   (conf-tzdata :with-test)
   fmt
@@ -107,7 +110,8 @@
    (and
     :with-test
     (>= 1.4.0)))
-  (logs (>= 0.7.0))
+  (logs
+   (>= 0.7.0))
   lwt
   (timmy
    (= :version)))
