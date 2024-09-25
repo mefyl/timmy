@@ -38,7 +38,8 @@ let timezone_local =
         Fmt.failwith "Given timestamp is negative"
     in
     let js_date =
-      new%js Js.date_fromTimeValue (Int64.to_float unix_timestamp *. 1000.0)
+      new%js Js.date_fromTimeValue
+        (Js.float (Int64.to_float unix_timestamp *. 1000.0))
     in
     js_date##getTimezoneOffset * 60 * -1
   in
