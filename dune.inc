@@ -1,12 +1,12 @@
 (alias (name extdeps) (deps opam/timmy.opam.extdeps))
 (subdir opam
- (rule (target timmy.%{version:timmy}.opam) (mode (promote (until-clean)))
-  (deps (:opam timmy.opam))
+ (rule (target timmy.%{version:timmy}.opam) (deps (:opam ../timmy.opam))
   (action
    (with-stdout-to %{target}
     (progn (cat %{opam})
-     (echo
-      "url { src: \"git://git@gitlab.routine.co:routine/timmy#%{version:timmy}\" }")))))
+     (run git log
+      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      -n1)))))
  (rule (deps (universe)) (target timmy.opam.locked)
   (action (run %{bin:opam} lock timmy)))
  (rule (mode (promote (until-clean))) (target timmy.opam.extdeps)
@@ -22,13 +22,13 @@
      %{dep:../timmy.opam} --cross
      timmy,timmy-jsoo,timmy-lwt,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
- (rule (target timmy-ios.%{version:timmy}.opam)
-  (mode (promote (until-clean))) (deps (:opam timmy-ios.opam))
+ (rule (target timmy-ios.%{version:timmy}.opam) (deps (:opam timmy-ios.opam))
   (action
    (with-stdout-to %{target}
     (progn (cat %{opam})
-     (echo
-      "url { src: \"git://git@gitlab.routine.co:routine/timmy#%{version:timmy}\" }")))))
+     (run git log
+      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      -n1)))))
  (rule (deps (universe)) (target timmy-ios.opam.locked)
   (action (run %{bin:opam} lock timmy-ios)))
  (rule (mode (promote (until-clean))) (target timmy.opam.extdeps-ios)
@@ -46,12 +46,13 @@
      timmy,timmy-jsoo,timmy-lwt,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-macos.%{version:timmy}.opam)
-  (mode (promote (until-clean))) (deps (:opam timmy-macos.opam))
+  (deps (:opam timmy-macos.opam))
   (action
    (with-stdout-to %{target}
     (progn (cat %{opam})
-     (echo
-      "url { src: \"git://git@gitlab.routine.co:routine/timmy#%{version:timmy}\" }")))))
+     (run git log
+      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      -n1)))))
  (rule (deps (universe)) (target timmy-macos.opam.locked)
   (action (run %{bin:opam} lock timmy-macos)))
  (rule (mode (promote (until-clean))) (target timmy.opam.extdeps-macos)
@@ -69,12 +70,13 @@
      timmy,timmy-jsoo,timmy-lwt,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-windows.%{version:timmy}.opam)
-  (mode (promote (until-clean))) (deps (:opam timmy-windows.opam))
+  (deps (:opam timmy-windows.opam))
   (action
    (with-stdout-to %{target}
     (progn (cat %{opam})
-     (echo
-      "url { src: \"git://git@gitlab.routine.co:routine/timmy#%{version:timmy}\" }")))))
+     (run git log
+      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      -n1)))))
  (rule (deps (universe)) (target timmy-windows.opam.locked)
   (action (run %{bin:opam} lock timmy-windows)))
  (rule (mode (promote (until-clean))) (target timmy.opam.extdeps-windows)
@@ -87,12 +89,13 @@
 (alias (name extdeps) (deps opam/timmy-jsoo.opam.extdeps))
 (subdir opam
  (rule (target timmy-jsoo.%{version:timmy-jsoo}.opam)
-  (mode (promote (until-clean))) (deps (:opam timmy-jsoo.opam))
+  (deps (:opam ../timmy-jsoo.opam))
   (action
    (with-stdout-to %{target}
     (progn (cat %{opam})
-     (echo
-      "url { src: \"git://git@gitlab.routine.co:routine/timmy#%{version:timmy-jsoo}\" }")))))
+     (run git log
+      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      -n1)))))
  (rule (deps (universe)) (target timmy-jsoo.opam.locked)
   (action (run %{bin:opam} lock timmy-jsoo)))
  (rule (mode (promote (until-clean))) (target timmy-jsoo.opam.extdeps)
@@ -109,12 +112,13 @@
      timmy,timmy-jsoo,timmy-lwt,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-jsoo-ios.%{version:timmy-jsoo}.opam)
-  (mode (promote (until-clean))) (deps (:opam timmy-jsoo-ios.opam))
+  (deps (:opam timmy-jsoo-ios.opam))
   (action
    (with-stdout-to %{target}
     (progn (cat %{opam})
-     (echo
-      "url { src: \"git://git@gitlab.routine.co:routine/timmy#%{version:timmy-jsoo}\" }")))))
+     (run git log
+      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      -n1)))))
  (rule (deps (universe)) (target timmy-jsoo-ios.opam.locked)
   (action (run %{bin:opam} lock timmy-jsoo-ios)))
  (rule (mode (promote (until-clean))) (target timmy-jsoo.opam.extdeps-ios)
@@ -132,12 +136,13 @@
      timmy,timmy-jsoo,timmy-lwt,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-jsoo-macos.%{version:timmy-jsoo}.opam)
-  (mode (promote (until-clean))) (deps (:opam timmy-jsoo-macos.opam))
+  (deps (:opam timmy-jsoo-macos.opam))
   (action
    (with-stdout-to %{target}
     (progn (cat %{opam})
-     (echo
-      "url { src: \"git://git@gitlab.routine.co:routine/timmy#%{version:timmy-jsoo}\" }")))))
+     (run git log
+      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      -n1)))))
  (rule (deps (universe)) (target timmy-jsoo-macos.opam.locked)
   (action (run %{bin:opam} lock timmy-jsoo-macos)))
  (rule (mode (promote (until-clean))) (target timmy-jsoo.opam.extdeps-macos)
@@ -155,12 +160,13 @@
      timmy,timmy-jsoo,timmy-lwt,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-jsoo-windows.%{version:timmy-jsoo}.opam)
-  (mode (promote (until-clean))) (deps (:opam timmy-jsoo-windows.opam))
+  (deps (:opam timmy-jsoo-windows.opam))
   (action
    (with-stdout-to %{target}
     (progn (cat %{opam})
-     (echo
-      "url { src: \"git://git@gitlab.routine.co:routine/timmy#%{version:timmy-jsoo}\" }")))))
+     (run git log
+      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      -n1)))))
  (rule (deps (universe)) (target timmy-jsoo-windows.opam.locked)
   (action (run %{bin:opam} lock timmy-jsoo-windows)))
  (rule (mode (promote (until-clean)))
@@ -174,12 +180,13 @@
 (alias (name extdeps) (deps opam/timmy-lwt.opam.extdeps))
 (subdir opam
  (rule (target timmy-lwt.%{version:timmy-lwt}.opam)
-  (mode (promote (until-clean))) (deps (:opam timmy-lwt.opam))
+  (deps (:opam ../timmy-lwt.opam))
   (action
    (with-stdout-to %{target}
     (progn (cat %{opam})
-     (echo
-      "url { src: \"git://git@gitlab.routine.co:routine/timmy#%{version:timmy-lwt}\" }")))))
+     (run git log
+      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      -n1)))))
  (rule (deps (universe)) (target timmy-lwt.opam.locked)
   (action (run %{bin:opam} lock timmy-lwt)))
  (rule (mode (promote (until-clean))) (target timmy-lwt.opam.extdeps)
@@ -196,12 +203,13 @@
      timmy,timmy-jsoo,timmy-lwt,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-lwt-ios.%{version:timmy-lwt}.opam)
-  (mode (promote (until-clean))) (deps (:opam timmy-lwt-ios.opam))
+  (deps (:opam timmy-lwt-ios.opam))
   (action
    (with-stdout-to %{target}
     (progn (cat %{opam})
-     (echo
-      "url { src: \"git://git@gitlab.routine.co:routine/timmy#%{version:timmy-lwt}\" }")))))
+     (run git log
+      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      -n1)))))
  (rule (deps (universe)) (target timmy-lwt-ios.opam.locked)
   (action (run %{bin:opam} lock timmy-lwt-ios)))
  (rule (mode (promote (until-clean))) (target timmy-lwt.opam.extdeps-ios)
@@ -219,12 +227,13 @@
      timmy,timmy-jsoo,timmy-lwt,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-lwt-macos.%{version:timmy-lwt}.opam)
-  (mode (promote (until-clean))) (deps (:opam timmy-lwt-macos.opam))
+  (deps (:opam timmy-lwt-macos.opam))
   (action
    (with-stdout-to %{target}
     (progn (cat %{opam})
-     (echo
-      "url { src: \"git://git@gitlab.routine.co:routine/timmy#%{version:timmy-lwt}\" }")))))
+     (run git log
+      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      -n1)))))
  (rule (deps (universe)) (target timmy-lwt-macos.opam.locked)
   (action (run %{bin:opam} lock timmy-lwt-macos)))
  (rule (mode (promote (until-clean))) (target timmy-lwt.opam.extdeps-macos)
@@ -242,12 +251,13 @@
      timmy,timmy-jsoo,timmy-lwt,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-lwt-windows.%{version:timmy-lwt}.opam)
-  (mode (promote (until-clean))) (deps (:opam timmy-lwt-windows.opam))
+  (deps (:opam timmy-lwt-windows.opam))
   (action
    (with-stdout-to %{target}
     (progn (cat %{opam})
-     (echo
-      "url { src: \"git://git@gitlab.routine.co:routine/timmy#%{version:timmy-lwt}\" }")))))
+     (run git log
+      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      -n1)))))
  (rule (deps (universe)) (target timmy-lwt-windows.opam.locked)
   (action (run %{bin:opam} lock timmy-lwt-windows)))
  (rule (mode (promote (until-clean))) (target timmy-lwt.opam.extdeps-windows)
@@ -260,12 +270,13 @@
 (alias (name extdeps) (deps opam/timmy-unix.opam.extdeps))
 (subdir opam
  (rule (target timmy-unix.%{version:timmy-unix}.opam)
-  (mode (promote (until-clean))) (deps (:opam timmy-unix.opam))
+  (deps (:opam ../timmy-unix.opam))
   (action
    (with-stdout-to %{target}
     (progn (cat %{opam})
-     (echo
-      "url { src: \"git://git@gitlab.routine.co:routine/timmy#%{version:timmy-unix}\" }")))))
+     (run git log
+      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      -n1)))))
  (rule (deps (universe)) (target timmy-unix.opam.locked)
   (action (run %{bin:opam} lock timmy-unix)))
  (rule (mode (promote (until-clean))) (target timmy-unix.opam.extdeps)
@@ -282,12 +293,13 @@
      timmy,timmy-jsoo,timmy-lwt,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-unix-ios.%{version:timmy-unix}.opam)
-  (mode (promote (until-clean))) (deps (:opam timmy-unix-ios.opam))
+  (deps (:opam timmy-unix-ios.opam))
   (action
    (with-stdout-to %{target}
     (progn (cat %{opam})
-     (echo
-      "url { src: \"git://git@gitlab.routine.co:routine/timmy#%{version:timmy-unix}\" }")))))
+     (run git log
+      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      -n1)))))
  (rule (deps (universe)) (target timmy-unix-ios.opam.locked)
   (action (run %{bin:opam} lock timmy-unix-ios)))
  (rule (mode (promote (until-clean))) (target timmy-unix.opam.extdeps-ios)
@@ -305,12 +317,13 @@
      timmy,timmy-jsoo,timmy-lwt,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-unix-macos.%{version:timmy-unix}.opam)
-  (mode (promote (until-clean))) (deps (:opam timmy-unix-macos.opam))
+  (deps (:opam timmy-unix-macos.opam))
   (action
    (with-stdout-to %{target}
     (progn (cat %{opam})
-     (echo
-      "url { src: \"git://git@gitlab.routine.co:routine/timmy#%{version:timmy-unix}\" }")))))
+     (run git log
+      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      -n1)))))
  (rule (deps (universe)) (target timmy-unix-macos.opam.locked)
   (action (run %{bin:opam} lock timmy-unix-macos)))
  (rule (mode (promote (until-clean))) (target timmy-unix.opam.extdeps-macos)
@@ -328,12 +341,13 @@
      timmy,timmy-jsoo,timmy-lwt,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-unix-windows.%{version:timmy-unix}.opam)
-  (mode (promote (until-clean))) (deps (:opam timmy-unix-windows.opam))
+  (deps (:opam timmy-unix-windows.opam))
   (action
    (with-stdout-to %{target}
     (progn (cat %{opam})
-     (echo
-      "url { src: \"git://git@gitlab.routine.co:routine/timmy#%{version:timmy-unix}\" }")))))
+     (run git log
+      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      -n1)))))
  (rule (deps (universe)) (target timmy-unix-windows.opam.locked)
   (action (run %{bin:opam} lock timmy-unix-windows)))
  (rule (mode (promote (until-clean)))
