@@ -219,13 +219,13 @@ module Span = struct
       check_seconds ~here:[%here] ~opposite:false
         "Null span is printed correctly" "0s" 0
     and () =
+      let span = Ptime.Span.of_float_s 0.123 in
       check ~here:[%here] "Milliseconds are printed correctly" "0.123s"
-      @@ Timmy.Span.of_ptime @@ Option.value_exn
-      (Ptime.Span.of_float_s 0.123)
+      @@ Timmy.Span.of_ptime @@ Option.value_exn span
     and () =
+      let span = Ptime.Span.of_float_s 1.234 in
       check ~here:[%here] "Milliseconds are printed correctly" "1.234s"
-      @@ Timmy.Span.of_ptime @@ Option.value_exn
-      (Ptime.Span.of_float_s 1.234)
+      @@ Timmy.Span.of_ptime @@ Option.value_exn span
     in
     ()
 end
