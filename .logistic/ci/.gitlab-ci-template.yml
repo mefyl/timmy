@@ -29,14 +29,13 @@ variables:
   stage: environment
   script:
     - make -f .logistic/ci/Makefile ci/image
-    - docker push "$IMAGE_CI$VARIANT"
 
 .ocaml-build:
   extends: .ocaml
   stage: build
   script:
-    - make -f .logistic/ci/Makefile build
     - make -f .logistic/ci/Makefile lint
+    - make -f .logistic/ci/Makefile build
   artifacts:
     expire_in: 10 days
     paths:
