@@ -221,11 +221,11 @@ module Span = struct
     and () =
       check ~here:[%here] "Milliseconds are printed correctly" "0.123s"
       @@ Timmy.Span.of_ptime @@ Option.value_exn
-      @@ Ptime.Span.of_float_s 0.123
+      (Ptime.Span.of_float_s 0.123)
     and () =
       check ~here:[%here] "Milliseconds are printed correctly" "1.234s"
       @@ Timmy.Span.of_ptime @@ Option.value_exn
-      @@ Ptime.Span.of_float_s 1.234
+      (Ptime.Span.of_float_s 1.234)
     in
     ()
 end

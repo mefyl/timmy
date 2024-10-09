@@ -13,7 +13,7 @@ let () =
         ( get_dict_elt "_other" map_zone |> Ezjsonm.get_string,
           get_dict_elt "_type" map_zone |> Ezjsonm.get_string )
       in
-      Ezjsonm.value_from_channel Stdlib.In_channel.stdin
+      Ezjsonm.value_from_channel Stdlib.stdin
       |> get_dict_elt "supplemental"
       |> get_dict_elt "windowsZones"
       |> get_dict_elt "mapTimezones"
