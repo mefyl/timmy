@@ -1,6 +1,6 @@
 opam-version: "2.0"
 name: "timmy-jsoo"
-version: "1.1.3"
+version: "1.1.4"
 synopsis: "Js_of_ocaml bindings for Timmy"
 maintainer: "mefyl <mefyl@gruntech.org>"
 authors: "mefyl <mefyl@gruntech.org>"
@@ -11,8 +11,7 @@ depends: [
   "ocamlformat" {= "0.26.1"}
   "opam-file-format"
   "sexplib"
-  "alcotest" {= "1.7.0" & with-test}
-  "angstrom" {= "0.16.0"}
+  "alcotest" {= "1.8.0" & with-test}
   "astring" {= "0.8.5" & with-test}
   "base" {= "v0.17.1"}
   "base-bigarray" {= "base"}
@@ -20,79 +19,55 @@ depends: [
   "base-nnp" {= "base"}
   "base-threads" {= "base"}
   "base-unix" {= "base"}
-  "base64" {= "3.5.1"}
-  "bigstringaf" {= "0.9.1"}
   "camlp-streams" {= "5.0.1" & with-doc}
   "cmdliner" {= "1.3.0"}
-  "conf-autoconf" {= "0.2"}
   "conf-npm" {= "1" & with-test}
-  "cppo" {= "1.6.9"}
+  "cppo" {= "1.7.0"}
   "crunch" {= "3.3.1" & with-doc}
   "csexp" {= "1.5.2"}
-  "cstruct" {= "6.2.0"}
   "dune" {= "3.16.0"}
   "dune-configurator" {= "3.16.0"}
-  "ezjsonm" {= "1.3.0"}
   "fmt" {= "0.9.0"}
   "fpath" {= "0.7.3" & with-doc}
   "gen" {= "1.1"}
-  "hex" {= "1.5.0"}
   "host-arch-x86_64" {= "1"}
   "host-system-other" {= "1"}
   "js_of_ocaml" {= "5.8.2"}
   "js_of_ocaml-compiler" {= "5.8.2"}
   "js_of_ocaml-ppx" {= "5.8.2"}
-  "jsonm" {= "1.0.2"}
-  "landmarks" {= "1.4"}
-  "landmarks-ppx" {= "1.4"}
   "menhir" {= "20240715"}
   "menhirCST" {= "20240715"}
   "menhirLib" {= "20240715"}
   "menhirSdk" {= "20240715"}
-  "metapp" {= "0.4.4"}
   "ocaml" {= "5.1.0"}
   "ocaml-base-compiler" {= "5.1.0"}
   "ocaml-compiler-libs" {= "v0.12.4"}
   "ocaml-config" {= "3"}
   "ocaml-options-vanilla" {= "1"}
-  "ocaml-syntax-shims" {= "1.0.0"}
-  "ocaml_intrinsics_kernel" {= "v0.17.0"}
+  "ocaml-syntax-shims" {= "1.0.0" & with-test}
+  "ocaml_intrinsics_kernel" {= "v0.17.1"}
   "ocamlbuild" {= "0.15.0"}
   "ocamlfind" {= "1.9.6"}
-  "odoc" {= "2.4.2" & with-doc}
-  "odoc-parser" {= "2.4.2" & with-doc}
+  "odoc" {= "2.4.3" & with-doc}
+  "odoc-parser" {= "2.4.3" & with-doc}
   "ppx_derivers" {= "1.2.1"}
-  "ppx_deriving" {= "6.0.2"}
+  "ppx_deriving" {= "6.0.3"}
   "ppx_here" {= "v0.17.0"}
-  "ppxlib" {= "0.32.1"}
-  "ptime" {= "1.1.0"}
-  "re" {= "1.11.0" & with-test}
-  "result" {= "1.5"}
+  "ppxlib" {= "0.33.0"}
+  "ptime" {= "1.2.0"}
+  "re" {= "1.12.0" & with-test}
+  "result" {= "1.5" & with-doc}
   "sedlex" {= "3.2"}
-  "semver2" {= "1.2.0"}
   "seq" {= "base"}
   "sexplib0" {= "v0.17.0"}
-  "stdcompat" {= "19"}
   "stdlib-shims" {= "0.3.0"}
-  "stringext" {= "1.6.0"}
   "topkg" {= "1.0.7"}
   "tyxml" {= "4.6.0" & with-doc}
-  "uchar" {= "0.0.2"}
-  "uri" {= "4.4.0"}
-  "uutf" {= "1.0.3"}
+  "uutf" {= "1.0.3" & with-test}
   "yojson" {= "2.2.2"}
 ]
 conflicts: [
   "schematic-jsoo" {< "0.18.2" | >= "0.21.0"}
+  "schematic-jsoo"
 ]
 dev-repo: "git+https://github.com/mefyl/timmy.git"
-pin-depends: [
-  [
-    "landmarks.1.4"
-    "git+https://github.com/LexiFi/landmarks.git#b0c753cd2a4c4aa00dffdd3be187d8ed592fabf7"
-  ]
-  [
-    "landmarks-ppx.1.4"
-    "git+https://github.com/LexiFi/landmarks.git#b0c753cd2a4c4aa00dffdd3be187d8ed592fabf7"
-  ]
-]
