@@ -41,17 +41,7 @@
     (>= 1.4.0)))
   ; Doc
   (odoc :with-doc)
-  ; Dev
-  (cmdliner
-   (and :dev :with-test))
-  (opam-file-format
-   (and :dev :with-test))
-  (sexplib
-   (and :dev :with-test))
-  (stdio
-   (and :dev :with-test))
-  (shexp
-   (and :dev :with-test)))
+  (odoc :with-doc))
  (depopts js_of_ocaml schematic)
  (conflicts
   (schematic

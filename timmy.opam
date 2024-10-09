@@ -17,11 +17,7 @@ depends: [
   "ptime"
   "alcotest" {with-test & >= "1.4.0"}
   "odoc" {with-doc}
-  "cmdliner" {dev & with-test}
-  "opam-file-format" {dev & with-test}
-  "sexplib" {dev & with-test}
-  "stdio" {dev & with-test}
-  "shexp" {dev & with-test}
+  "odoc" {with-doc}
 ]
 depopts: ["js_of_ocaml" "schematic"]
 conflicts: [
