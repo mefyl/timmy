@@ -125,7 +125,6 @@ let () =
                   Atom "target";
                   Atom (package ^ suffix ^ ".%{version:" ^ package ^ "}.opam");
                 ];
-              promote_until_clean;
               List
                 [
                   Atom "deps";
@@ -145,12 +144,14 @@ let () =
                           List [ Atom "cat"; Atom "%{opam}" ];
                           List
                             [
-                              Atom "echo";
+                              Atom "run";
+                              Atom "git";
+                              Atom "log";
                               Atom
-                                ("url { src: \
-                                  \"git://git@gitlab.routine.co:routine/"
-                               ^ repository ^ "#%{version:" ^ package ^ "}\" }"
-                                );
+                                ("--pretty=url { src: \
+                                  \"git+ssh://git@gitlab.routine.co:routine/"
+                               ^ repository ^ "#%H\" }");
+                              Atom "-n1";
                             ];
                         ];
                     ];
@@ -266,7 +267,11 @@ let () =
           List
             (Atom "subdir" :: Atom "opam"
             :: List.concat
-                 ([ opam_rule ""; locked_rule ""; extdeps_rule None ]
+                 ([
+                    opam_rule ~source:"../" "";
+                    locked_rule "";
+                    extdeps_rule None;
+                  ]
                  :: List.map cross_toolchains ~f:(fun toolchain ->
                         [
                           cross_rule toolchain;

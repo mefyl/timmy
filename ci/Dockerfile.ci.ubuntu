@@ -29,6 +29,19 @@ RUN apt-get update && apt-get install --no-install-recommends --yes \
     openssh-client && \
     apt-get clean
 
+# Install Nix
+RUN curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install linux \
+--extra-conf "sandbox = false" \
+--init none \
+--no-confirm
+ENV PATH="${PATH}:/nix/var/nix/profiles/default/bin"
+RUN nix --version
+
+# Install some packages via Nix because it is difficult to procure them from Apt (either they don't exist or they are VERY old).
+# As a side bonus, we are 100% sure to use the same versions as developers (who use Nix).
+ADD .logistic/nix /nix
+RUN nix-env --install --file /nix/ci-packages.nix
+
 # OCaml setup
 ARG OCAML_VERSION
 RUN opam --version
