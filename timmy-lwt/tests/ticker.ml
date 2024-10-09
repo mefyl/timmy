@@ -75,17 +75,24 @@ let stop_resume _ () =
   Lwt.return ()
 
 let forgotten_finalize _ () =
-  let errors = Logs.err_count () in
-  let () =
-    let _ticker =
-      Timmy_lwt.Ticker.make ~period:(Timmy.Span.minutes 1) (fun _ -> true)
+  match Sys.ocaml_version |> String.split ~on:'.' with
+  | major :: minor :: _
+    when Int.of_string major >= 5 && Int.of_string minor >= 2 ->
+    (* FIXME: The finaliser is not triggered by [Gc.full_major] with OCaml
+       5.2.2 *)
+    Lwt.return ()
+  | _ ->
+    let errors = Logs.err_count () in
+    let () =
+      let _ticker =
+        Timmy_lwt.Ticker.make ~period:(Timmy.Span.minutes 1) (fun _ -> true)
+      in
+      ()
     in
-    ()
-  in
-  let () = Stdlib.Gc.full_major () in
-  Lwt.return
-  @@ Alcotest.(check ~here:[%here] int) "an error log was emitted" (errors + 1)
-  @@ Logs.err_count ()
+    let () = Stdlib.Gc.full_major () in
+    Lwt.return
+    @@ Alcotest.(check ~here:[%here] int) "an error log was emitted" (errors + 1)
+    @@ Logs.err_count ()
 
 let () =
   Lwt_main.run
