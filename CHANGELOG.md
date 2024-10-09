@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.1.4] - 2024-10-09
+
+### Added
+
+- Windows support for `timmy-unix`.
+
+### Changed
+
+- `Timmy.Span.pp` to display fractional seconds.
+
+### Fixed
+
+- Missing `logs` dependency.
+- Missing `Js.float` conversions, for wasm-of-ocaml.
+
+## [1.1.3] - 2024-02-29
+
+## Fixed
+
+- Pins for landmarks.
+- Some documentation links.
+
 ## [1.1.2] - 2023-12-25
 
 ### Added
