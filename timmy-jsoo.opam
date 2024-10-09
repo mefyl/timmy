@@ -9,6 +9,8 @@ homepage: "https://github.com/mefyl/timmy"
 bug-reports: "https://github.com/mefyl/timmy/issues"
 depends: [
   "dune" {>= "3.0"}
+  "ptime"
+  "ppx_here"
   "alcotest" {with-test & >= "1.4.0"}
   "conf-npm" {with-test}
   "fmt"

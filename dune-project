@@ -40,7 +40,6 @@
     :with-test
     (>= 1.4.0)))
   ; Doc
-  (odoc :with-doc)
   (odoc :with-doc))
  (depopts js_of_ocaml schematic)
  (conflicts
@@ -53,6 +52,8 @@
  (name timmy-jsoo)
  (synopsis "Js_of_ocaml bindings for Timmy")
  (depends
+  ptime
+  ppx_here
   (alcotest
    (and
     :with-test
@@ -74,6 +75,7 @@
  (name timmy-unix)
  (synopsis "Unix clock implementation for Timmy")
  (depends
+  ptime
   (alcotest
    (and
     :with-test
@@ -92,6 +94,9 @@
  (name timmy-lwt)
  (synopsis "Lwt utilities based on Timmy")
  (depends
+  ppx_here
+  (ppx_deriving
+   (>= 5.0))
   (alcotest
    (and
     :with-test

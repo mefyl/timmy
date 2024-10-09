@@ -9,6 +9,8 @@ homepage: "https://github.com/mefyl/timmy"
 bug-reports: "https://github.com/mefyl/timmy/issues"
 depends: [
   "dune" {>= "3.0"}
+  "ppx_here"
+  "ppx_deriving" {>= "5.0"}
   "alcotest" {with-test & >= "1.4.0"}
   "alcotest-lwt" {with-test & >= "1.4.0"}
   "logs" {>= "0.7.0"}

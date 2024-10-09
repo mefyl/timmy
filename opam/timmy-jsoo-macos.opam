@@ -8,6 +8,9 @@ homepage: "https://github.com/mefyl/timmy"
 bug-reports: "https://github.com/mefyl/timmy/issues"
 depends: [
   "dune" {>= "3.0"}
+  "ptime-macos"
+  "ppx_here"
+  "ppx_here-macos"
   "fmt-macos"
   "js_of_ocaml-ppx"
   "timmy" {= version}

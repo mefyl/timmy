@@ -8,6 +8,7 @@ homepage: "https://github.com/mefyl/timmy"
 bug-reports: "https://github.com/mefyl/timmy/issues"
 depends: [
   "dune" {>= "3.0"}
+  "ptime-windows"
   "base-windows"
   "fmt-windows"
   "timmy" {= version}

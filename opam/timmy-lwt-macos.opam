@@ -8,6 +8,10 @@ homepage: "https://github.com/mefyl/timmy"
 bug-reports: "https://github.com/mefyl/timmy/issues"
 depends: [
   "dune" {>= "3.0"}
+  "ppx_here"
+  "ppx_here-macos"
+  "ppx_deriving" {>= "5.0"}
+  "ppx_deriving-macos" {>= "5.0"}
   "logs" {>= "0.7.0"}
   "lwt-macos"
   "timmy" {= version}
