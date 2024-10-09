@@ -4,13 +4,13 @@ include:
 toolchain:
   extends: .toolchain
   variables:
-    OPAM_PACKAGES: "js_of_ocaml.5.0.1 schematic-jsoo"
+    OPAM_PACKAGES: "js_of_ocaml.5.8.2 schematic-jsoo"
 
 toolchain:no-schematic:
   extends: .toolchain
   variables:
     DUNE_PACKAGES: "timmy,timmy-jsoo,timmy-lwt,timmy-unix"
-    OPAM_PACKAGES: "js_of_ocaml.5.0.1"
+    OPAM_PACKAGES: "js_of_ocaml.5.8.2"
     OPAM_WITHOUT_PACKAGES: "schematic"
     VARIANT: "-no-schematic"
 
