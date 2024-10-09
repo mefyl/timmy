@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.1.5] - 2024-10-09
+
+### Fixed
+
+- OCaml 4.08 compatibility.
+
+### Removed
+
+- Landmarks dependency.
+
 ## [1.1.4] - 2024-10-09
 
 ### Added
