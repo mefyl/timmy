@@ -149,7 +149,7 @@ let () =
                               Atom "log";
                               Atom
                                 ("--pretty=url { src: \
-                                  \"git+ssh://git@gitlab.routine.co:routine/"
+                                  \"git://git@gitlab.routine.co:routine/"
                                ^ repository ^ "#%H\" }");
                               Atom "-n1";
                             ];
