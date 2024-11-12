@@ -22,6 +22,7 @@ for f in *.opam; do
     make_opam "${f%.opam}-ios"
     make_opam "${f%.opam}-macos"
     make_opam "${f%.opam}-windows"
+    make_opam "${f%.opam}-android"
 done
 
 if test $(git  -C "/tmp/opam" status --porcelain | wc -c) -gt 0; then

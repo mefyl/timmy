@@ -5,7 +5,7 @@
    (with-stdout-to %{target}
     (progn (cat %{opam})
      (run git log
-      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
       -n1)))))
  (rule (deps (universe)) (target timmy.opam.locked)
   (action (run %{bin:opam} lock timmy)))
@@ -27,7 +27,7 @@
    (with-stdout-to %{target}
     (progn (cat %{opam})
      (run git log
-      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
       -n1)))))
  (rule (deps (universe)) (target timmy-ios.opam.locked)
   (action (run %{bin:opam} lock timmy-ios)))
@@ -51,7 +51,7 @@
    (with-stdout-to %{target}
     (progn (cat %{opam})
      (run git log
-      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
       -n1)))))
  (rule (deps (universe)) (target timmy-macos.opam.locked)
   (action (run %{bin:opam} lock timmy-macos)))
@@ -75,7 +75,7 @@
    (with-stdout-to %{target}
     (progn (cat %{opam})
      (run git log
-      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
       -n1)))))
  (rule (deps (universe)) (target timmy-windows.opam.locked)
   (action (run %{bin:opam} lock timmy-windows)))
@@ -85,7 +85,31 @@
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
      %{dep:timmy-windows.opam.locked} --local
      timmy,timmy-jsoo,timmy-lwt,timmy-unix,hlist,schematic,schematic-jsoo
-     --toolchain windows)))))
+     --toolchain windows))))
+ (rule (target timmy-android.opam) (mode (promote (until-clean)))
+  (action
+   (with-stdout-to %{target}
+    (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-android --input
+     %{dep:../timmy.opam} --cross
+     timmy,timmy-jsoo,timmy-lwt,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime
+     --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
+ (rule (target timmy-android.%{version:timmy}.opam)
+  (deps (:opam timmy-android.opam))
+  (action
+   (with-stdout-to %{target}
+    (progn (cat %{opam})
+     (run git log
+      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+      -n1)))))
+ (rule (deps (universe)) (target timmy-android.opam.locked)
+  (action (run %{bin:opam} lock timmy-android)))
+ (rule (mode (promote (until-clean))) (target timmy.opam.extdeps-android)
+  (action
+   (with-stdout-to %{target}
+    (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
+     %{dep:timmy-android.opam.locked} --local
+     timmy,timmy-jsoo,timmy-lwt,timmy-unix,hlist,schematic,schematic-jsoo
+     --toolchain android)))))
 (alias (name extdeps) (deps opam/timmy-jsoo.opam.extdeps))
 (subdir opam
  (rule (target timmy-jsoo.%{version:timmy-jsoo}.opam)
@@ -94,7 +118,7 @@
    (with-stdout-to %{target}
     (progn (cat %{opam})
      (run git log
-      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
       -n1)))))
  (rule (deps (universe)) (target timmy-jsoo.opam.locked)
   (action (run %{bin:opam} lock timmy-jsoo)))
@@ -117,7 +141,7 @@
    (with-stdout-to %{target}
     (progn (cat %{opam})
      (run git log
-      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
       -n1)))))
  (rule (deps (universe)) (target timmy-jsoo-ios.opam.locked)
   (action (run %{bin:opam} lock timmy-jsoo-ios)))
@@ -141,7 +165,7 @@
    (with-stdout-to %{target}
     (progn (cat %{opam})
      (run git log
-      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
       -n1)))))
  (rule (deps (universe)) (target timmy-jsoo-macos.opam.locked)
   (action (run %{bin:opam} lock timmy-jsoo-macos)))
@@ -165,7 +189,7 @@
    (with-stdout-to %{target}
     (progn (cat %{opam})
      (run git log
-      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
       -n1)))))
  (rule (deps (universe)) (target timmy-jsoo-windows.opam.locked)
   (action (run %{bin:opam} lock timmy-jsoo-windows)))
@@ -176,7 +200,32 @@
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
      %{dep:timmy-jsoo-windows.opam.locked} --local
      timmy,timmy-jsoo,timmy-lwt,timmy-unix,hlist,schematic,schematic-jsoo
-     --toolchain windows)))))
+     --toolchain windows))))
+ (rule (target timmy-jsoo-android.opam) (mode (promote (until-clean)))
+  (action
+   (with-stdout-to %{target}
+    (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-android --input
+     %{dep:../timmy-jsoo.opam} --cross
+     timmy,timmy-jsoo,timmy-lwt,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime
+     --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
+ (rule (target timmy-jsoo-android.%{version:timmy-jsoo}.opam)
+  (deps (:opam timmy-jsoo-android.opam))
+  (action
+   (with-stdout-to %{target}
+    (progn (cat %{opam})
+     (run git log
+      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+      -n1)))))
+ (rule (deps (universe)) (target timmy-jsoo-android.opam.locked)
+  (action (run %{bin:opam} lock timmy-jsoo-android)))
+ (rule (mode (promote (until-clean)))
+  (target timmy-jsoo.opam.extdeps-android)
+  (action
+   (with-stdout-to %{target}
+    (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
+     %{dep:timmy-jsoo-android.opam.locked} --local
+     timmy,timmy-jsoo,timmy-lwt,timmy-unix,hlist,schematic,schematic-jsoo
+     --toolchain android)))))
 (alias (name extdeps) (deps opam/timmy-lwt.opam.extdeps))
 (subdir opam
  (rule (target timmy-lwt.%{version:timmy-lwt}.opam)
@@ -185,7 +234,7 @@
    (with-stdout-to %{target}
     (progn (cat %{opam})
      (run git log
-      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
       -n1)))))
  (rule (deps (universe)) (target timmy-lwt.opam.locked)
   (action (run %{bin:opam} lock timmy-lwt)))
@@ -208,7 +257,7 @@
    (with-stdout-to %{target}
     (progn (cat %{opam})
      (run git log
-      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
       -n1)))))
  (rule (deps (universe)) (target timmy-lwt-ios.opam.locked)
   (action (run %{bin:opam} lock timmy-lwt-ios)))
@@ -232,7 +281,7 @@
    (with-stdout-to %{target}
     (progn (cat %{opam})
      (run git log
-      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
       -n1)))))
  (rule (deps (universe)) (target timmy-lwt-macos.opam.locked)
   (action (run %{bin:opam} lock timmy-lwt-macos)))
@@ -256,7 +305,7 @@
    (with-stdout-to %{target}
     (progn (cat %{opam})
      (run git log
-      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
       -n1)))))
  (rule (deps (universe)) (target timmy-lwt-windows.opam.locked)
   (action (run %{bin:opam} lock timmy-lwt-windows)))
@@ -266,7 +315,31 @@
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
      %{dep:timmy-lwt-windows.opam.locked} --local
      timmy,timmy-jsoo,timmy-lwt,timmy-unix,hlist,schematic,schematic-jsoo
-     --toolchain windows)))))
+     --toolchain windows))))
+ (rule (target timmy-lwt-android.opam) (mode (promote (until-clean)))
+  (action
+   (with-stdout-to %{target}
+    (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-android --input
+     %{dep:../timmy-lwt.opam} --cross
+     timmy,timmy-jsoo,timmy-lwt,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime
+     --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
+ (rule (target timmy-lwt-android.%{version:timmy-lwt}.opam)
+  (deps (:opam timmy-lwt-android.opam))
+  (action
+   (with-stdout-to %{target}
+    (progn (cat %{opam})
+     (run git log
+      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+      -n1)))))
+ (rule (deps (universe)) (target timmy-lwt-android.opam.locked)
+  (action (run %{bin:opam} lock timmy-lwt-android)))
+ (rule (mode (promote (until-clean))) (target timmy-lwt.opam.extdeps-android)
+  (action
+   (with-stdout-to %{target}
+    (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
+     %{dep:timmy-lwt-android.opam.locked} --local
+     timmy,timmy-jsoo,timmy-lwt,timmy-unix,hlist,schematic,schematic-jsoo
+     --toolchain android)))))
 (alias (name extdeps) (deps opam/timmy-unix.opam.extdeps))
 (subdir opam
  (rule (target timmy-unix.%{version:timmy-unix}.opam)
@@ -275,7 +348,7 @@
    (with-stdout-to %{target}
     (progn (cat %{opam})
      (run git log
-      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
       -n1)))))
  (rule (deps (universe)) (target timmy-unix.opam.locked)
   (action (run %{bin:opam} lock timmy-unix)))
@@ -298,7 +371,7 @@
    (with-stdout-to %{target}
     (progn (cat %{opam})
      (run git log
-      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
       -n1)))))
  (rule (deps (universe)) (target timmy-unix-ios.opam.locked)
   (action (run %{bin:opam} lock timmy-unix-ios)))
@@ -322,7 +395,7 @@
    (with-stdout-to %{target}
     (progn (cat %{opam})
      (run git log
-      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
       -n1)))))
  (rule (deps (universe)) (target timmy-unix-macos.opam.locked)
   (action (run %{bin:opam} lock timmy-unix-macos)))
@@ -346,7 +419,7 @@
    (with-stdout-to %{target}
     (progn (cat %{opam})
      (run git log
-      "--pretty=url { src: \"git+ssh://git@gitlab.routine.co:routine/timmy#%H\" }"
+      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
       -n1)))))
  (rule (deps (universe)) (target timmy-unix-windows.opam.locked)
   (action (run %{bin:opam} lock timmy-unix-windows)))
@@ -357,4 +430,29 @@
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
      %{dep:timmy-unix-windows.opam.locked} --local
      timmy,timmy-jsoo,timmy-lwt,timmy-unix,hlist,schematic,schematic-jsoo
-     --toolchain windows)))))
+     --toolchain windows))))
+ (rule (target timmy-unix-android.opam) (mode (promote (until-clean)))
+  (action
+   (with-stdout-to %{target}
+    (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-android --input
+     %{dep:../timmy-unix.opam} --cross
+     timmy,timmy-jsoo,timmy-lwt,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime
+     --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
+ (rule (target timmy-unix-android.%{version:timmy-unix}.opam)
+  (deps (:opam timmy-unix-android.opam))
+  (action
+   (with-stdout-to %{target}
+    (progn (cat %{opam})
+     (run git log
+      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+      -n1)))))
+ (rule (deps (universe)) (target timmy-unix-android.opam.locked)
+  (action (run %{bin:opam} lock timmy-unix-android)))
+ (rule (mode (promote (until-clean)))
+  (target timmy-unix.opam.extdeps-android)
+  (action
+   (with-stdout-to %{target}
+    (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
+     %{dep:timmy-unix-android.opam.locked} --local
+     timmy,timmy-jsoo,timmy-lwt,timmy-unix,hlist,schematic,schematic-jsoo
+     --toolchain android)))))
