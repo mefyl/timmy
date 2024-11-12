@@ -42,16 +42,19 @@
   ; Doc
   (odoc :with-doc)
   ; Dev
+  ; These should become only :with-dev-setup when `dune pkg` supports it.
   (cmdliner
-   (and :dev :with-test))
+   (or :with-dev-setup :with-test))
+  (ocamlformat
+   (and
+    (= 0.26.2)
+    (or :with-dev-setup :with-test)))
   (opam-file-format
-   (and :dev :with-test))
+   (or :with-dev-setup :with-test))
   (sexplib
-   (and :dev :with-test))
+   (or :with-dev-setup :with-test))
   (stdio
-   (and :dev :with-test))
-  (shexp
-   (and :dev :with-test)))
+   (or :with-dev-setup :with-test)))
  (depopts js_of_ocaml schematic)
  (conflicts
   (schematic

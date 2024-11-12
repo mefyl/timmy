@@ -1,0 +1,17 @@
+(version 1.8.0)
+
+(build
+ (progn
+  (when
+   %{pkg-self:dev}
+   (run dune subst))
+  (run dune build -p %{pkg-self:name} -j %{jobs} @install)))
+
+(depends dune fmt ocaml alcotest lwt logs)
+
+(source
+ (fetch
+  (url
+   https://github.com/mirage/alcotest/releases/download/1.8.0/alcotest-1.8.0.tbz)
+  (checksum
+   sha256=cba1bd01707c8c55b4764bb0df8c9c732be321e1f1c1a96a406e56d8dbca1d0e)))

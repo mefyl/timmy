@@ -16,6 +16,11 @@ depends: [
   "ppx_deriving" {>= "5.0"}
   "ppx_deriving-macos" {>= "5.0"}
   "ptime-macos"
+  "cmdliner" {with-dev-setup | with-test}
+  "ocamlformat" {= "0.26.2" & (with-dev-setup | with-test)}
+  "opam-file-format" {with-dev-setup | with-test}
+  "sexplib" {with-dev-setup | with-test}
+  "stdio" {with-dev-setup | with-test}
 ]
 depopts: ["schematic-macos"]
 conflicts: [

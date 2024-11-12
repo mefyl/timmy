@@ -17,11 +17,11 @@ depends: [
   "ptime"
   "alcotest" {with-test & >= "1.4.0"}
   "odoc" {with-doc}
-  "cmdliner" {dev & with-test}
-  "opam-file-format" {dev & with-test}
-  "sexplib" {dev & with-test}
-  "stdio" {dev & with-test}
-  "shexp" {dev & with-test}
+  "cmdliner" {with-dev-setup | with-test}
+  "ocamlformat" {= "0.26.2" & (with-dev-setup | with-test)}
+  "opam-file-format" {with-dev-setup | with-test}
+  "sexplib" {with-dev-setup | with-test}
+  "stdio" {with-dev-setup | with-test}
 ]
 depopts: ["js_of_ocaml" "schematic"]
 conflicts: [
