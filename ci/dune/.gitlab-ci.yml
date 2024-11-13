@@ -1,0 +1,20 @@
+include:
+  - local: '/.logistic/ci/dune/.gitlab-ci-template.yml'
+
+build:
+  extends: .ocaml-build
+
+check:
+  extends: .ocaml-check
+  needs:
+    - build
+
+package:
+  extends: .ocaml-package
+  needs:
+    - check
+
+opam:
+  extends: .ocaml-opam
+  needs:
+    - check

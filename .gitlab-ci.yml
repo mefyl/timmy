@@ -1,12 +1,22 @@
 stages:
   - build
 
-docker-ci-builder:
+before_script:
+  - apk add --no-cache docker-cli
+  - echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" --username "$CI_REGISTRY_USER" --password-stdin
+
+opam-docker-builder:
   stage: build
   only:
     - master
   script:
     - apk add --no-cache docker-cli
-    - docker build -f docker-ci-builder/Dockerfile docker-ci-builder -t $CI_REGISTRY_IMAGE/ci-builder
-    - echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" --username "$CI_REGISTRY_USER" --password-stdin
+    - docker build -f docker/opam-builder/Dockerfile docker/opam-builder -t $CI_REGISTRY_IMAGE/ci-builder
     - docker push $CI_REGISTRY_IMAGE/ci-builder
+
+opam-dune-builder:
+  stage: build
+  script:
+    - docker build -f docker/dune-builder/Dockerfile docker/dune-builder -t dune-builder
+    - IMAGE=$CI_REGISTRY_IMAGE/dune-builder:$(docker run --rm dune-builder /root/.dune/bin/dune --version | sed 's/"//' | tail -n 1 | head -c 7) && docker tag dune-builder $IMAGE && docker push $IMAGE
+
