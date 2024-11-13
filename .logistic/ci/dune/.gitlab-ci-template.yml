@@ -53,6 +53,7 @@ variables:
     - make -f .logistic/ci/dune/Makefile package/clean
 
 .ocaml-opam:
+
   extends: .ocaml
   stage: package
   script:

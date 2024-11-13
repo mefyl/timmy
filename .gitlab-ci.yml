@@ -1,113 +1,22 @@
 include:
-  - local: "/.logistic/ci/.gitlab-ci-template.yml"
-
-toolchain:
-  extends: .toolchain
-  variables:
-    OPAM_PACKAGES: "js_of_ocaml.5.8.2 schematic-jsoo"
-
-toolchain:no-schematic:
-  extends: .toolchain
-  variables:
-    DUNE_PACKAGES: "timmy,timmy-jsoo,timmy-lwt,timmy-unix"
-    OPAM_PACKAGES: "js_of_ocaml.5.8.2"
-    OPAM_WITHOUT_PACKAGES: "schematic"
-    VARIANT: "-no-schematic"
-
-toolchain:no-jsoo:
-  extends: .toolchain
-  variables:
-    DUNE_PACKAGES: "timmy,timmy-lwt,timmy-unix"
-    OPAM_PACKAGES: "schematic"
-    OPAM_WITHOUT_PACKAGES: "js_of_ocaml"
-    VARIANT: "-no-jsoo"
-
-build:
-  extends: .ocaml-build
-  dependencies:
-    - toolchain
-  needs:
-    - toolchain
-
-build:no-schematic:
-  extends: .ocaml-build
-  dependencies:
-    - toolchain:no-schematic
-  needs:
-    - toolchain:no-schematic
-  variables:
-    DUNE_PACKAGES: "timmy,timmy-jsoo,timmy-unix"
-    VARIANT: "-no-schematic"
-
-build:no-jsoo:
-  extends: .ocaml-build
-  dependencies:
-    - toolchain:no-jsoo
-  needs:
-    - toolchain:no-jsoo
-  variables:
-    DUNE_PACKAGES: "timmy"
-    VARIANT: "-no-jsoo"
+  - local: "/.logistic/ci/dune/.gitlab-ci.yml"
 
 documentation:
   extends: .ocaml
   stage: build
-  dependencies:
-    - toolchain
   needs:
-    - toolchain
+    - build
   script:
-    - opam exec -- dune build @doc
+    - dune build @doc
   artifacts:
     expire_in: 10 days
     paths:
       - _build/default/_doc/_html
-
-check:
-  extends: .ocaml-check
-  dependencies:
-    - build
-  needs:
-    - build
-
-check:no-schematic:
-  extends: .ocaml-check
-  dependencies:
-    - build:no-schematic
-  needs:
-    - build:no-schematic
-  variables:
-    VARIANT: "-no-schematic"
-
-check:no-jsoo:
-  extends: .ocaml-check
-  dependencies:
-    - build:no-jsoo
-  needs:
-    - build:no-jsoo
-  variables:
-    VARIANT: "-no-jsoo"
-
-package:
-  extends: .ocaml-package
-  dependencies:
-    - check
-  needs:
-    - check
-    - check:no-schematic
-    - check:no-jsoo
-
-publish:
+    
+publish-documentation:
   extends:
     - .ocaml-opam
-  dependencies:
-    - check
-    - documentation
   needs:
-    - check
-    - check:no-schematic
-    - check:no-jsoo
     - documentation
   script:
-    - !reference [.ocaml-opam, script]
     - ./doc-publish
