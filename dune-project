@@ -98,6 +98,8 @@
   base
   (conf-tzdata :with-test)
   fmt
+  (logs
+   (>= 0.7.0))
   (timmy
    (= :version))))
 

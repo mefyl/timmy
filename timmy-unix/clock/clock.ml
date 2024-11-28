@@ -40,14 +40,21 @@ let get_timezone_name () =
 
 let timezone_local =
   let offset_calendar_time_s ~date ~time = offset_calendar_time_s date time
-  and offset_timestamp_s ~unix_timestamp =
-    let () =
-      if Int64.compare 0L unix_timestamp > 0 then
-        Fmt.failwith "Given timestamp is negative"
-    in
-    offset_timestamp_s unix_timestamp
+  and timezone_name = get_timezone_name () in
+  let offset_timestamp_s ~unix_timestamp =
+    if Int64.compare 0L unix_timestamp > 0 then
+      let () =
+        Logs.warn (fun m ->
+            m
+              "Passing a negative timestamp [%a] to \
+               [gmt_offset_seconds_at_time]. This isn't supported on this \
+               platform, assuming and offset of [0]"
+              Int64.pp unix_timestamp)
+      in
+      0
+    else offset_timestamp_s unix_timestamp
   in
   Timmy.Timezone.of_implementation ~offset_calendar_time_s ~offset_timestamp_s
-    (get_timezone_name ())
+    timezone_name
 
 let today () = Timmy.Date.of_time ~timezone:timezone_local @@ now ()

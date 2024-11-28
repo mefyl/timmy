@@ -11,6 +11,7 @@ depends: [
   "ptime-macos"
   "base-macos"
   "fmt-macos"
+  "logs" {>= "0.7.0"}
   "timmy" {= version}
   "timmy-macos" {= version}
 ]

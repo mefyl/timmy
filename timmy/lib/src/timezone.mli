@@ -38,7 +38,9 @@ val gmt_offset_seconds_at_datetime :
 
 (** [gmt_offset_seconds_at_time tz timestamp] is the number of seconds that
     offset from UTC, at the time given by a unix timestamp (Ptime.t). In other
-    words, [localtime = UTC + offset]. *)
+    words, [localtime = UTC + offset].
+
+    Might throw [Negative_timestamp  timestamp] if [timestamp < 0] *)
 val gmt_offset_seconds_at_time : t -> Ptime.t -> int
 
 (** [name tz] is the IANA name of [tz], if it could be determined. *)
