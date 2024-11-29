@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <errno.h>
 #include <time.h>
 
 #include <caml/alloc.h>
@@ -68,7 +69,15 @@ ocaml_timmy_offset_timestamp_s(value datetime)
   CAMLparam1(datetime);
   const time_t time = Int64_val(datetime);
 
-  CAMLreturn(Val_int (offset(time)));
+  errno = 0;
+  int offset_timestamp = offset(time);
+  if (errno == EINVAL) {
+    CAMLreturn(Val_none);
+  } else {
+    CAMLlocal1(res);
+    res = caml_alloc_some(Val_int(offset_timestamp));
+    CAMLreturn(res);
+  }
 }
 
 CAMLprim

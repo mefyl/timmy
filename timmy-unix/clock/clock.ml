@@ -6,7 +6,8 @@ let now () = Ptime_clock.now () |> Timmy.Time.of_ptime
 external offset_calendar_time_s : int * int * int -> int * int * int -> int
   = "ocaml_timmy_offset_calendar_time_s"
 
-external offset_timestamp_s : Int64.t -> int = "ocaml_timmy_offset_timestamp_s"
+external offset_timestamp_s : Int64.t -> int option
+  = "ocaml_timmy_offset_timestamp_s"
 
 external local_timezone_name : unit -> string
   = "ocaml_timmy_local_timezone_name"
@@ -42,7 +43,9 @@ let timezone_local =
   let offset_calendar_time_s ~date ~time = offset_calendar_time_s date time
   and timezone_name = get_timezone_name () in
   let offset_timestamp_s ~unix_timestamp =
-    if Int64.compare 0L unix_timestamp > 0 then
+    match offset_timestamp_s unix_timestamp with
+    | Some offset -> offset
+    | None when Int64.compare 0L unix_timestamp > 0 ->
       let () =
         Logs.warn (fun m ->
             m
@@ -52,7 +55,9 @@ let timezone_local =
               Int64.pp unix_timestamp)
       in
       0
-    else offset_timestamp_s unix_timestamp
+    | None ->
+      Fmt.failwith "Unknown error converting the timestamp %a to a local time"
+        Int64.pp unix_timestamp
   in
   Timmy.Timezone.of_implementation ~offset_calendar_time_s ~offset_timestamp_s
     timezone_name

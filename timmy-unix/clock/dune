@@ -1,7 +1,7 @@
 (library
  (name clock_unix)
  (public_name timmy-unix.clock)
- (libraries fmt ptime.clock.os timmy base unix logs)
+ (libraries fmt ptime.clock.os timmy base unix logs logs.fmt)
  (modules clock windows_timezones)
  (foreign_stubs
   (language c)
