@@ -3,10 +3,12 @@ module Timmy = Timmy.Versions.V1_1
 
 let now () = Ptime_clock.now () |> Timmy.Time.of_ptime
 
-external offset_calendar_time_s : int * int * int -> int * int * int -> int
+external offset_calendar_time_s :
+  int * int * int -> int * int * int -> int option
   = "ocaml_timmy_offset_calendar_time_s"
 
-external offset_timestamp_s : Int64.t -> int = "ocaml_timmy_offset_timestamp_s"
+external offset_timestamp_s : Int64.t -> int option
+  = "ocaml_timmy_offset_timestamp_s"
 
 external local_timezone_name : unit -> string
   = "ocaml_timmy_local_timezone_name"
@@ -39,15 +41,37 @@ let get_timezone_name () =
   |> Option.value ~default:(local_timezone_name ())
 
 let timezone_local =
-  let offset_calendar_time_s ~date ~time = offset_calendar_time_s date time
-  and offset_timestamp_s ~unix_timestamp =
-    let () =
-      if Int64.compare 0L unix_timestamp > 0 then
-        Fmt.failwith "Given timestamp is negative"
-    in
-    offset_timestamp_s unix_timestamp
+  let offset_calendar_time_s ~date ~time =
+    match offset_calendar_time_s date time with
+    | Some offset -> offset
+    | None ->
+      let () =
+        let (year, month, day), (hours, minutes, seconds) = (date, time) in
+        Logs.warn (fun m ->
+            m
+              "determining timezone offset of %04d-%02d-%02d %02d:%02d:%02d \
+               not supported on this platform, assuming an offset of [0]"
+              year month day hours minutes seconds)
+      in
+      0
+  and timezone_name = get_timezone_name () in
+  let offset_timestamp_s ~unix_timestamp =
+    match offset_timestamp_s unix_timestamp with
+    | Some offset -> offset
+    | None when Int64.compare 0L unix_timestamp > 0 ->
+      let () =
+        Logs.warn (fun m ->
+            m
+              "passing a negative timestamp %a to gmt_offset_seconds_at_time \
+               not supported on this platform, assuming an offset of 0"
+              Int64.pp unix_timestamp)
+      in
+      0
+    | None ->
+      Fmt.failwith "Unknown error converting the timestamp %a to a local time"
+        Int64.pp unix_timestamp
   in
   Timmy.Timezone.of_implementation ~offset_calendar_time_s ~offset_timestamp_s
-    (get_timezone_name ())
+    timezone_name
 
 let today () = Timmy.Date.of_time ~timezone:timezone_local @@ now ()

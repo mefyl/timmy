@@ -11,6 +11,7 @@ depends: [
   "ptime-windows"
   "base-windows"
   "fmt-windows"
+  "logs" {>= "0.7.0"}
   "timmy" {= version}
   "timmy-windows" {= version}
 ]
