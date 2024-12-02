@@ -52,7 +52,7 @@
    (and :dev :with-test))
   (shexp
    (and :dev :with-test)))
- (depopts js_of_ocaml schematic)
+ (depopts js_of_ocaml js_of_ocaml-ppx schematic)
  (conflicts
   (schematic
    (or
