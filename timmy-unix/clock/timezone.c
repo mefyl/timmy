@@ -55,7 +55,7 @@ int
 offset(const time_t time, int* output)
 {
   struct tm localtime;
-  if (!localtime_s(&localtime, &time))
+  if (localtime_s(&localtime, &time))
     return 0;
   struct tm* gmt = gmtime(&time);
   gmt->tm_isdst = localtime.tm_isdst;
