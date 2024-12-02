@@ -2,7 +2,7 @@
 
 (name timmy)
 
-(version 1.1.5)
+(version 1.1.6)
 
 (generate_opam_files true)
 
@@ -52,11 +52,12 @@
    (and :dev :with-test))
   (shexp
    (and :dev :with-test)))
- (depopts js_of_ocaml schematic)
+ (depopts js_of_ocaml js_of_ocaml-ppx schematic)
  (conflicts
   (schematic
    (or
     (< 0.18.2)
+    (= 0.20.0)
     (>= 0.21.0)))))
 
 (package
