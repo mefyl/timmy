@@ -1,6 +1,7 @@
 ; Timmy-js won't build on OCaml-CI as schematic is not available.
 
-(dirs opam timmy timmy-clock timmy-jsoo timmy-lwt timmy-unix .logistic)
+(dirs dev-tools.locks dune.lock opam timmy timmy-clock timmy-jsoo timmy-lwt
+ timmy-unix .logistic)
 
 (env
  (dev
