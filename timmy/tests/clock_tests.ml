@@ -72,7 +72,7 @@ let daylight_savings () =
 
   (* Before epoch. Unfortunae special-case for windows because it doesn't handle
      before-epoch dates properly *)
-  test (if Sys.os_type == "Win32" then 0 else 1) (1945, 1, 1) (3, 0, 0);
+  test (if String.equal Sys.os_type "Win32" then 0 else 1) (1945, 1, 1) (3, 0, 0);
 
   (* during the timeshift. *)
   test_relaxed (2022, 3, 27) (2, 0, 0);
