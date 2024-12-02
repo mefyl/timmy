@@ -30,11 +30,13 @@ check_int(value n)
 
 static
 int
-offset(const time_t time)
+offset(const time_t time, int* output)
 {
   struct tm localtime;
-  localtime_r(&time, &localtime);
-  return localtime.tm_gmtoff;
+  if (!localtime_r(&time, &localtime))
+    return 0;
+  *output = localtime.tm_gmtoff;
+  return 1;
 }
 
 #else
@@ -50,14 +52,18 @@ local_timezone()
 
 static
 int
-offset(const time_t time)
+offset(const time_t time, int* output)
 {
   struct tm localtime;
-  localtime_s(&localtime, &time);
+  if (!localtime_s(&localtime, &time))
+    return 0;
   struct tm* gmt = gmtime(&time);
   gmt->tm_isdst = localtime.tm_isdst;
   time_t gmt_time = mktime(gmt);
-  return difftime(time, gmt_time);
+  if (gmt_time == -1)
+    return 0;
+  *output = difftime(time, gmt_time);
+  return 1;
 }
 
 #endif
@@ -68,10 +74,8 @@ ocaml_timmy_offset_timestamp_s(value datetime)
 {
   CAMLparam1(datetime);
   const time_t time = Int64_val(datetime);
-
-  errno = 0;
-  int offset_timestamp = offset(time);
-  if (errno == EINVAL) {
+  int offset_timestamp;
+  if (!offset(time, &offset_timestamp)) {
     CAMLreturn(Val_none);
   } else {
     CAMLlocal1(res);
@@ -104,7 +108,14 @@ ocaml_timmy_offset_calendar_time_s(value date, value daytime)
     .tm_year = year - 1900
   };
   time_t time = mktime(&datetime);
-  CAMLreturn(Val_int(offset(time)));
+  int offset_result;
+  if (!offset(time, &offset_result)) {
+    CAMLreturn(Val_none);
+  } else {
+    CAMLlocal1(res);
+    res = caml_alloc_some(Val_int(offset_result));
+    CAMLreturn(res);
+  }
 }
 
 #ifndef __MINGW32__
