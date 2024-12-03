@@ -122,6 +122,9 @@
   (logs
    (>= 0.7.0))
   lwt
+  stdio
+  sexplib
+  opam-file-format
   (timmy
    (= :version)))
  (depopts js_of_ocaml-lwt))
