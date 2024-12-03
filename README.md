@@ -24,3 +24,15 @@ In order to release a new version of a library using logistic, you need to:
 6. Create an annotated tag with the version number and the message `Prerelease X.Y.Z`
 
 The CI should then push on https://gitlab.routine.co/routine/opam to make the new version available
+
+## Generating `*.opam.extdeps` files
+
+To generate the `*.opam.extdeps` files (used in CI for Docker caching Opam dependencies), run the following at the root of a repository containing `*.opam` files:
+```console
+# Refresh the `dune.inc`
+$ dune build dune.inc
+# Install the packages for which you want to generate the extdeps files
+$ opam install ./*.opam
+# Generate them
+$ dune build @extdeps
+```

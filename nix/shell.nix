@@ -11,14 +11,14 @@
     The ocamlformat version (formatted as Nix wants it).
     To keep in sync with the one in .ocamlformat
   */
-, ocamlformatVersion ? "0_26_1"
+, ocamlformatVersion ? "0_26_2"
   /**
     Extra arguments passed directly to `mkShell`
   */
 , extraArgs ? { }
 }:
 let
-  ci-packages = import ./ci-packages.nix;
+  ci-packages = import ./ci-packages.nix { inherit pkgs; };
 in
 pkgs.mkShell
   ({

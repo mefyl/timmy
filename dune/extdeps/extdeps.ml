@@ -69,7 +69,7 @@ let promote_until_clean =
   Sexp.List
     [ Atom "mode"; List [ Atom "promote"; List [ Atom "until-clean" ] ] ]
 
-let cross_toolchains = [ "ios"; "macos"; "windows" ]
+let cross_toolchains = [ "ios"; "macos"; "windows"; "android" ]
 let cross_toolchain_packages = [ "routine-controller-lib" ]
 
 let value_filter_map name value ~f =
@@ -364,7 +364,7 @@ let () =
                  {
                    value with
                    pelem =
-                     pin_depend "ocamlformat" "0.26.1"
+                     pin_depend "ocamlformat" "0.26.2"
                      :: { pelem = String "opam-file-format"; pos }
                      :: { pelem = String "sexplib"; pos }
                      :: l;
@@ -543,5 +543,6 @@ let () =
            rewrite_toolchain "ios";
            rewrite_toolchain "macos";
            rewrite_toolchain "windows";
+           rewrite_toolchain "android";
          ]))
   |> Stdlib.exit

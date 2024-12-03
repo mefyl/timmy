@@ -1,0 +1,5 @@
+# Work around this error:
+# merlin-command: opam var failed ("/nix/store/y3sv3lw8cibibdwfyj5dbda1bgk0n50l-set-vars.sh: line 21: NIX_BUILD_TOP: unbound variable
+export NIX_BUILD_TOP=/tmp
+watch_file *.opam
+use nix
