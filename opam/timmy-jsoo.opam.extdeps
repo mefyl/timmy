@@ -1,6 +1,6 @@
 opam-version: "2.0"
 name: "timmy-jsoo"
-version: "1.1.4"
+version: "1.1.6"
 synopsis: "Js_of_ocaml bindings for Timmy"
 maintainer: "mefyl <mefyl@gruntech.org>"
 authors: "mefyl <mefyl@gruntech.org>"
@@ -8,7 +8,7 @@ license: "LGPL-3.0-or-later"
 homepage: "https://github.com/mefyl/timmy"
 bug-reports: "https://github.com/mefyl/timmy/issues"
 depends: [
-  "ocamlformat" {= "0.26.1"}
+  "ocamlformat" {= "0.26.2"}
   "opam-file-format"
   "sexplib"
   "alcotest" {= "1.8.0" & with-test}
@@ -25,23 +25,23 @@ depends: [
   "cppo" {= "1.7.0"}
   "crunch" {= "3.3.1" & with-doc}
   "csexp" {= "1.5.2"}
-  "dune" {= "3.16.0"}
-  "dune-configurator" {= "3.16.0"}
+  "dune" {= "3.17.0"}
+  "dune-configurator" {= "3.17.0"}
   "fmt" {= "0.9.0"}
   "fpath" {= "0.7.3" & with-doc}
   "gen" {= "1.1"}
   "host-arch-x86_64" {= "1"}
   "host-system-other" {= "1"}
-  "js_of_ocaml" {= "5.8.2"}
-  "js_of_ocaml-compiler" {= "5.8.2"}
-  "js_of_ocaml-ppx" {= "5.8.2"}
+  "js_of_ocaml" {= "5.9.0"}
+  "js_of_ocaml-compiler" {= "5.9.0"}
+  "js_of_ocaml-ppx" {= "5.9.0"}
   "menhir" {= "20240715"}
   "menhirCST" {= "20240715"}
   "menhirLib" {= "20240715"}
   "menhirSdk" {= "20240715"}
-  "ocaml" {= "5.1.0"}
-  "ocaml-base-compiler" {= "5.1.0"}
-  "ocaml-compiler-libs" {= "v0.12.4"}
+  "ocaml" {= "5.2.1"}
+  "ocaml-base-compiler" {= "5.2.1"}
+  "ocaml-compiler-libs" {= "v0.17.0"}
   "ocaml-config" {= "3"}
   "ocaml-options-vanilla" {= "1"}
   "ocaml-syntax-shims" {= "1.0.0" & with-test}
@@ -57,7 +57,7 @@ depends: [
   "ptime" {= "1.2.0"}
   "re" {= "1.12.0" & with-test}
   "result" {= "1.5" & with-doc}
-  "sedlex" {= "3.2"}
+  "sedlex" {= "3.3"}
   "seq" {= "base"}
   "sexplib0" {= "v0.17.0"}
   "stdlib-shims" {= "0.3.0"}
@@ -68,6 +68,5 @@ depends: [
 ]
 conflicts: [
   "schematic-jsoo" {< "0.18.2" | >= "0.21.0"}
-  "schematic-jsoo"
 ]
 dev-repo: "git+https://github.com/mefyl/timmy.git"
