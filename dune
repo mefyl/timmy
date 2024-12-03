@@ -23,11 +23,15 @@
   timmy-jsoo.opam
   timmy-lwt.opam
   timmy-unix.opam
+  opam/timmy-jsoo-android.opam
   opam/timmy-jsoo-macos.opam
   opam/timmy-jsoo-windows.opam
+  opam/timmy-lwt-android.opam
   opam/timmy-lwt-macos.opam
   opam/timmy-lwt-windows.opam
+  opam/timmy-android.opam
   opam/timmy-macos.opam
+  opam/timmy-unix-android.opam
   opam/timmy-unix-macos.opam
   opam/timmy-unix-windows.opam
   opam/timmy-windows.opam

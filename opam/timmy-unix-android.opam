@@ -8,15 +8,15 @@ homepage: "https://github.com/mefyl/timmy"
 bug-reports: "https://github.com/mefyl/timmy/issues"
 depends: [
   "dune" {>= "3.0"}
-  "ptime-macos"
-  "base-macos"
-  "fmt-macos"
+  "ptime-android"
+  "base-android"
+  "fmt-android"
   "logs" {>= "0.7.0"}
   "timmy" {= version}
-  "timmy-macos" {= version}
+  "timmy-android" {= version}
 ]
 build: [
   ["dune" "subst"] {dev}
-  ["dune" "build" "-x" "macos" "-p" "timmy-unix" "-j" jobs "@install"]
+  ["dune" "build" "-x" "android" "-p" "timmy-unix" "-j" jobs "@install"]
 ]
 dev-repo: "git+https://github.com/mefyl/timmy.git"
