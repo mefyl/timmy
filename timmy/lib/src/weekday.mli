@@ -25,9 +25,13 @@ val pp : t Fmt.t
 (** [to_string weekday] is the english name of [weekday]. *)
 val to_string : t -> string
 
-val equal : t -> t -> bool
-val compare : t -> t -> int
+(** {2 Comparison} *)
 
+include Base.Comparable.S with type t := t
+
+(** {2 Operators} *)
+
+(** Convenience module to only pull operators. *)
 module O : sig
   val ( = ) : t -> t -> bool
   val ( <> ) : t -> t -> bool

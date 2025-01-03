@@ -54,6 +54,8 @@ let days ~year month =
   in
   Base.Sequence.unfold ~init:1 ~f
 
+let pp = Fmt.of_to_string to_string
+
 module O = struct
   include Comparable.Make (Type)
 
@@ -61,5 +63,3 @@ module O = struct
 end
 
 include O
-
-let pp = Fmt.of_to_string to_string

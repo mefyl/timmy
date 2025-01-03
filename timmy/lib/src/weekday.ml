@@ -1,5 +1,21 @@
 open Base
-include Type_schema.Weekday
+
+module Type = struct
+  include Type_schema.Weekday
+
+  let to_string = function
+    | Monday -> "Monday"
+    | Tuesday -> "Tuesday"
+    | Wednesday -> "Wednesday"
+    | Thursday -> "Thursday"
+    | Friday -> "Friday"
+    | Saturday -> "Saturday"
+    | Sunday -> "Sunday"
+
+  let sexp_of_t t = Sexp.Atom (to_string t)
+end
+
+include Type
 include Type_js.Weekday
 
 let to_int ?(base = Monday) weekday =
@@ -14,20 +30,10 @@ let to_int ?(base = Monday) weekday =
   in
   Int.rem (to_int weekday - to_int base + 7) 7
 
-let to_string = function
-  | Monday -> "Monday"
-  | Tuesday -> "Tuesday"
-  | Wednesday -> "Wednesday"
-  | Thursday -> "Thursday"
-  | Friday -> "Friday"
-  | Saturday -> "Saturday"
-  | Sunday -> "Sunday"
-
 let pp = Fmt.of_to_string to_string
 
 module O = struct
-  let ( = ) l r = equal l r
-  let ( <> ) l r = not (l = r)
+  include Comparable.Make (Type)
 end
 
 include O
