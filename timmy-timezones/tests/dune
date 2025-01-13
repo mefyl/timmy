@@ -1,0 +1,15 @@
+(test
+ (name tests)
+ (package timmy-timezones)
+ (libraries
+  alcotest
+  clock_virtual
+  logs.fmt
+  timmy
+  clock_tests
+  timmy-unix.clock
+  timmy-timezones
+  )
+ (preprocess
+  (pps ppx_here)))
+
