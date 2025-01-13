@@ -14,6 +14,7 @@
   timmy-jsoo.opam
   timmy-lwt.opam
   timmy-unix.opam
+  timmy-timezones.opam
   opam/timmy-jsoo-android.opam
   opam/timmy-jsoo-macos.opam
   opam/timmy-jsoo-windows.opam
