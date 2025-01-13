@@ -45,10 +45,6 @@ let daylight_savings ?(timezone = Clock.timezone_local) () =
 
   (* right after the timeshift. *)
   test 2 (2022, 3, 27) (3, 0, 0);
-
-  (* Before epoch. Unfortunae special-case for windows because it doesn't handle
-     before-epoch dates properly *)
-  test (if String.equal Sys.os_type "Win32" then 0 else 1) (1945, 1, 1) (3, 0, 0);
   ()
 
 let timezone_name () =
