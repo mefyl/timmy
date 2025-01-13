@@ -1,10 +1,6 @@
 ; Timmy-js won't build on OCaml-CI as schematic is not available.
 
-(dirs
-  :standard
- .logistic
- \ timmy-js
-)
+(dirs :standard .logistic \ timmy-js)
 
 (env
  (dev

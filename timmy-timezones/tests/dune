@@ -8,8 +8,6 @@
   timmy
   clock_tests
   timmy-unix.clock
-  timmy-timezones
-  )
+  timmy-timezones)
  (preprocess
   (pps ppx_here)))
-
