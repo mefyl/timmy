@@ -18,7 +18,10 @@ let of_timere timere_tz : Timmy.Timezone.t =
   and offset_calendar_time_s ~date:(year, month, day)
       ~time:(hour, minute, second) =
     let timedesc =
-      match Timedesc.make_exn ~year ~month ~day ~hour ~minute ~second () with
+      match
+        Timedesc.make_exn ~tz:timere_tz ~year ~month ~day ~hour ~minute ~second
+          ()
+      with
       | exception e ->
         Exn.reraisef e
           "Error converting calendar time (%d, %d, %d) (%d, %d, %d) to timere"
