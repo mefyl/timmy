@@ -1,0 +1,6 @@
+(library
+ (name timmy_timezones)
+ (public_name timmy-timezones)
+ (libraries clock logs timmy timedesc)
+ (preprocess
+  (pps ppx_here ppx_deriving.eq ppx_deriving.ord)))

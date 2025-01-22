@@ -126,6 +126,24 @@
    (= :version)))
  (depopts js_of_ocaml-lwt))
 
+(package
+ (name timmy-timezones)
+ (synopsis "Timezone database support for Timmy")
+ (depends
+  (timedesc (>= 3.0))
+  ppx_here
+  (ppx_deriving
+   (>= 5.0))
+  (alcotest
+   (and
+    :with-test
+    (>= 1.4.0)))
+  (logs
+   (>= 0.7.0))
+  (timmy
+   (= :version)))
+ (depopts js_of_ocaml-lwt))
+
 ; Timmy-js won't build on OCaml-CI as schematic is not available.
 ; (package
 ;  (name timmy-js)
