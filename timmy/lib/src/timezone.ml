@@ -51,3 +51,5 @@ module T = struct
 end
 
 include Base.Comparable.Make (T)
+
+let pp fmt t = Fmt.pf fmt "%s" (name t)
