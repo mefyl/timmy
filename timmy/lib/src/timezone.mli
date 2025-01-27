@@ -50,3 +50,8 @@ val name : t -> string
 
 (** @inline *)
 include Base.Comparable.S with type t := t
+
+(** {1 Printing} *)
+
+(** [pp fmt tz] prints the name of [tz] to formatter [fmt]. *)
+val pp : t Fmt.t

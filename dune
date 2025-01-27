@@ -23,6 +23,9 @@
   opam/timmy-lwt-windows.opam
   opam/timmy-android.opam
   opam/timmy-macos.opam
+  opam/timmy-timezones-android.opam
+  opam/timmy-timezones-macos.opam
+  opam/timmy-timezones-windows.opam
   opam/timmy-unix-android.opam
   opam/timmy-unix-macos.opam
   opam/timmy-unix-windows.opam
@@ -43,7 +46,7 @@
     %{dep:.logistic/dune/extdeps/extdeps.exe}
     generate
     --cross
-    base,fmt,lwt,ptime
+    base,fmt,lwt,ptime,timedesc
     --cross-both
     ; FIXME: dune need the native timmy to be install to be able to
     ; reimplement clock. Remove when dune is fixed.
