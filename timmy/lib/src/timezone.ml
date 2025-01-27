@@ -52,4 +52,4 @@ end
 
 include Base.Comparable.Make (T)
 
-let pp fmt t = Fmt.pf fmt "%s" (name t)
+let pp fmt t = Fmt.string fmt @@ name t
