@@ -17,17 +17,22 @@
   timmy-timezones.opam
   opam/timmy-jsoo-android.opam
   opam/timmy-jsoo-macos.opam
+  opam/timmy-jsoo-ios.opam
   opam/timmy-jsoo-windows.opam
   opam/timmy-lwt-android.opam
   opam/timmy-lwt-macos.opam
+  opam/timmy-lwt-ios.opam
   opam/timmy-lwt-windows.opam
   opam/timmy-android.opam
   opam/timmy-macos.opam
+  opam/timmy-ios.opam
   opam/timmy-timezones-android.opam
   opam/timmy-timezones-macos.opam
+  opam/timmy-timezones-ios.opam
   opam/timmy-timezones-windows.opam
   opam/timmy-unix-android.opam
   opam/timmy-unix-macos.opam
+  opam/timmy-unix-ios.opam
   opam/timmy-unix-windows.opam
   opam/timmy-windows.opam
   (alias_rec timmy/default)
