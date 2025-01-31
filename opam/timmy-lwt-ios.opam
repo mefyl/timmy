@@ -12,7 +12,7 @@ depends: [
   "ppx_here-ios"
   "ppx_deriving" {>= "5.0"}
   "ppx_deriving-ios" {>= "5.0"}
-  "logs" {>= "0.7.0"}
+  "logs-ios" {>= "0.7.0"}
   "lwt-ios"
   "timmy" {= version}
   "timmy-ios" {= version}

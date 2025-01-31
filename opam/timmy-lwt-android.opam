@@ -12,7 +12,7 @@ depends: [
   "ppx_here-android"
   "ppx_deriving" {>= "5.0"}
   "ppx_deriving-android" {>= "5.0"}
-  "logs" {>= "0.7.0"}
+  "logs-android" {>= "0.7.0"}
   "lwt-android"
   "timmy" {= version}
   "timmy-android" {= version}

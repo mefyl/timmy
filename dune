@@ -51,7 +51,7 @@
     %{dep:.logistic/dune/extdeps/extdeps.exe}
     generate
     --cross
-    base,fmt,lwt,ptime,timedesc
+    base,fmt,lwt,ptime,timedesc,logs
     --cross-both
     ; FIXME: dune need the native timmy to be install to be able to
     ; reimplement clock. Remove when dune is fixed.
