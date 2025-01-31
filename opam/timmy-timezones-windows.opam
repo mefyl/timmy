@@ -13,7 +13,7 @@ depends: [
   "ppx_here-windows"
   "ppx_deriving" {>= "5.0"}
   "ppx_deriving-windows" {>= "5.0"}
-  "logs" {>= "0.7.0"}
+  "logs-windows" {>= "0.7.0"}
   "timmy" {= version}
   "timmy-windows" {= version}
 ]

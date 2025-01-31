@@ -20,7 +20,7 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-ios --input
      %{dep:../timmy.opam} --cross
-     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-ios.%{version:timmy}.opam) (deps (:opam timmy-ios.opam))
   (action
@@ -43,7 +43,7 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-macos --input
      %{dep:../timmy.opam} --cross
-     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-macos.%{version:timmy}.opam)
   (deps (:opam timmy-macos.opam))
@@ -67,7 +67,7 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-windows --input
      %{dep:../timmy.opam} --cross
-     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-windows.%{version:timmy}.opam)
   (deps (:opam timmy-windows.opam))
@@ -91,7 +91,7 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-android --input
      %{dep:../timmy.opam} --cross
-     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-android.%{version:timmy}.opam)
   (deps (:opam timmy-android.opam))
@@ -133,7 +133,7 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-ios --input
      %{dep:../timmy-jsoo.opam} --cross
-     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-jsoo-ios.%{version:timmy-jsoo}.opam)
   (deps (:opam timmy-jsoo-ios.opam))
@@ -157,7 +157,7 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-macos --input
      %{dep:../timmy-jsoo.opam} --cross
-     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-jsoo-macos.%{version:timmy-jsoo}.opam)
   (deps (:opam timmy-jsoo-macos.opam))
@@ -181,7 +181,7 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-windows --input
      %{dep:../timmy-jsoo.opam} --cross
-     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-jsoo-windows.%{version:timmy-jsoo}.opam)
   (deps (:opam timmy-jsoo-windows.opam))
@@ -206,7 +206,7 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-android --input
      %{dep:../timmy-jsoo.opam} --cross
-     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-jsoo-android.%{version:timmy-jsoo}.opam)
   (deps (:opam timmy-jsoo-android.opam))
@@ -249,7 +249,7 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-ios --input
      %{dep:../timmy-lwt.opam} --cross
-     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-lwt-ios.%{version:timmy-lwt}.opam)
   (deps (:opam timmy-lwt-ios.opam))
@@ -273,7 +273,7 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-macos --input
      %{dep:../timmy-lwt.opam} --cross
-     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-lwt-macos.%{version:timmy-lwt}.opam)
   (deps (:opam timmy-lwt-macos.opam))
@@ -297,7 +297,7 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-windows --input
      %{dep:../timmy-lwt.opam} --cross
-     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-lwt-windows.%{version:timmy-lwt}.opam)
   (deps (:opam timmy-lwt-windows.opam))
@@ -321,7 +321,7 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-android --input
      %{dep:../timmy-lwt.opam} --cross
-     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-lwt-android.%{version:timmy-lwt}.opam)
   (deps (:opam timmy-lwt-android.opam))
@@ -363,7 +363,7 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-ios --input
      %{dep:../timmy-timezones.opam} --cross
-     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-timezones-ios.%{version:timmy-timezones}.opam)
   (deps (:opam timmy-timezones-ios.opam))
@@ -388,7 +388,7 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-macos --input
      %{dep:../timmy-timezones.opam} --cross
-     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-timezones-macos.%{version:timmy-timezones}.opam)
   (deps (:opam timmy-timezones-macos.opam))
@@ -413,7 +413,7 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-windows --input
      %{dep:../timmy-timezones.opam} --cross
-     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-timezones-windows.%{version:timmy-timezones}.opam)
   (deps (:opam timmy-timezones-windows.opam))
@@ -438,7 +438,7 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-android --input
      %{dep:../timmy-timezones.opam} --cross
-     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-timezones-android.%{version:timmy-timezones}.opam)
   (deps (:opam timmy-timezones-android.opam))
@@ -481,7 +481,7 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-ios --input
      %{dep:../timmy-unix.opam} --cross
-     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-unix-ios.%{version:timmy-unix}.opam)
   (deps (:opam timmy-unix-ios.opam))
@@ -505,7 +505,7 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-macos --input
      %{dep:../timmy-unix.opam} --cross
-     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-unix-macos.%{version:timmy-unix}.opam)
   (deps (:opam timmy-unix-macos.opam))
@@ -529,7 +529,7 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-windows --input
      %{dep:../timmy-unix.opam} --cross
-     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-unix-windows.%{version:timmy-unix}.opam)
   (deps (:opam timmy-unix-windows.opam))
@@ -554,7 +554,7 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-android --input
      %{dep:../timmy-unix.opam} --cross
-     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude js_of_ocaml))))
  (rule (target timmy-unix-android.%{version:timmy-unix}.opam)
   (deps (:opam timmy-unix-android.opam))

@@ -9,17 +9,17 @@ bug-reports: "https://github.com/mefyl/timmy/issues"
 depends: [
   "dune" {>= "3.0"}
   "ppx_here"
-  "ppx_here-windows"
+  "ppx_here-ios"
   "ppx_deriving" {>= "5.0"}
-  "ppx_deriving-windows" {>= "5.0"}
-  "logs-windows" {>= "0.7.0"}
-  "lwt-windows"
+  "ppx_deriving-ios" {>= "5.0"}
+  "logs-ios" {>= "0.7.0"}
+  "lwt-ios"
   "timmy" {= version}
-  "timmy-windows" {= version}
+  "timmy-ios" {= version}
 ]
 depopts: ["js_of_ocaml-lwt"]
 build: [
   ["dune" "subst"] {dev}
-  ["dune" "build" "-x" "windows" "-p" "timmy-lwt" "-j" jobs "@install"]
+  ["dune" "build" "-x" "ios" "-p" "timmy-lwt" "-j" jobs "@install"]
 ]
 dev-repo: "git+https://github.com/mefyl/timmy.git"
