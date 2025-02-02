@@ -42,7 +42,7 @@ let pp f span =
     else (true, -(days + 1), Int64.(neg @@ (ps - (pico * 60L * 60L * 24L))))
   in
   let open Fmt in
-  if days = 0 && Int64.(ps = 0L) then string f "0s"
+  if days = 0 && Int64.(ps < 1000000000L) then string f "0s"
   else
     let d = Int.abs days
     and h = Int64.(ps / (pico * 60L * 60L) % 24L) |> Int64.to_int_trunc
@@ -58,7 +58,7 @@ let pp f span =
     and seconds f = function
       | 0, 0 -> ()
       | s, 0 -> pf f "%is" s
-      | s, ms -> pf f "%d.%ds" s ms
+      | s, ms -> pf f "%d.%03ds" s ms
     and sp c l r = if Int.(l > 0 && r > 0) then const char c else nop in
     concat ~sep:nop
       [
