@@ -141,7 +141,11 @@
   (logs
    (>= 0.7.0))
   (timmy
-   (= :version)))
+   (= :version))
+  (timmy-unix
+   (and
+    :with-test
+    (= :version))))
  (depopts js_of_ocaml-lwt))
 
 ; Timmy-js won't build on OCaml-CI as schematic is not available.

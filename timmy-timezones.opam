@@ -15,6 +15,7 @@ depends: [
   "alcotest" {with-test & >= "1.4.0"}
   "logs" {>= "0.7.0"}
   "timmy" {= version}
+  "timmy-unix" {with-test & = version}
   "odoc" {with-doc}
 ]
 depopts: ["js_of_ocaml-lwt"]
