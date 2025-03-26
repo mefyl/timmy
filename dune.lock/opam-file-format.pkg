@@ -12,9 +12,13 @@
    (run
     %{make}
     (when
-     (not %{pkg:ocaml:native})
+     (catch_undefined_var
+      (not %{pkg:ocaml:native})
+      false)
      byte)
-    (when %{pkg:ocaml:native} all)))
+    (when
+     (catch_undefined_var %{pkg:ocaml:native} false)
+     all)))
   (when
    %{pkg:dune:installed}
    (run dune build -p %{pkg-self:name} -j %{jobs} @install))))

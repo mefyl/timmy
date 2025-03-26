@@ -7,14 +7,18 @@
    %{make}
    PROFILE=release
    (when
-    (and_absorb_undefined_var
-     (not %{pkg:ocaml:preinstalled})
-     (< %{pkg:ocaml:version} 5.0.0~~))
+    (catch_undefined_var
+     (and_absorb_undefined_var
+      (not %{pkg:ocaml:preinstalled})
+      (< %{pkg:ocaml:version} 5.0.0~~))
+     false)
     opam-legacy)
    (when
-    (or_absorb_undefined_var
-     %{pkg:ocaml:preinstalled}
-     (>= %{pkg:ocaml:version} 5.0.0~~))
+    (catch_undefined_var
+     (or_absorb_undefined_var
+      %{pkg:ocaml:preinstalled}
+      (>= %{pkg:ocaml:version} 5.0.0~~))
+     false)
     opam-modern))))
 
 (depends ocaml)

@@ -1,4 +1,4 @@
-(version 5.8.2)
+(version 6.0.1)
 
 (build
  (progn
@@ -12,6 +12,6 @@
 (source
  (fetch
   (url
-   https://github.com/ocsigen/js_of_ocaml/releases/download/5.8.2/js_of_ocaml-5.8.2.tbz)
+   https://github.com/ocsigen/js_of_ocaml/releases/download/6.0.1/js_of_ocaml-6.0.1.tbz)
   (checksum
-   sha256=7220194bd2f9b14d958153a5a206750359d7b49de12fe88d7450d385cecbf04a)))
+   sha256=813dbee2b62e1541049ea23a20e405cf244e27ebfa9859785cfa53e286d2c614)))

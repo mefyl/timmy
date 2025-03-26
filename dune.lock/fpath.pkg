@@ -5,7 +5,9 @@
   ocaml
   pkg/pkg.ml
   build
-  (when %{pkg-self:dev} --dev-pkg=true)))
+  (when
+   (catch_undefined_var %{pkg-self:dev} false)
+   --dev-pkg=true)))
 
 (depends ocaml ocamlfind ocamlbuild topkg astring)
 
