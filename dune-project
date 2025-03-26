@@ -58,7 +58,7 @@
  (depopts js_of_ocaml js_of_ocaml-ppx schematic)
  (conflicts
   (schematic
-    (or
+   (or
     (< 0.18.2)
     (= 0.20.0)
     (>= 0.21.0)))))
@@ -133,7 +133,8 @@
  (name timmy-timezones)
  (synopsis "Timezone database support for Timmy")
  (depends
-  (timedesc (>= 3.0))
+  (timedesc
+   (>= 3.0))
   ppx_here
   (ppx_deriving
    (>= 5.0))
