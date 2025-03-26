@@ -18,10 +18,10 @@ endif
 build:
 	if test -d /root/node_modules; then ln -s /root/node_modules; fi
 	$(DUNE) subst
-	$(DUNE) build --profile release $(if ${DUNE_PACKAGES},--only-packages="${DUNE_PACKAGES}") --ignore-promoted-rules @install
+	$(DUNE) build --profile release $(if ${DUNE_PACKAGES},--only-packages="${DUNE_PACKAGES}") --ignore-promoted-rules @install --debug-cache=shared,fs
 
 lint:
-	$(DUNE) build @fmt
+	$(DUNE) build @fmt --cache=enabled --cache-storage-mode=copy --debug-cache=shared,fs --verbose
 
 check:
 	if test -d /root/node_modules; then ln -s /root/node_modules; fi

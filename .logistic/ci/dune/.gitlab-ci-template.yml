@@ -17,7 +17,6 @@ variables:
   FROM_SCRATCH:
     value: ""
     description: "Rebuild Docker images from scratch if not empty"
-  DUNE_CACHE_ROOT: "/cache"
   DUNE_CACHE_STORAGE_MODE: "copy"
 
 .ocaml:
