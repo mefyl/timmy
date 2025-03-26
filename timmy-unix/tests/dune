@@ -1,6 +1,6 @@
 (executable
  (name test)
- (libraries alcotest clock_tests timmy timmy-unix.clock))
+ (libraries alcotest clock_tests timmy timmy-unix.clock logs))
 
 (rule
  (alias runtest)

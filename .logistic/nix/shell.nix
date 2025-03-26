@@ -18,7 +18,7 @@
 , extraArgs ? { }
 }:
 let
-  ci-packages = import ./ci-packages.nix;
+  ci-packages = import ./ci-packages.nix { inherit pkgs; };
 in
 pkgs.mkShell
   ({

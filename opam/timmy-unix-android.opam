@@ -1,0 +1,22 @@
+opam-version: "2.0"
+version: "1.1.6"
+synopsis: "Unix clock implementation for Timmy"
+maintainer: ["mefyl <mefyl@gruntech.org>"]
+authors: ["mefyl <mefyl@gruntech.org>"]
+license: "LGPL-3.0-or-later"
+homepage: "https://github.com/mefyl/timmy"
+bug-reports: "https://github.com/mefyl/timmy/issues"
+depends: [
+  "dune" {>= "3.0"}
+  "ptime-android"
+  "base-android"
+  "fmt-android"
+  "logs-android" {>= "0.7.0"}
+  "timmy" {= version}
+  "timmy-android" {= version}
+]
+build: [
+  ["dune" "subst"] {dev}
+  ["dune" "build" "-x" "android" "-p" "timmy-unix" "-j" jobs "@install"]
+]
+dev-repo: "git+https://github.com/mefyl/timmy.git"

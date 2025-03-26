@@ -42,3 +42,14 @@ let name = function
       "it appears you mixed a pre 1.0 Clock implementation with a post 1.1 \
        Timmy interface"
   | { name; _ } -> name
+
+module T = struct
+  type nonrec t = t
+
+  let compare t1 t2 = String.compare (name t1) (name t2)
+  let sexp_of_t t = Base.Sexp.Atom (name t)
+end
+
+include Base.Comparable.Make (T)
+
+let pp fmt t = Fmt.string fmt @@ name t

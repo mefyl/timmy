@@ -43,3 +43,15 @@ val gmt_offset_seconds_at_time : t -> Ptime.t -> int
 
 (** [name tz] is the IANA name of [tz], if it could be determined. *)
 val name : t -> string
+
+(** {1 Comparison} *)
+
+(** Timezones are comparable through their names. *)
+
+(** @inline *)
+include Base.Comparable.S with type t := t
+
+(** {1 Printing} *)
+
+(** [pp fmt tz] prints the name of [tz] to formatter [fmt]. *)
+val pp : t Fmt.t

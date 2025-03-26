@@ -213,6 +213,10 @@ module Span = struct
       check_seconds ~here:[%here] "Days are printed correctly" "7 days"
         (60 * 60 * 24 * 7)
     and () =
+      check ~here:[%here] "Milliseconds are printed correctly" "0.003s"
+      @@ Timmy.Span.of_ptime @@ Option.value_exn
+      @@ Ptime.Span.of_float_s 0.003
+    and () =
       check_seconds ~here:[%here] "A composite duration is printed correctly"
         "100 days 3h 58m 41s" 8654321
     and () =

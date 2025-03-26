@@ -1,0 +1,28 @@
+opam-version: "2.0"
+version: "1.1.6"
+synopsis: "Time and calendar library"
+maintainer: ["mefyl <mefyl@gruntech.org>"]
+authors: ["mefyl <mefyl@gruntech.org>"]
+license: "LGPL-3.0-or-later"
+homepage: "https://github.com/mefyl/timmy"
+bug-reports: "https://github.com/mefyl/timmy/issues"
+depends: [
+  "dune" {>= "3.0"}
+  "base-ios"
+  "fmt-ios" {>= "0.8.7"}
+  "ocaml-ios" {>= "4.08.0"}
+  "ppx_here"
+  "ppx_here-ios"
+  "ppx_deriving" {>= "5.0"}
+  "ppx_deriving-ios" {>= "5.0"}
+  "ptime-ios"
+]
+depopts: ["js_of_ocaml-ppx" "schematic-ios"]
+conflicts: [
+  "schematic" {< "0.18.2" | = "0.20.0" | >= "0.21.0"}
+]
+build: [
+  ["dune" "subst"] {dev}
+  ["dune" "build" "-x" "ios" "-p" "timmy" "-j" jobs "@install"]
+]
+dev-repo: "git+https://github.com/mefyl/timmy.git"

@@ -1,5 +1,5 @@
 opam-version: "2.0"
-version: "1.1.5"
+version: "1.1.6"
 synopsis: "Unix clock implementation for Timmy"
 maintainer: ["mefyl <mefyl@gruntech.org>"]
 authors: ["mefyl <mefyl@gruntech.org>"]
@@ -11,6 +11,7 @@ depends: [
   "ptime-windows"
   "base-windows"
   "fmt-windows"
+  "logs-windows" {>= "0.7.0"}
   "timmy" {= version}
   "timmy-windows" {= version}
 ]

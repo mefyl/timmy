@@ -2,7 +2,7 @@
 
 (name timmy)
 
-(version 1.1.5)
+(version 1.1.6)
 
 (generate_opam_files true)
 
@@ -55,11 +55,12 @@
    (or :with-dev-setup :with-test))
   (stdio
    (or :with-dev-setup :with-test)))
- (depopts js_of_ocaml schematic)
+ (depopts js_of_ocaml js_of_ocaml-ppx schematic)
  (conflicts
   (schematic
-   (or
+    (or
     (< 0.18.2)
+    (= 0.20.0)
     (>= 0.21.0)))))
 
 (package
@@ -101,6 +102,8 @@
   base
   (conf-tzdata :with-test)
   fmt
+  (logs
+   (>= 0.7.0))
   (timmy
    (= :version))))
 
@@ -122,6 +125,24 @@
   (logs
    (>= 0.7.0))
   lwt
+  (timmy
+   (= :version)))
+ (depopts js_of_ocaml-lwt))
+
+(package
+ (name timmy-timezones)
+ (synopsis "Timezone database support for Timmy")
+ (depends
+  (timedesc (>= 3.0))
+  ppx_here
+  (ppx_deriving
+   (>= 5.0))
+  (alcotest
+   (and
+    :with-test
+    (>= 1.4.0)))
+  (logs
+   (>= 0.7.0))
   (timmy
    (= :version)))
  (depopts js_of_ocaml-lwt))
