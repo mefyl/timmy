@@ -21,7 +21,7 @@ variables:
   DUNE_CACHE_STORAGE_MODE: "copy"
 
 .ocaml:
-  image: "$CI_REGISTRY/routine/logistic/dune-builder:f7af2d0"
+  image: "$CI_REGISTRY/routine/logistic/dune-builder:5251af8"
 
 .ocaml-build:
   extends: .ocaml
@@ -53,7 +53,6 @@ variables:
     - make -f .logistic/ci/dune/Makefile package/clean
 
 .ocaml-opam:
-
   extends: .ocaml
   stage: package
   script:
