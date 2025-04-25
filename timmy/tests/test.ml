@@ -230,6 +230,12 @@ module Span = struct
       let span = Ptime.Span.of_float_s 1.234 in
       check ~here:[%here] "Milliseconds are printed correctly" "1.234s"
       @@ Timmy.Span.of_ptime @@ Option.value_exn span
+    and () =
+      check ~here:[%here] "Multiplied correctly" "0.100s"
+      @@ Timmy.Span.(seconds 1 *. 0.1)
+    and () =
+      Alcotest.check ~here:[%here] (Alcotest.float 0.01) "Divided correctly" 10.
+      @@ Timmy.Span.(seconds 1 /. (seconds 1 *. 0.1))
     in
     ()
 end
