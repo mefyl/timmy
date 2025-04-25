@@ -20,7 +20,8 @@ let to_seconds s = Option.value_exn ~here:[%here] (Ptime.Span.to_int_s s)
 module O = struct
   include Comparable.Make (T)
 
-  let ( / ) l r = to_seconds l / to_seconds r
+  let ( /. ) l r = Ptime.Span.to_float_s l /. Ptime.Span.to_float_s r
+  let ( / ) l r = l /. r |> Float.to_int
   let ( + ) = Ptime.Span.add
   let ( - ) = Ptime.Span.sub
   let ( ~- ) = Ptime.Span.neg

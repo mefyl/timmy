@@ -51,9 +51,13 @@ module O : sig
   (** [span * i]'s duration is [i] times [span]'s duration. *)
   val ( * ) : t -> int -> t
 
-  (** [l / r] is [l]'s duration divedid by [r]'s duration, with the semantics of
+  (** [l / r] is [l]'s duration divided by [r]'s duration, with the semantics of
       [Caml.( / )]. *)
   val ( / ) : t -> t -> int
+
+  (** [l /. r] is [l]'s duration in seconds divided by [r]'s duration in
+      seconds. *)
+  val ( /. ) : t -> t -> float
 end
 
 include module type of O
