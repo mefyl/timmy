@@ -3,24 +3,13 @@ include:
 
 toolchain:
   extends: .toolchain
-  variables:
-    OPAM_PACKAGES: "js_of_ocaml.5.8.2 schematic-jsoo"
 
 toolchain:no-schematic:
   extends: .toolchain
   variables:
-    DUNE_PACKAGES: "timmy,timmy-jsoo,timmy-lwt,timmy-unix"
-    OPAM_PACKAGES: "js_of_ocaml.5.8.2"
+    DUNE_PACKAGES: "timmy,timmy-lwt,timmy-unix"
     OPAM_WITHOUT_PACKAGES: "schematic"
     VARIANT: "-no-schematic"
-
-toolchain:no-jsoo:
-  extends: .toolchain
-  variables:
-    DUNE_PACKAGES: "timmy,timmy-lwt,timmy-unix"
-    OPAM_PACKAGES: "schematic"
-    OPAM_WITHOUT_PACKAGES: "js_of_ocaml"
-    VARIANT: "-no-jsoo"
 
 build:
   extends: .ocaml-build
@@ -36,18 +25,8 @@ build:no-schematic:
   needs:
     - toolchain:no-schematic
   variables:
-    DUNE_PACKAGES: "timmy,timmy-jsoo,timmy-unix"
+    DUNE_PACKAGES: "timmy,timmy-unix"
     VARIANT: "-no-schematic"
-
-build:no-jsoo:
-  extends: .ocaml-build
-  dependencies:
-    - toolchain:no-jsoo
-  needs:
-    - toolchain:no-jsoo
-  variables:
-    DUNE_PACKAGES: "timmy"
-    VARIANT: "-no-jsoo"
 
 documentation:
   extends: .ocaml
@@ -79,15 +58,6 @@ check:no-schematic:
   variables:
     VARIANT: "-no-schematic"
 
-check:no-jsoo:
-  extends: .ocaml-check
-  dependencies:
-    - build:no-jsoo
-  needs:
-    - build:no-jsoo
-  variables:
-    VARIANT: "-no-jsoo"
-
 package:
   extends: .ocaml-package
   dependencies:
@@ -95,7 +65,6 @@ package:
   needs:
     - check
     - check:no-schematic
-    - check:no-jsoo
 
 publish:
   extends:
@@ -106,7 +75,6 @@ publish:
   needs:
     - check
     - check:no-schematic
-    - check:no-jsoo
     - documentation
   script:
     - !reference [.ocaml-opam, script]
