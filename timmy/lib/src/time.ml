@@ -2,7 +2,6 @@ open Base
 
 module T = struct
   include Type_schema.Time
-  include Type_js.Time
 
   let compare = Ptime.compare
   let sexp_of_t t = Sexp.Atom (Ptime.to_rfc3339 t)

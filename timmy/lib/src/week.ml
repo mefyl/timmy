@@ -27,7 +27,6 @@ module T = struct
 end
 
 include T
-include Type_js.Week
 
 let of_monday jd =
   let Date.{ day; month; year } = Date.of_int jd in

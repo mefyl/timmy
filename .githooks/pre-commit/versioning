@@ -16,5 +16,3 @@ check () {
 
 check "timmy/lib/src/timmy.ml"
 check "timmy/lib/src/versions.ml"
-check "timmy-jsoo/lib/src/timmy_jsoo.ml"
-check "timmy-jsoo/lib/src/versions.ml"

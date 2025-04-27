@@ -18,7 +18,6 @@ depends: [
   "timmy-unix" {with-test & = version}
   "odoc" {with-doc}
 ]
-depopts: ["js_of_ocaml-lwt"]
 build: [
   ["dune" "subst"] {dev}
   [

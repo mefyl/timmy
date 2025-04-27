@@ -5,9 +5,6 @@ open Base
 (** @inline *)
 include Type_schema.DATE
 
-(** @inline *)
-include module type of Type_js.Date
-
 (** {1 Construction} *)
 
 (** [make ~year ~month ~day] is [{ day; month; year }] if it represents a valid

@@ -40,47 +40,13 @@
     :with-test
     (>= 1.4.0)))
   ; Doc
-  (odoc :with-doc)
-  ; Dev
-  (cmdliner
-   (and :dev :with-test))
-  (opam-file-format
-   (and :dev :with-test))
-  (sexplib
-   (and :dev :with-test))
-  (stdio
-   (and :dev :with-test))
-  (shexp
-   (and :dev :with-test)))
- (depopts js_of_ocaml js_of_ocaml-ppx schematic)
+  (odoc :with-doc))
+ (depopts schematic)
  (conflicts
   (schematic
    (or
     (< 0.18.2)
     (= 0.20.0)
-    (>= 0.21.0)))))
-
-(package
- (name timmy-jsoo)
- (synopsis "Js_of_ocaml bindings for Timmy")
- (depends
-  ptime
-  ppx_here
-  (alcotest
-   (and
-    :with-test
-    (>= 1.4.0)))
-  (conf-npm :with-test)
-  fmt
-  js_of_ocaml
-  js_of_ocaml-ppx
-  (timmy
-   (= :version)))
- (depopts schematic-jsoo)
- (conflicts
-  (schematic-jsoo
-   (or
-    (< 0.18.2)
     (>= 0.21.0)))))
 
 (package
@@ -123,14 +89,14 @@
    (>= 0.7.0))
   lwt
   (timmy
-   (= :version)))
- (depopts js_of_ocaml-lwt))
+   (= :version))))
 
 (package
  (name timmy-timezones)
  (synopsis "Timezone database support for Timmy")
  (depends
-  (timedesc (>= 3.0))
+  (timedesc
+   (>= 3.0))
   ppx_here
   (ppx_deriving
    (>= 5.0))
@@ -145,18 +111,4 @@
   (timmy-unix
    (and
     :with-test
-    (= :version))))
- (depopts js_of_ocaml-lwt))
-
-; Timmy-js won't build on OCaml-CI as schematic is not available.
-; (package
-;  (name timmy-js)
-;  (synopsis "Javascript binding of Timmy")
-;  (depends
-;   (conf-tzdata :with-test)
-;   (schematic-jsoo
-;    (and
-;     (>= 0.18.2)
-;     (< 0.19.0)))
-;   (timmy-jsoo
-;    (= :version))))
+    (= :version)))))

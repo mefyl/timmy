@@ -16,7 +16,6 @@ module Type = struct
 end
 
 include Type
-include Type_js.Weekday
 
 let to_int ?(base = Monday) weekday =
   let to_int = function

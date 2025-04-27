@@ -5,9 +5,6 @@ open Base
 (** @inline *)
 include Type_schema.DAYTIME
 
-(** @inline *)
-include module type of Type_js.Daytime
-
 (** {1 Construction} *)
 
 (** [make ~hours ~minutes ~int] is [{ hours; minutes; seconds }] if it

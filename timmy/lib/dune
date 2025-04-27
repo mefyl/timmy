@@ -11,11 +11,6 @@
    type_schema.ml
    from
    (schematic -> type_schema.schematic.ml)
-   (!schematic -> type_schema.noschematic.ml))
-  (select
-   type_js.ml
-   from
-   (js_of_ocaml -> type_js.js.ml)
-   (!js_of_ocaml -> type_js.nojs.ml)))
+   (!schematic -> type_schema.noschematic.ml)))
  (preprocess
   (pps ppx_here ppx_deriving.eq ppx_deriving.ord)))

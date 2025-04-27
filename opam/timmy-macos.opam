@@ -17,7 +17,7 @@ depends: [
   "ppx_deriving-macos" {>= "5.0"}
   "ptime-macos"
 ]
-depopts: ["js_of_ocaml-ppx" "schematic-macos"]
+depopts: ["schematic-macos"]
 conflicts: [
   "schematic" {< "0.18.2" | = "0.20.0" | >= "0.21.0"}
 ]

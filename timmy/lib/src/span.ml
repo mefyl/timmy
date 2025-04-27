@@ -8,7 +8,6 @@ module T = struct
 end
 
 include T
-include Type_js.Span
 
 let days s = Option.value_exn ~here:[%here] (Ptime.Span.of_d_ps (s, 0L))
 let hours s = Ptime.Span.of_int_s (s * 60 * 60)

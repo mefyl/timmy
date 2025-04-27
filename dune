@@ -1,6 +1,4 @@
-; Timmy-js won't build on OCaml-CI as schematic is not available.
-
-(dirs :standard .logistic \ timmy-js)
+(dirs :standard .logistic)
 
 (env
  (dev
@@ -11,14 +9,9 @@
  (name default)
  (deps
   timmy.opam
-  timmy-jsoo.opam
   timmy-lwt.opam
   timmy-unix.opam
   timmy-timezones.opam
-  opam/timmy-jsoo-android.opam
-  opam/timmy-jsoo-macos.opam
-  opam/timmy-jsoo-ios.opam
-  opam/timmy-jsoo-windows.opam
   opam/timmy-lwt-android.opam
   opam/timmy-lwt-macos.opam
   opam/timmy-lwt-ios.opam
@@ -36,7 +29,6 @@
   opam/timmy-unix-windows.opam
   opam/timmy-windows.opam
   (alias_rec timmy/default)
-  (alias_rec timmy-jsoo/default)
   (alias_rec timmy-lwt/default)
   (alias_rec timmy-unix/default)))
 
@@ -56,9 +48,7 @@
     ; FIXME: dune need the native timmy to be install to be able to
     ; reimplement clock. Remove when dune is fixed.
     timmy,ppx_here,ppx_deriving
-    --cross-exclude
-    js_of_ocaml
     --local
-    hlist,schematic,schematic-jsoo))))
+    hlist,schematic))))
 
 (include dune.inc)

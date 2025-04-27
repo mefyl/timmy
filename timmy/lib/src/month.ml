@@ -21,7 +21,6 @@ module Type = struct
 end
 
 include Type
-include Type_js.Month
 
 let of_string m =
   match String.lowercase m with

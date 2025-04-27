@@ -17,7 +17,7 @@ depends: [
   "ppx_deriving-ios" {>= "5.0"}
   "ptime-ios"
 ]
-depopts: ["js_of_ocaml-ppx" "schematic-ios"]
+depopts: ["schematic-ios"]
 conflicts: [
   "schematic" {< "0.18.2" | = "0.20.0" | >= "0.21.0"}
 ]

@@ -5,9 +5,6 @@ open Base
 (** @inline *)
 include Type_schema.TIME
 
-(** @inline *)
-include module type of Type_js.Time
-
 (** {1 Construction} *)
 
 (** Timmy leaves the burden of determining the current time to {!Ptime_clock}.

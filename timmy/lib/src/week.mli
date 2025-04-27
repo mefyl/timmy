@@ -5,9 +5,6 @@ open Base
 (** @inline *)
 include Type_schema.WEEK
 
-(** @inline *)
-include module type of Type_js.Week
-
 (** {1 Construction} *)
 
 (** [make ~year n] is [{ n; year }] if it represents a valid week or a relevant

@@ -1,7 +1,6 @@
 (** {1 Type} *)
 
 include Type_schema.SPAN
-include module type of Type_js.Span
 
 (** {1 Construction} *)
 

@@ -5,8 +5,6 @@ open Base
 (** @inline *)
 include Type_schema.MONTH with type t = Types_bare.Month.t
 
-include module type of Type_js.Month
-
 (** {1 Time manipulation} *)
 
 (** [add_months month n] is the month occuring [n] months after [month]. *)

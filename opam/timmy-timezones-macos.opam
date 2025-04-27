@@ -17,7 +17,6 @@ depends: [
   "timmy" {= version}
   "timmy-macos" {= version}
 ]
-depopts: ["js_of_ocaml-lwt"]
 build: [
   ["dune" "subst"] {dev}
   ["dune" "build" "-x" "macos" "-p" "timmy-timezones" "-j" jobs "@install"]

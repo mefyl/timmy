@@ -17,7 +17,7 @@ depends: [
   "ppx_deriving-android" {>= "5.0"}
   "ptime-android"
 ]
-depopts: ["js_of_ocaml-ppx" "schematic-android"]
+depopts: ["schematic-android"]
 conflicts: [
   "schematic" {< "0.18.2" | = "0.20.0" | >= "0.21.0"}
 ]
