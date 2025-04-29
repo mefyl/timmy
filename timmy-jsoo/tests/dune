@@ -1,0 +1,17 @@
+(executable
+ (name test)
+ (modules test)
+ (modes js)
+ (libraries alcotest clock_tests js_of_ocaml timmy-jsoo.clock)
+ (preprocess
+  (pps ppx_here js_of_ocaml-ppx)))
+
+(rule
+ (alias runtest)
+ (package timmy-jsoo)
+ (enabled_if %{lib-available:js_of_ocaml})
+ (action
+  (setenv
+   TZ
+   Europe/Amsterdam
+   (run node %{dep:./test.bc.js}))))

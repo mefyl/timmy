@@ -14,13 +14,13 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
      %{dep:timmy.opam.locked} --local
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic))))
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic))))
  (rule (target timmy-ios.opam) (mode (promote (until-clean)))
   (action
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-ios --input
      %{dep:../timmy.opam} --cross
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
  (rule (target timmy-ios.%{version:timmy}.opam) (deps (:opam timmy-ios.opam))
   (action
@@ -36,14 +36,14 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
      %{dep:timmy-ios.opam.locked} --local
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic --toolchain
-     ios))))
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic
+     --toolchain ios))))
  (rule (target timmy-macos.opam) (mode (promote (until-clean)))
   (action
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-macos --input
      %{dep:../timmy.opam} --cross
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
  (rule (target timmy-macos.%{version:timmy}.opam)
   (deps (:opam timmy-macos.opam))
@@ -60,14 +60,14 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
      %{dep:timmy-macos.opam.locked} --local
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic --toolchain
-     macos))))
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic
+     --toolchain macos))))
  (rule (target timmy-windows.opam) (mode (promote (until-clean)))
   (action
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-windows --input
      %{dep:../timmy.opam} --cross
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
  (rule (target timmy-windows.%{version:timmy}.opam)
   (deps (:opam timmy-windows.opam))
@@ -84,14 +84,14 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
      %{dep:timmy-windows.opam.locked} --local
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic --toolchain
-     windows))))
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic
+     --toolchain windows))))
  (rule (target timmy-android.opam) (mode (promote (until-clean)))
   (action
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-android --input
      %{dep:../timmy.opam} --cross
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
  (rule (target timmy-android.%{version:timmy}.opam)
   (deps (:opam timmy-android.opam))
@@ -108,8 +108,124 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
      %{dep:timmy-android.opam.locked} --local
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic --toolchain
-     android)))))
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic
+     --toolchain android)))))
+(alias (name extdeps) (deps opam/timmy-jsoo.opam.extdeps))
+(subdir opam
+ (rule (target timmy-jsoo.%{version:timmy-jsoo}.opam)
+  (deps (:opam ../timmy-jsoo.opam))
+  (action
+   (with-stdout-to %{target}
+    (progn (cat %{opam})
+     (run git log
+      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+      -n1)))))
+ (rule (deps (universe)) (target timmy-jsoo.opam.locked)
+  (action (run %{bin:opam} lock timmy-jsoo)))
+ (rule (mode (promote (until-clean))) (target timmy-jsoo.opam.extdeps)
+  (action
+   (with-stdout-to %{target}
+    (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
+     %{dep:timmy-jsoo.opam.locked} --local
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic))))
+ (rule (target timmy-jsoo-ios.opam) (mode (promote (until-clean)))
+  (action
+   (with-stdout-to %{target}
+    (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-ios --input
+     %{dep:../timmy-jsoo.opam} --cross
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
+     --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
+ (rule (target timmy-jsoo-ios.%{version:timmy-jsoo}.opam)
+  (deps (:opam timmy-jsoo-ios.opam))
+  (action
+   (with-stdout-to %{target}
+    (progn (cat %{opam})
+     (run git log
+      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+      -n1)))))
+ (rule (deps (universe)) (target timmy-jsoo-ios.opam.locked)
+  (action (run %{bin:opam} lock timmy-jsoo-ios)))
+ (rule (mode (promote (until-clean))) (target timmy-jsoo.opam.extdeps-ios)
+  (action
+   (with-stdout-to %{target}
+    (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
+     %{dep:timmy-jsoo-ios.opam.locked} --local
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic
+     --toolchain ios))))
+ (rule (target timmy-jsoo-macos.opam) (mode (promote (until-clean)))
+  (action
+   (with-stdout-to %{target}
+    (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-macos --input
+     %{dep:../timmy-jsoo.opam} --cross
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
+     --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
+ (rule (target timmy-jsoo-macos.%{version:timmy-jsoo}.opam)
+  (deps (:opam timmy-jsoo-macos.opam))
+  (action
+   (with-stdout-to %{target}
+    (progn (cat %{opam})
+     (run git log
+      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+      -n1)))))
+ (rule (deps (universe)) (target timmy-jsoo-macos.opam.locked)
+  (action (run %{bin:opam} lock timmy-jsoo-macos)))
+ (rule (mode (promote (until-clean))) (target timmy-jsoo.opam.extdeps-macos)
+  (action
+   (with-stdout-to %{target}
+    (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
+     %{dep:timmy-jsoo-macos.opam.locked} --local
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic
+     --toolchain macos))))
+ (rule (target timmy-jsoo-windows.opam) (mode (promote (until-clean)))
+  (action
+   (with-stdout-to %{target}
+    (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-windows --input
+     %{dep:../timmy-jsoo.opam} --cross
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
+     --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
+ (rule (target timmy-jsoo-windows.%{version:timmy-jsoo}.opam)
+  (deps (:opam timmy-jsoo-windows.opam))
+  (action
+   (with-stdout-to %{target}
+    (progn (cat %{opam})
+     (run git log
+      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+      -n1)))))
+ (rule (deps (universe)) (target timmy-jsoo-windows.opam.locked)
+  (action (run %{bin:opam} lock timmy-jsoo-windows)))
+ (rule (mode (promote (until-clean)))
+  (target timmy-jsoo.opam.extdeps-windows)
+  (action
+   (with-stdout-to %{target}
+    (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
+     %{dep:timmy-jsoo-windows.opam.locked} --local
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic
+     --toolchain windows))))
+ (rule (target timmy-jsoo-android.opam) (mode (promote (until-clean)))
+  (action
+   (with-stdout-to %{target}
+    (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-android --input
+     %{dep:../timmy-jsoo.opam} --cross
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
+     --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
+ (rule (target timmy-jsoo-android.%{version:timmy-jsoo}.opam)
+  (deps (:opam timmy-jsoo-android.opam))
+  (action
+   (with-stdout-to %{target}
+    (progn (cat %{opam})
+     (run git log
+      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+      -n1)))))
+ (rule (deps (universe)) (target timmy-jsoo-android.opam.locked)
+  (action (run %{bin:opam} lock timmy-jsoo-android)))
+ (rule (mode (promote (until-clean)))
+  (target timmy-jsoo.opam.extdeps-android)
+  (action
+   (with-stdout-to %{target}
+    (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
+     %{dep:timmy-jsoo-android.opam.locked} --local
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic
+     --toolchain android)))))
 (alias (name extdeps) (deps opam/timmy-lwt.opam.extdeps))
 (subdir opam
  (rule (target timmy-lwt.%{version:timmy-lwt}.opam)
@@ -127,13 +243,13 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
      %{dep:timmy-lwt.opam.locked} --local
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic))))
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic))))
  (rule (target timmy-lwt-ios.opam) (mode (promote (until-clean)))
   (action
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-ios --input
      %{dep:../timmy-lwt.opam} --cross
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
  (rule (target timmy-lwt-ios.%{version:timmy-lwt}.opam)
   (deps (:opam timmy-lwt-ios.opam))
@@ -150,14 +266,14 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
      %{dep:timmy-lwt-ios.opam.locked} --local
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic --toolchain
-     ios))))
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic
+     --toolchain ios))))
  (rule (target timmy-lwt-macos.opam) (mode (promote (until-clean)))
   (action
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-macos --input
      %{dep:../timmy-lwt.opam} --cross
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
  (rule (target timmy-lwt-macos.%{version:timmy-lwt}.opam)
   (deps (:opam timmy-lwt-macos.opam))
@@ -174,14 +290,14 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
      %{dep:timmy-lwt-macos.opam.locked} --local
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic --toolchain
-     macos))))
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic
+     --toolchain macos))))
  (rule (target timmy-lwt-windows.opam) (mode (promote (until-clean)))
   (action
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-windows --input
      %{dep:../timmy-lwt.opam} --cross
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
  (rule (target timmy-lwt-windows.%{version:timmy-lwt}.opam)
   (deps (:opam timmy-lwt-windows.opam))
@@ -198,14 +314,14 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
      %{dep:timmy-lwt-windows.opam.locked} --local
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic --toolchain
-     windows))))
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic
+     --toolchain windows))))
  (rule (target timmy-lwt-android.opam) (mode (promote (until-clean)))
   (action
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-android --input
      %{dep:../timmy-lwt.opam} --cross
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
  (rule (target timmy-lwt-android.%{version:timmy-lwt}.opam)
   (deps (:opam timmy-lwt-android.opam))
@@ -222,8 +338,8 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
      %{dep:timmy-lwt-android.opam.locked} --local
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic --toolchain
-     android)))))
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic
+     --toolchain android)))))
 (alias (name extdeps) (deps opam/timmy-timezones.opam.extdeps))
 (subdir opam
  (rule (target timmy-timezones.%{version:timmy-timezones}.opam)
@@ -241,13 +357,13 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
      %{dep:timmy-timezones.opam.locked} --local
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic))))
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic))))
  (rule (target timmy-timezones-ios.opam) (mode (promote (until-clean)))
   (action
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-ios --input
      %{dep:../timmy-timezones.opam} --cross
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
  (rule (target timmy-timezones-ios.%{version:timmy-timezones}.opam)
   (deps (:opam timmy-timezones-ios.opam))
@@ -265,14 +381,14 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
      %{dep:timmy-timezones-ios.opam.locked} --local
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic --toolchain
-     ios))))
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic
+     --toolchain ios))))
  (rule (target timmy-timezones-macos.opam) (mode (promote (until-clean)))
   (action
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-macos --input
      %{dep:../timmy-timezones.opam} --cross
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
  (rule (target timmy-timezones-macos.%{version:timmy-timezones}.opam)
   (deps (:opam timmy-timezones-macos.opam))
@@ -290,14 +406,14 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
      %{dep:timmy-timezones-macos.opam.locked} --local
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic --toolchain
-     macos))))
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic
+     --toolchain macos))))
  (rule (target timmy-timezones-windows.opam) (mode (promote (until-clean)))
   (action
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-windows --input
      %{dep:../timmy-timezones.opam} --cross
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
  (rule (target timmy-timezones-windows.%{version:timmy-timezones}.opam)
   (deps (:opam timmy-timezones-windows.opam))
@@ -315,14 +431,14 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
      %{dep:timmy-timezones-windows.opam.locked} --local
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic --toolchain
-     windows))))
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic
+     --toolchain windows))))
  (rule (target timmy-timezones-android.opam) (mode (promote (until-clean)))
   (action
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-android --input
      %{dep:../timmy-timezones.opam} --cross
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
  (rule (target timmy-timezones-android.%{version:timmy-timezones}.opam)
   (deps (:opam timmy-timezones-android.opam))
@@ -340,8 +456,8 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
      %{dep:timmy-timezones-android.opam.locked} --local
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic --toolchain
-     android)))))
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic
+     --toolchain android)))))
 (alias (name extdeps) (deps opam/timmy-unix.opam.extdeps))
 (subdir opam
  (rule (target timmy-unix.%{version:timmy-unix}.opam)
@@ -359,13 +475,13 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
      %{dep:timmy-unix.opam.locked} --local
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic))))
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic))))
  (rule (target timmy-unix-ios.opam) (mode (promote (until-clean)))
   (action
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-ios --input
      %{dep:../timmy-unix.opam} --cross
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
  (rule (target timmy-unix-ios.%{version:timmy-unix}.opam)
   (deps (:opam timmy-unix-ios.opam))
@@ -382,14 +498,14 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
      %{dep:timmy-unix-ios.opam.locked} --local
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic --toolchain
-     ios))))
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic
+     --toolchain ios))))
  (rule (target timmy-unix-macos.opam) (mode (promote (until-clean)))
   (action
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-macos --input
      %{dep:../timmy-unix.opam} --cross
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
  (rule (target timmy-unix-macos.%{version:timmy-unix}.opam)
   (deps (:opam timmy-unix-macos.opam))
@@ -406,14 +522,14 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
      %{dep:timmy-unix-macos.opam.locked} --local
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic --toolchain
-     macos))))
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic
+     --toolchain macos))))
  (rule (target timmy-unix-windows.opam) (mode (promote (until-clean)))
   (action
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-windows --input
      %{dep:../timmy-unix.opam} --cross
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
  (rule (target timmy-unix-windows.%{version:timmy-unix}.opam)
   (deps (:opam timmy-unix-windows.opam))
@@ -431,14 +547,14 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
      %{dep:timmy-unix-windows.opam.locked} --local
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic --toolchain
-     windows))))
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic
+     --toolchain windows))))
  (rule (target timmy-unix-android.opam) (mode (promote (until-clean)))
   (action
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite-android --input
      %{dep:../timmy-unix.opam} --cross
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,base,fmt,lwt,ptime,timedesc,logs
      --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
  (rule (target timmy-unix-android.%{version:timmy-unix}.opam)
   (deps (:opam timmy-unix-android.opam))
@@ -456,5 +572,5 @@
    (with-stdout-to %{target}
     (run %{dep:../.logistic/dune/extdeps/extdeps.exe} rewrite --input
      %{dep:timmy-unix-android.opam.locked} --local
-     timmy,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic --toolchain
-     android)))))
+     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic
+     --toolchain android)))))

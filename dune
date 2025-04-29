@@ -9,9 +9,11 @@
  (name default)
  (deps
   timmy.opam
+  timmy-jsoo.opam
   timmy-lwt.opam
   timmy-unix.opam
   timmy-timezones.opam
+  opam/timmy-lwt-android.opam
   opam/timmy-lwt-android.opam
   opam/timmy-lwt-macos.opam
   opam/timmy-lwt-ios.opam
@@ -29,7 +31,9 @@
   opam/timmy-unix-windows.opam
   opam/timmy-windows.opam
   (alias_rec timmy/default)
+  (alias_rec timmy-jsoo/default)
   (alias_rec timmy-lwt/default)
+  (alias_rec timmy-timezones/default)
   (alias_rec timmy-unix/default)))
 
 (rule

@@ -50,6 +50,29 @@
     (>= 0.21.0)))))
 
 (package
+ (name timmy-jsoo)
+ (synopsis "Js_of_ocaml bindings for Timmy")
+ (depends
+  ptime
+  ppx_here
+  (alcotest
+   (and
+    :with-test
+    (>= 1.4.0)))
+  (conf-npm :with-test)
+  fmt
+  js_of_ocaml
+  js_of_ocaml-ppx
+  (timmy
+   (= :version)))
+ (depopts schematic-jsoo)
+ (conflicts
+  (schematic-jsoo
+   (or
+    (< 0.18.2)
+    (>= 0.21.0)))))
+
+(package
  (name timmy-unix)
  (synopsis "Unix clock implementation for Timmy")
  (depends
@@ -111,4 +134,5 @@
   (timmy-unix
    (and
     :with-test
-    (= :version)))))
+    (= :version))))
+ (depopts js_of_ocaml-lwt))
