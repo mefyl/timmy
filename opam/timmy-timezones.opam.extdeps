@@ -1,7 +1,7 @@
 opam-version: "2.0"
-name: "timmy-unix"
+name: "timmy-timezones"
 version: "1.1.7"
-synopsis: "Unix clock implementation for Timmy"
+synopsis: "Timezone database support for Timmy"
 maintainer: "mefyl <mefyl@gruntech.org>"
 authors: "mefyl <mefyl@gruntech.org>"
 license: "LGPL-3.0-or-later"
@@ -25,7 +25,6 @@ depends: [
   "bigstringaf" {= "0.10.0"}
   "camlp-streams" {= "5.0.1" & with-doc}
   "cmdliner" {= "1.3.0"}
-  "conf-tzdata" {= "1" & with-test}
   "cppo" {= "1.8.0"}
   "crunch" {= "4.0.0" & with-doc}
   "csexp" {= "1.5.2"}
@@ -65,17 +64,21 @@ depends: [
   "ppxlib" {= "0.35.0"}
   "ptime" {= "1.2.0"}
   "re" {= "1.12.0" & with-test}
-  "result" {= "1.5" & with-doc}
+  "result" {= "1.5"}
   "sedlex" {= "3.4"}
   "semver2" {= "1.2.0"}
   "seq" {= "0.3"}
   "sexplib0" {= "v0.17.0"}
   "stdlib-shims" {= "0.3.0"}
   "stringext" {= "1.6.0"}
+  "timedesc" {= "3.1.0"}
+  "timedesc-tzdb" {= "3.1.0"}
+  "timedesc-tzlocal" {= "3.1.0"}
   "topkg" {= "1.0.8"}
   "tyxml" {= "4.6.0" & with-doc}
   "uri" {= "4.4.0"}
   "uutf" {= "1.0.4"}
   "yojson" {= "2.2.2"}
 ]
+conflicts: ["js_of_ocaml-lwt"]
 dev-repo: "git+https://github.com/mefyl/timmy.git"

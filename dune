@@ -53,6 +53,6 @@
     ; reimplement clock. Remove when dune is fixed.
     timmy,ppx_here,ppx_deriving
     --local
-    hlist,schematic))))
+    hlist,schematic,schematic-jsoo))))
 
 (include dune.inc)
