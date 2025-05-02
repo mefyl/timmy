@@ -17,6 +17,7 @@ depends: [
   "timmy" {= version}
   "timmy-android" {= version}
 ]
+depopts: ["js_of_ocaml-lwt"]
 build: [
   ["dune" "subst"] {dev}
   ["dune" "build" "-x" "android" "-p" "timmy-lwt" "-j" jobs "@install"]

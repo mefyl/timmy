@@ -112,7 +112,8 @@
    (>= 0.7.0))
   lwt
   (timmy
-   (= :version))))
+   (= :version)))
+ (depopts js_of_ocaml-lwt))
 
 (package
  (name timmy-timezones)
@@ -134,5 +135,4 @@
   (timmy-unix
    (and
     :with-test
-    (= :version))))
- (depopts js_of_ocaml-lwt))
+    (= :version)))))
