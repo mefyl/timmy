@@ -51,3 +51,10 @@ image/%:
 
 opam:
 	$(DIR)/opam-publish
+
+select-track:
+	if test -n "$$TRACK"; then \
+		echo "(context (default (lock_dir $(TRACK).lock)))" \
+		>> dune-workspace ; \
+		echo "Select track $$TRACK." ; \
+	fi

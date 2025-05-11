@@ -25,6 +25,7 @@ variables:
   extends: .ocaml
   stage: build
   script:
+    - make -f .logistic/ci/dune/Makefile select-track
     - make -f .logistic/ci/dune/Makefile lint
     - make -f .logistic/ci/dune/Makefile build
     - make -f .logistic/ci/dune/Makefile check

@@ -1,2 +1,16 @@
 include:
-  - local: "/.logistic/ci/dune/.gitlab-ci.yml"
+  - local: '/.logistic/ci/dune/.gitlab-ci-template.yml'
+
+build:
+  extends: .ocaml-build
+
+build:no-schematic:
+  extends: .ocaml-build
+  variables:
+    TRACK: "no-schematic"
+    
+opam:
+  extends: .ocaml-opam
+  needs:
+    - build
+    - build:no-schematic
