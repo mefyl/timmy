@@ -20,12 +20,30 @@ ln --symbolic ../logistic/nix/envrc-full .envrc
 2. Create a file `shell.nix`:
 ```nix
 # shell.nix
-((import ./.logistic/nix/full-nix-shell.nix).lib.mkRoutineRepo ./. { }).devShells.x86_64-linux.default
-# Or if you would rather use a global `logistic` repo
-((import ../logistic/nix/full-nix-shell.nix).lib.mkRoutineRepo ./. { }).devShells.x86_64-linux.default
+let
+  logisticPath =
+    if builtins.pathExists ./path-to-logistic.nix
+    then (import ./path-to-logistic.nix) else ./.logistic;
+
+  logisticFullNixShell = import "${logisticPath}/nix/full-nix-shell.nix";
+
+  thisRoutineRepo = logisticFullNixShell.lib.mkRoutineRepo ./. {
+    # Optional parameters to `mkRoutineRepo` go here
+  };
+in
+thisRoutineRepo.devShells.${builtins.currentSystem}.default
+```
+
+3. If you want to use another `logistic` repo than the one present in each repo (e.g., to use the same everywhere), you can override the path by creating a file `path-to-logistic.nix` containing that path:
+```nix
+/home/foobar/code/routine/logistic
 ```
 
 Note that you can pass some fields to `mkRoutineRepo` to customize the Nix shell. See examples below.
+
+You should:
+* Add `shell.nix` to the source control of each repo (they each may vary in the parameters passed to `mkRoutineRepo`)
+* Add `path-to-logistic.nix` to the `.gitignore` of each repo
 
 ### Add Opam packages to the shell
 Sometimes you want to install extra Opam packages, e.g. for development, or because some `dune` files does not have a corresponding top-level `.opam` file.

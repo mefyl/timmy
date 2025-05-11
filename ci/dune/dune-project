@@ -1,0 +1,8 @@
+(lang dune 3.0)
+
+(name dune-sak)
+
+(package
+ (name dune-sak)
+ (allow_empty)
+ (depends cmdliner fmt ocaml opam-file-format sexplib stdio))

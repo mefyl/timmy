@@ -1,4 +1,4 @@
-version=0.26.2
+version=0.27.0
 ocaml-version=4.14.0
 
 cases-exp-indent=2
@@ -9,3 +9,4 @@ parse-docstrings=true
 type-decl=sparse
 wrap-comments=true
 exp-grouping=preserve
+break-infix=fit-or-vertical

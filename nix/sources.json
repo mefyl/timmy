@@ -1,14 +1,26 @@
 {
-    "gitignore.nix": {
-        "branch": "master",
-        "description": "Nix functions for filtering local git sources",
-        "homepage": "",
-        "owner": "hercules-ci",
-        "repo": "gitignore.nix",
-        "rev": "637db329424fd7e46cf4185293b9cc8c88c95394",
-        "sha256": "02wxkdpbhlm3yk5mhkhsp3kwakc16xpmsf2baw57nz1dg459qv8w",
+    "dune": {
+        "branch": "main",
+        "description": "A composable build system for OCaml.",
+        "homepage": "https://dune.build/",
+        "owner": "ocaml",
+        "repo": "dune",
+        "rev": "96ab1a5b7a3e7a8a0a2eb197cf9fd359d5928ae3",
+        "sha256": "0am2vimlqr23ym9n0f9s1awqq9g25qb5g2dyvm5cxn1dx0f868hp",
         "type": "tarball",
-        "url": "https://github.com/hercules-ci/gitignore.nix/archive/637db329424fd7e46cf4185293b9cc8c88c95394.tar.gz",
+        "url": "https://github.com/ocaml/dune/archive/96ab1a5b7a3e7a8a0a2eb197cf9fd359d5928ae3.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "flake-compat": {
+        "branch": "master",
+        "description": null,
+        "homepage": null,
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "rev": "ff81ac966bb2cae68946d5ed5fc4994f96d0ffec",
+        "sha256": "19d2z6xsvpxm184m41qrpi1bplilwipgnzv9jy17fgw421785q1m",
+        "type": "tarball",
+        "url": "https://github.com/edolstra/flake-compat/archive/ff81ac966bb2cae68946d5ed5fc4994f96d0ffec.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs": {
@@ -17,10 +29,10 @@
         "homepage": null,
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "4aa36568d413aca0ea84a1684d2d46f55dbabad7",
-        "sha256": "0ahgvblbkcvjqzd73fc0nlcw1xas80sx7zp2kcp329fm0ii7q2b7",
+        "rev": "52faf482a3889b7619003c0daec593a1912fddc1",
+        "sha256": "04glsr88dhs9w61nyfpn17dphkmn2kssaf603ndhp7sizcppl6ga",
         "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs/archive/4aa36568d413aca0ea84a1684d2d46f55dbabad7.tar.gz",
+        "url": "https://github.com/NixOS/nixpkgs/archive/52faf482a3889b7619003c0daec593a1912fddc1.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }

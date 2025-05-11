@@ -70,7 +70,6 @@ let promote_until_clean =
     [ Atom "mode"; List [ Atom "promote"; List [ Atom "until-clean" ] ] ]
 
 let cross_toolchains = [ "ios"; "macos"; "windows"; "android" ]
-let cross_toolchain_packages = [ "routine-controller-lib" ]
 
 let value_filter_map name value ~f =
   match value with
@@ -91,6 +90,13 @@ let () =
   let open Cmdliner in
   let generate =
     let generate name local cross_both cross_exclude cross_only =
+      let cross_enabled =
+        not
+          (List.is_empty cross_both
+          && List.is_empty cross_exclude
+          && List.is_empty cross_only
+          && List.is_empty local)
+      in
       let* repository, packages =
         let* description = run [| "dune"; "describe"; "opam-files" |] in
         match Sexplib.Sexp.parse description with
@@ -158,60 +164,6 @@ let () =
                     ];
                 ];
             ]
-        and locked_rule suffix =
-          List
-            [
-              Atom "rule";
-              List [ Atom "deps"; List [ Atom "universe" ] ];
-              List [ Atom "target"; Atom (package ^ suffix ^ ".opam.locked") ];
-              List
-                [
-                  Atom "action";
-                  List
-                    [
-                      Atom "run";
-                      Atom "%{bin:opam}";
-                      Atom "lock";
-                      Atom (package ^ suffix);
-                    ];
-                ];
-            ]
-        and extdeps_rule toolchain =
-          let suffix =
-            match toolchain with
-            | Some toolchain -> "-" ^ toolchain
-            | None -> ""
-          in
-          List
-            [
-              Atom "rule";
-              promote_until_clean;
-              List [ Atom "target"; Atom (package ^ ".opam.extdeps" ^ suffix) ];
-              List
-                [
-                  Atom "action";
-                  List
-                    [
-                      Atom "with-stdout-to";
-                      Atom "%{target}";
-                      List
-                        ([
-                           Atom "run";
-                           Atom "%{dep:../.logistic/dune/extdeps/extdeps.exe}";
-                           Atom "rewrite";
-                           Atom "--input";
-                           Atom ("%{dep:" ^ package ^ suffix ^ ".opam.locked}");
-                           Atom "--local";
-                           Atom (String.concat ~sep:"," (packages @ local));
-                         ]
-                        @
-                        match toolchain with
-                        | Some toolchain ->
-                          [ Atom "--toolchain"; Atom toolchain ]
-                        | None -> []);
-                    ];
-                ];
-            ]
         and cross_rule toolchain =
           List
             [
@@ -232,7 +184,7 @@ let () =
                       List
                         [
                           Atom "run";
-                          Atom "%{dep:../.logistic/dune/extdeps/extdeps.exe}";
+                          Atom "%{dep:../.logistic/ci/dune/dune_sak.exe}";
                           Atom ("rewrite-" ^ toolchain);
                           Atom "--input";
                           Atom ("%{dep:../" ^ package ^ ".opam}");
@@ -249,39 +201,13 @@ let () =
                 ];
             ]
         in
-        [
-          List
-            [
-              Atom "alias";
-              List [ Atom "name"; Atom "extdeps" ];
-              List
-                (Atom "deps"
-                :: Atom ("opam/" ^ package ^ ".opam.extdeps")
-                ::
-                (if
-                   List.mem ~equal:String.equal cross_toolchain_packages package
-                 then
-                   List.map cross_toolchains ~f:(fun toolchain ->
-                       Atom ("opam/" ^ package ^ ".opam.extdeps-" ^ toolchain))
-                 else []));
-            ];
-          List
-            (Atom "subdir"
-            :: Atom "opam"
-            :: List.concat
-                 ([
-                    opam_rule ~source:"../" "";
-                    locked_rule "";
-                    extdeps_rule None;
-                  ]
-                 :: List.map cross_toolchains ~f:(fun toolchain ->
-                        [
-                          cross_rule toolchain;
-                          opam_rule ("-" ^ toolchain);
-                          locked_rule ("-" ^ toolchain);
-                          extdeps_rule (Some toolchain);
-                        ])));
-        ]
+        let host_opam_rule = opam_rule ~source:"../" "" in
+        if cross_enabled then
+          host_opam_rule
+          :: List.concat
+               (List.map cross_toolchains ~f:(fun toolchain ->
+                    [ cross_rule toolchain; opam_rule ("-" ^ toolchain) ]))
+        else [ host_opam_rule ]
       in
       List.map ~f:generate packages
       |> List.concat
@@ -295,7 +221,7 @@ let () =
       $ Arg.value cross_both
       $ Arg.value cross_exclude
       $ Arg.value cross_only)
-    |> Cmd.(v (info "generate"))
+    |> Cmd.(v (info ~doc:"generate dune.inc boilerplate" "generate"))
   and rewrite =
     let open OpamParserTypes.FullPos in
     let pos f ({ pelem; _ } as pos) =
@@ -373,7 +299,6 @@ let () =
                      pin_depend "ocamlformat" "0.27.0"
                      :: { pelem = String "opam-file-format"; pos }
                      :: { pelem = String "sexplib"; pos }
-                     :: { pelem = String "opam-dune-lint"; pos }
                      :: l;
                  }))
         | _ -> failwith "pin-depends expects a list"
@@ -399,7 +324,7 @@ let () =
     in
     Term.(
       const rewrite $ Arg.value toolchain $ Arg.value local $ Arg.required input)
-    |> Cmd.(v (info "rewrite"))
+    |> Cmd.(v (info ~doc:"rewrite opam file for release" "rewrite"))
   and rewrite_toolchain toolchain =
     let open OpamParserTypes.FullPos in
     let pos f ({ pelem; _ } as pos) =
@@ -543,11 +468,16 @@ let () =
       $ Arg.value cross_only
       $ Arg.value cross_both
       $ Arg.value cross_exclude)
-    |> Cmd.(v (info ("rewrite-" ^ toolchain)))
+    |> Cmd.(
+         v
+           (info
+              ~doc:
+                (Fmt.str "rewrite Opam file to cross-compile for %s" toolchain)
+              ("rewrite-" ^ toolchain)))
   in
   Cmdliner.Cmd.(
     eval_result
-      (group (info "extdeps")
+      (group (info "dune-sak")
          [
            generate;
            rewrite;
