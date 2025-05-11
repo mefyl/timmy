@@ -62,7 +62,11 @@ let to_int { year; month; day } =
   let m = month + (12 * a) - 3 in
   day
   + (((153 * m) + 2) / 5)
-  + (365 * y) + (y / 4) - (y / 100) + (y / 400) - 32045
+  + (365 * y)
+  + (y / 4)
+  - (y / 100)
+  + (y / 400)
+  - 32045
 
 let add_days date days = of_int @@ (to_int date + days)
 

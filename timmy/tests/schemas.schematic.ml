@@ -34,19 +34,21 @@ let daytime () =
       (Result.ok_or_failwith
       @@ Timmy.Daytime.make ~hours:13 ~minutes:37 ~seconds:42)
       (`O
-        [
-          ("hours", `Float 13.); ("minutes", `Float 37.); ("seconds", `Float 42.);
-        ])
+         [
+           ("hours", `Float 13.);
+           ("minutes", `Float 37.);
+           ("seconds", `Float 42.);
+         ])
   and () =
     try
       let res =
         Schematic.Json.decode Timmy.Daytime.schema
           (`O
-            [
-              ("hours", `Float (-1.));
-              ("minutes", `Float 0.);
-              ("seconds", `Float 0.);
-            ])
+             [
+               ("hours", `Float (-1.));
+               ("minutes", `Float 0.);
+               ("seconds", `Float 0.);
+             ])
       in
       Alcotest.(
         check ~here:[%here]

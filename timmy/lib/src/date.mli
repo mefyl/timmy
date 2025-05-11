@@ -17,26 +17,21 @@ val make : year:int -> month:Month.t -> day:int -> (t, string) Result.t
     worrying about month and year boundaries and readjust the final results.
 
     Month below 1 will underflow to previous years and month above 12 will
-    overflow to the next years, eg. [make ~year:2021 ~month:-1
-   ~day:1 ()] is
+    overflow to the next years, eg. [make ~year:2021 ~month:-1 ~day:1 ()] is
     [{year = 2020; month = 11; day = 1}] and
-    [make
-   ~year:2021 ~month:25 ~day:1 ()] is
-    [{year = 2023; month = 1; day =
-   1}].
+    [make ~year:2021 ~month:25 ~day:1 ()] is
+    [{year = 2023; month = 1; day = 1}].
 
     Unless [truncate_day] is true, days below 1 will underflow to the previous
     months and days past the last day of the month will overflow to the next
-    months, eg. [make_overflow ~year:1985 ~month:2
-   ~day:29 ()] is
+    months, eg. [make_overflow ~year:1985 ~month:2 ~day:29 ()] is
     [{year = 1985; month = 3; day = 1}].
 
     If [truncate_day] is true, the day is clipped to the valid range for the
     current month. This is useful to do arithmetics on months without risking
     the day overflowing to the next months if the new month is shorter, eg.
     [make_overflow ~day_truncate:true ~year:1985 ~month:(1 + 1) ~day:31 ()] is
-    [{year = 1985;
-   month = 2; day = 28}]. *)
+    [{year = 1985; month = 2; day = 28}]. *)
 val make_overflow :
   ?day_truncate:bool -> year:int -> month:int -> day:int -> unit -> t
 

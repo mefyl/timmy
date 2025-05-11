@@ -31,7 +31,8 @@ val with_daytime : timezone:Timezone.t -> t -> Time.t -> Time.t
 (** [truncate_seconds daytime] is [daytime] with seconds set to [0]. *)
 val truncate_seconds : t -> t
 
-(** [truncate_minutes daytime] is [daytime] with minutes and seconds set to [0]. *)
+(** [truncate_minutes daytime] is [daytime] with minutes and seconds set to [0].
+*)
 val truncate_minutes : t -> t
 
 (** {2 Time conversions} *)

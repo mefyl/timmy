@@ -41,7 +41,8 @@ include module type of O
 
 (** {2 Pretty-print} *)
 
-(** [pp f date] prints [date] to [f] in an unspecified, human readable format. *)
+(** [pp f date] prints [date] to [f] in an unspecified, human readable format.
+*)
 val pp : t Fmt.t
 
 (** {2 String} *)

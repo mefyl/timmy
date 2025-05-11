@@ -214,7 +214,8 @@ module Span = struct
         (60 * 60 * 24 * 7)
     and () =
       check ~here:[%here] "Milliseconds are printed correctly" "0.003s"
-      @@ Timmy.Span.of_ptime @@ Option.value_exn
+      @@ Timmy.Span.of_ptime
+      @@ Option.value_exn
       @@ Ptime.Span.of_float_s 0.003
     and () =
       check_seconds ~here:[%here] "A composite duration is printed correctly"
@@ -225,11 +226,13 @@ module Span = struct
     and () =
       let span = Ptime.Span.of_float_s 0.123 in
       check ~here:[%here] "Milliseconds are printed correctly" "0.123s"
-      @@ Timmy.Span.of_ptime @@ Option.value_exn span
+      @@ Timmy.Span.of_ptime
+      @@ Option.value_exn span
     and () =
       let span = Ptime.Span.of_float_s 1.234 in
       check ~here:[%here] "Milliseconds are printed correctly" "1.234s"
-      @@ Timmy.Span.of_ptime @@ Option.value_exn span
+      @@ Timmy.Span.of_ptime
+      @@ Option.value_exn span
     and () =
       check ~here:[%here] "Multiplied correctly" "0.100s"
       @@ Timmy.Span.(seconds 1 *. 0.1)

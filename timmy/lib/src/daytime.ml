@@ -47,8 +47,8 @@ let pp f { hours; minutes; seconds } =
 
 let pp_opt ?(format = `_24) ?(precision = `Seconds) ?(size = `Short) () f
     { hours; minutes; seconds } =
-  let hours_format :
-      type x. unit -> (int -> x, Formatter.t, unit, unit, unit, x) format6 =
+  let hours_format : type x.
+      unit -> (int -> x, Formatter.t, unit, unit, unit, x) format6 =
     match format with `_24 -> fun () -> "%02i" | `_12 -> fun () -> "%i"
   and hours_formatted =
     match (format, hours) with

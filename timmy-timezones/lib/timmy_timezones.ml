@@ -13,7 +13,8 @@ let of_timere timere_tz : Timmy.Timezone.t =
       | x -> x
     in
     Timedesc.offset_from_utc timedesc
-    |> Timedesc.min_of_local_date_time_result |> Timedesc.Timestamp.to_float_s
+    |> Timedesc.min_of_local_date_time_result
+    |> Timedesc.Timestamp.to_float_s
     |> Float.to_int
   and offset_calendar_time_s ~date:(year, month, day)
       ~time:(hour, minute, second) =
@@ -29,7 +30,8 @@ let of_timere timere_tz : Timmy.Timezone.t =
       | x -> x
     in
     Timedesc.offset_from_utc timedesc
-    |> Timedesc.min_of_local_date_time_result |> Timedesc.Timestamp.to_float_s
+    |> Timedesc.min_of_local_date_time_result
+    |> Timedesc.Timestamp.to_float_s
     |> Float.to_int
   in
   Timmy.Timezone.of_implementation ~offset_timestamp_s ~offset_calendar_time_s

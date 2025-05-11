@@ -21,14 +21,16 @@ let daylight_savings ?(timezone = Clock.timezone_local) () =
            time_t)
         offset
       @@ Timmy.Timezone.gmt_offset_seconds_at_datetime ~date ~time timezone
-         / 60 / 60
+         / 60
+         / 60
     and () =
       Alcotest.(check ~here:[%here] int)
         (Fmt.str "UTC offset at %a" Timmy.Time.pp timestamp)
         offset
       @@ Timmy.Timezone.gmt_offset_seconds_at_time timezone
            (Timmy.Time.to_ptime timestamp)
-         / 60 / 60
+         / 60
+         / 60
     and () =
       Alcotest.(check ~here:[%here] date) "date roundtrip" date_t
       @@ Timmy.Date.of_time ~timezone timestamp
