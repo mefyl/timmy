@@ -1,0 +1,34 @@
+(lang package 0.1)
+
+(dependency_hash 4975d452cf5da35cb44009497ea6cff5)
+
+(repositories
+ (complete true)
+ (used
+  ((source
+    https://github.com/ocaml-dune/ocaml-binary-packages.git#fb7b39863a4d229e2cd3ac212459e15650c75d4d))
+  ((source
+    https://github.com/ocaml-dune/opam-overlays.git#2a9543286ff0e0656058fee5c0da7abc16b8717d))
+  ((source
+    https://github.com/ocaml/opam-repository.git#0d013e603b5ebf0e9b404e10d5a6839f226e1739))
+  ((source
+    ssh://git@gitlab.routine.co/routine/opam#4479e5ff968d373e979b553b14147398cf4f3159))))
+
+(expanded_solver_variable_bindings
+ (variable_values
+  (with-doc false)
+  (with-dev-setup false)
+  (sys-ocaml-version 5.2.1)
+  (post true)
+  (os-distribution gentoo)
+  (os linux)
+  (opam-version 2.2.0~alpha-vendored)
+  (arch x86_64))
+ (unset_variables
+  with-test
+  sys-ocaml-libc
+  sys-ocaml-cc
+  sys-ocaml-arch
+  enable-ocaml-beta-repository
+  dev
+  build))

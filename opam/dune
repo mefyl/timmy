@@ -1,0 +1,754 @@
+(rule
+ (target timmy.%{version:timmy}.opam)
+ (deps
+  (:opam ../timmy.opam))
+ (action
+  (with-stdout-to
+   %{target}
+   (progn
+    (cat %{opam})
+    (run
+     git
+     log
+     "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+     -n1)))))
+
+(rule
+ (target timmy-ios.opam)
+ (mode
+  (promote (until-clean)))
+ (action
+  (with-stdout-to
+   %{target}
+   (run
+    %{dep:../.logistic/ci/dune/dune_sak.exe}
+    rewrite-ios
+    --input
+    %{dep:../timmy.opam}
+    --cross
+    timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
+    --cross-both
+    timmy,ppx_here,ppx_deriving
+    --cross-exclude
+    ""))))
+
+(rule
+ (target timmy-ios.%{version:timmy}.opam)
+ (deps
+  (:opam timmy-ios.opam))
+ (action
+  (with-stdout-to
+   %{target}
+   (progn
+    (cat %{opam})
+    (run
+     git
+     log
+     "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+     -n1)))))
+
+(rule
+ (target timmy-macos.opam)
+ (mode
+  (promote (until-clean)))
+ (action
+  (with-stdout-to
+   %{target}
+   (run
+    %{dep:../.logistic/ci/dune/dune_sak.exe}
+    rewrite-macos
+    --input
+    %{dep:../timmy.opam}
+    --cross
+    timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
+    --cross-both
+    timmy,ppx_here,ppx_deriving
+    --cross-exclude
+    ""))))
+
+(rule
+ (target timmy-macos.%{version:timmy}.opam)
+ (deps
+  (:opam timmy-macos.opam))
+ (action
+  (with-stdout-to
+   %{target}
+   (progn
+    (cat %{opam})
+    (run
+     git
+     log
+     "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+     -n1)))))
+
+(rule
+ (target timmy-windows.opam)
+ (mode
+  (promote (until-clean)))
+ (action
+  (with-stdout-to
+   %{target}
+   (run
+    %{dep:../.logistic/ci/dune/dune_sak.exe}
+    rewrite-windows
+    --input
+    %{dep:../timmy.opam}
+    --cross
+    timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
+    --cross-both
+    timmy,ppx_here,ppx_deriving
+    --cross-exclude
+    ""))))
+
+(rule
+ (target timmy-windows.%{version:timmy}.opam)
+ (deps
+  (:opam timmy-windows.opam))
+ (action
+  (with-stdout-to
+   %{target}
+   (progn
+    (cat %{opam})
+    (run
+     git
+     log
+     "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+     -n1)))))
+
+(rule
+ (target timmy-android.opam)
+ (mode
+  (promote (until-clean)))
+ (action
+  (with-stdout-to
+   %{target}
+   (run
+    %{dep:../.logistic/ci/dune/dune_sak.exe}
+    rewrite-android
+    --input
+    %{dep:../timmy.opam}
+    --cross
+    timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
+    --cross-both
+    timmy,ppx_here,ppx_deriving
+    --cross-exclude
+    ""))))
+
+(rule
+ (target timmy-android.%{version:timmy}.opam)
+ (deps
+  (:opam timmy-android.opam))
+ (action
+  (with-stdout-to
+   %{target}
+   (progn
+    (cat %{opam})
+    (run
+     git
+     log
+     "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+     -n1)))))
+
+(rule
+ (target timmy-jsoo.%{version:timmy-jsoo}.opam)
+ (deps
+  (:opam ../timmy-jsoo.opam))
+ (action
+  (with-stdout-to
+   %{target}
+   (progn
+    (cat %{opam})
+    (run
+     git
+     log
+     "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+     -n1)))))
+
+(rule
+ (target timmy-jsoo-ios.opam)
+ (mode
+  (promote (until-clean)))
+ (action
+  (with-stdout-to
+   %{target}
+   (run
+    %{dep:../.logistic/ci/dune/dune_sak.exe}
+    rewrite-ios
+    --input
+    %{dep:../timmy-jsoo.opam}
+    --cross
+    timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
+    --cross-both
+    timmy,ppx_here,ppx_deriving
+    --cross-exclude
+    ""))))
+
+(rule
+ (target timmy-jsoo-ios.%{version:timmy-jsoo}.opam)
+ (deps
+  (:opam timmy-jsoo-ios.opam))
+ (action
+  (with-stdout-to
+   %{target}
+   (progn
+    (cat %{opam})
+    (run
+     git
+     log
+     "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+     -n1)))))
+
+(rule
+ (target timmy-jsoo-macos.opam)
+ (mode
+  (promote (until-clean)))
+ (action
+  (with-stdout-to
+   %{target}
+   (run
+    %{dep:../.logistic/ci/dune/dune_sak.exe}
+    rewrite-macos
+    --input
+    %{dep:../timmy-jsoo.opam}
+    --cross
+    timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
+    --cross-both
+    timmy,ppx_here,ppx_deriving
+    --cross-exclude
+    ""))))
+
+(rule
+ (target timmy-jsoo-macos.%{version:timmy-jsoo}.opam)
+ (deps
+  (:opam timmy-jsoo-macos.opam))
+ (action
+  (with-stdout-to
+   %{target}
+   (progn
+    (cat %{opam})
+    (run
+     git
+     log
+     "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+     -n1)))))
+
+(rule
+ (target timmy-jsoo-windows.opam)
+ (mode
+  (promote (until-clean)))
+ (action
+  (with-stdout-to
+   %{target}
+   (run
+    %{dep:../.logistic/ci/dune/dune_sak.exe}
+    rewrite-windows
+    --input
+    %{dep:../timmy-jsoo.opam}
+    --cross
+    timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
+    --cross-both
+    timmy,ppx_here,ppx_deriving
+    --cross-exclude
+    ""))))
+
+(rule
+ (target timmy-jsoo-windows.%{version:timmy-jsoo}.opam)
+ (deps
+  (:opam timmy-jsoo-windows.opam))
+ (action
+  (with-stdout-to
+   %{target}
+   (progn
+    (cat %{opam})
+    (run
+     git
+     log
+     "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+     -n1)))))
+
+(rule
+ (target timmy-jsoo-android.opam)
+ (mode
+  (promote (until-clean)))
+ (action
+  (with-stdout-to
+   %{target}
+   (run
+    %{dep:../.logistic/ci/dune/dune_sak.exe}
+    rewrite-android
+    --input
+    %{dep:../timmy-jsoo.opam}
+    --cross
+    timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
+    --cross-both
+    timmy,ppx_here,ppx_deriving
+    --cross-exclude
+    ""))))
+
+(rule
+ (target timmy-jsoo-android.%{version:timmy-jsoo}.opam)
+ (deps
+  (:opam timmy-jsoo-android.opam))
+ (action
+  (with-stdout-to
+   %{target}
+   (progn
+    (cat %{opam})
+    (run
+     git
+     log
+     "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+     -n1)))))
+
+(rule
+ (target timmy-lwt.%{version:timmy-lwt}.opam)
+ (deps
+  (:opam ../timmy-lwt.opam))
+ (action
+  (with-stdout-to
+   %{target}
+   (progn
+    (cat %{opam})
+    (run
+     git
+     log
+     "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+     -n1)))))
+
+(rule
+ (target timmy-lwt-ios.opam)
+ (mode
+  (promote (until-clean)))
+ (action
+  (with-stdout-to
+   %{target}
+   (run
+    %{dep:../.logistic/ci/dune/dune_sak.exe}
+    rewrite-ios
+    --input
+    %{dep:../timmy-lwt.opam}
+    --cross
+    timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
+    --cross-both
+    timmy,ppx_here,ppx_deriving
+    --cross-exclude
+    ""))))
+
+(rule
+ (target timmy-lwt-ios.%{version:timmy-lwt}.opam)
+ (deps
+  (:opam timmy-lwt-ios.opam))
+ (action
+  (with-stdout-to
+   %{target}
+   (progn
+    (cat %{opam})
+    (run
+     git
+     log
+     "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+     -n1)))))
+
+(rule
+ (target timmy-lwt-macos.opam)
+ (mode
+  (promote (until-clean)))
+ (action
+  (with-stdout-to
+   %{target}
+   (run
+    %{dep:../.logistic/ci/dune/dune_sak.exe}
+    rewrite-macos
+    --input
+    %{dep:../timmy-lwt.opam}
+    --cross
+    timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
+    --cross-both
+    timmy,ppx_here,ppx_deriving
+    --cross-exclude
+    ""))))
+
+(rule
+ (target timmy-lwt-macos.%{version:timmy-lwt}.opam)
+ (deps
+  (:opam timmy-lwt-macos.opam))
+ (action
+  (with-stdout-to
+   %{target}
+   (progn
+    (cat %{opam})
+    (run
+     git
+     log
+     "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+     -n1)))))
+
+(rule
+ (target timmy-lwt-windows.opam)
+ (mode
+  (promote (until-clean)))
+ (action
+  (with-stdout-to
+   %{target}
+   (run
+    %{dep:../.logistic/ci/dune/dune_sak.exe}
+    rewrite-windows
+    --input
+    %{dep:../timmy-lwt.opam}
+    --cross
+    timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
+    --cross-both
+    timmy,ppx_here,ppx_deriving
+    --cross-exclude
+    ""))))
+
+(rule
+ (target timmy-lwt-windows.%{version:timmy-lwt}.opam)
+ (deps
+  (:opam timmy-lwt-windows.opam))
+ (action
+  (with-stdout-to
+   %{target}
+   (progn
+    (cat %{opam})
+    (run
+     git
+     log
+     "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+     -n1)))))
+
+(rule
+ (target timmy-lwt-android.opam)
+ (mode
+  (promote (until-clean)))
+ (action
+  (with-stdout-to
+   %{target}
+   (run
+    %{dep:../.logistic/ci/dune/dune_sak.exe}
+    rewrite-android
+    --input
+    %{dep:../timmy-lwt.opam}
+    --cross
+    timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
+    --cross-both
+    timmy,ppx_here,ppx_deriving
+    --cross-exclude
+    ""))))
+
+(rule
+ (target timmy-lwt-android.%{version:timmy-lwt}.opam)
+ (deps
+  (:opam timmy-lwt-android.opam))
+ (action
+  (with-stdout-to
+   %{target}
+   (progn
+    (cat %{opam})
+    (run
+     git
+     log
+     "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+     -n1)))))
+
+(rule
+ (target timmy-timezones.%{version:timmy-timezones}.opam)
+ (deps
+  (:opam ../timmy-timezones.opam))
+ (action
+  (with-stdout-to
+   %{target}
+   (progn
+    (cat %{opam})
+    (run
+     git
+     log
+     "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+     -n1)))))
+
+(rule
+ (target timmy-timezones-ios.opam)
+ (mode
+  (promote (until-clean)))
+ (action
+  (with-stdout-to
+   %{target}
+   (run
+    %{dep:../.logistic/ci/dune/dune_sak.exe}
+    rewrite-ios
+    --input
+    %{dep:../timmy-timezones.opam}
+    --cross
+    timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
+    --cross-both
+    timmy,ppx_here,ppx_deriving
+    --cross-exclude
+    ""))))
+
+(rule
+ (target timmy-timezones-ios.%{version:timmy-timezones}.opam)
+ (deps
+  (:opam timmy-timezones-ios.opam))
+ (action
+  (with-stdout-to
+   %{target}
+   (progn
+    (cat %{opam})
+    (run
+     git
+     log
+     "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+     -n1)))))
+
+(rule
+ (target timmy-timezones-macos.opam)
+ (mode
+  (promote (until-clean)))
+ (action
+  (with-stdout-to
+   %{target}
+   (run
+    %{dep:../.logistic/ci/dune/dune_sak.exe}
+    rewrite-macos
+    --input
+    %{dep:../timmy-timezones.opam}
+    --cross
+    timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
+    --cross-both
+    timmy,ppx_here,ppx_deriving
+    --cross-exclude
+    ""))))
+
+(rule
+ (target timmy-timezones-macos.%{version:timmy-timezones}.opam)
+ (deps
+  (:opam timmy-timezones-macos.opam))
+ (action
+  (with-stdout-to
+   %{target}
+   (progn
+    (cat %{opam})
+    (run
+     git
+     log
+     "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+     -n1)))))
+
+(rule
+ (target timmy-timezones-windows.opam)
+ (mode
+  (promote (until-clean)))
+ (action
+  (with-stdout-to
+   %{target}
+   (run
+    %{dep:../.logistic/ci/dune/dune_sak.exe}
+    rewrite-windows
+    --input
+    %{dep:../timmy-timezones.opam}
+    --cross
+    timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
+    --cross-both
+    timmy,ppx_here,ppx_deriving
+    --cross-exclude
+    ""))))
+
+(rule
+ (target timmy-timezones-windows.%{version:timmy-timezones}.opam)
+ (deps
+  (:opam timmy-timezones-windows.opam))
+ (action
+  (with-stdout-to
+   %{target}
+   (progn
+    (cat %{opam})
+    (run
+     git
+     log
+     "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+     -n1)))))
+
+(rule
+ (target timmy-timezones-android.opam)
+ (mode
+  (promote (until-clean)))
+ (action
+  (with-stdout-to
+   %{target}
+   (run
+    %{dep:../.logistic/ci/dune/dune_sak.exe}
+    rewrite-android
+    --input
+    %{dep:../timmy-timezones.opam}
+    --cross
+    timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
+    --cross-both
+    timmy,ppx_here,ppx_deriving
+    --cross-exclude
+    ""))))
+
+(rule
+ (target timmy-timezones-android.%{version:timmy-timezones}.opam)
+ (deps
+  (:opam timmy-timezones-android.opam))
+ (action
+  (with-stdout-to
+   %{target}
+   (progn
+    (cat %{opam})
+    (run
+     git
+     log
+     "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+     -n1)))))
+
+(rule
+ (target timmy-unix.%{version:timmy-unix}.opam)
+ (deps
+  (:opam ../timmy-unix.opam))
+ (action
+  (with-stdout-to
+   %{target}
+   (progn
+    (cat %{opam})
+    (run
+     git
+     log
+     "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+     -n1)))))
+
+(rule
+ (target timmy-unix-ios.opam)
+ (mode
+  (promote (until-clean)))
+ (action
+  (with-stdout-to
+   %{target}
+   (run
+    %{dep:../.logistic/ci/dune/dune_sak.exe}
+    rewrite-ios
+    --input
+    %{dep:../timmy-unix.opam}
+    --cross
+    timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
+    --cross-both
+    timmy,ppx_here,ppx_deriving
+    --cross-exclude
+    ""))))
+
+(rule
+ (target timmy-unix-ios.%{version:timmy-unix}.opam)
+ (deps
+  (:opam timmy-unix-ios.opam))
+ (action
+  (with-stdout-to
+   %{target}
+   (progn
+    (cat %{opam})
+    (run
+     git
+     log
+     "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+     -n1)))))
+
+(rule
+ (target timmy-unix-macos.opam)
+ (mode
+  (promote (until-clean)))
+ (action
+  (with-stdout-to
+   %{target}
+   (run
+    %{dep:../.logistic/ci/dune/dune_sak.exe}
+    rewrite-macos
+    --input
+    %{dep:../timmy-unix.opam}
+    --cross
+    timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
+    --cross-both
+    timmy,ppx_here,ppx_deriving
+    --cross-exclude
+    ""))))
+
+(rule
+ (target timmy-unix-macos.%{version:timmy-unix}.opam)
+ (deps
+  (:opam timmy-unix-macos.opam))
+ (action
+  (with-stdout-to
+   %{target}
+   (progn
+    (cat %{opam})
+    (run
+     git
+     log
+     "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+     -n1)))))
+
+(rule
+ (target timmy-unix-windows.opam)
+ (mode
+  (promote (until-clean)))
+ (action
+  (with-stdout-to
+   %{target}
+   (run
+    %{dep:../.logistic/ci/dune/dune_sak.exe}
+    rewrite-windows
+    --input
+    %{dep:../timmy-unix.opam}
+    --cross
+    timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
+    --cross-both
+    timmy,ppx_here,ppx_deriving
+    --cross-exclude
+    ""))))
+
+(rule
+ (target timmy-unix-windows.%{version:timmy-unix}.opam)
+ (deps
+  (:opam timmy-unix-windows.opam))
+ (action
+  (with-stdout-to
+   %{target}
+   (progn
+    (cat %{opam})
+    (run
+     git
+     log
+     "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+     -n1)))))
+
+(rule
+ (target timmy-unix-android.opam)
+ (mode
+  (promote (until-clean)))
+ (action
+  (with-stdout-to
+   %{target}
+   (run
+    %{dep:../.logistic/ci/dune/dune_sak.exe}
+    rewrite-android
+    --input
+    %{dep:../timmy-unix.opam}
+    --cross
+    timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
+    --cross-both
+    timmy,ppx_here,ppx_deriving
+    --cross-exclude
+    ""))))
+
+(rule
+ (target timmy-unix-android.%{version:timmy-unix}.opam)
+ (deps
+  (:opam timmy-unix-android.opam))
+ (action
+  (with-stdout-to
+   %{target}
+   (progn
+    (cat %{opam})
+    (run
+     git
+     log
+     "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
+     -n1)))))
