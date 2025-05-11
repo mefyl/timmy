@@ -73,7 +73,7 @@ ENV OPAMSWITCH=/root
 ARG OPAM_PACKAGES OPAM_WITHOUT_PACKAGES
 ADD .exists *.opam /root/
 RUN --mount=type=ssh \
-    opam repository add --all routine git@gitlab.routine.co:routine/opam && \
+    opam repository add --all routine git@gitlab.routine.co:routine/opam#3d611f193a7eed960981f74031045364396c19a8 && \
     opam update && \
     opam install --confirm-level=unsafe-yes --deps-only --with-test /root && \
     (if test -n "$OPAM_PACKAGES"; then opam install --confirm-level=unsafe-yes $OPAM_PACKAGES; fi) && \

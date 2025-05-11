@@ -1,4 +1,3 @@
 (executable
- (name extdeps)
- (optional)
+ (name dune_sak)
  (libraries cmdliner fmt opam-file-format sexplib stdio unix))

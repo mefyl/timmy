@@ -1,0 +1,5 @@
+(lang dune 3.0)
+
+(repository
+ (name routine)
+ (url git+ssh://git@gitlab.routine.co/routine/opam))
