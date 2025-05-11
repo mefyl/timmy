@@ -19,7 +19,7 @@ variables:
   DUNE_CACHE_STORAGE_MODE: "copy"
 
 .ocaml:
-  image: "$CI_REGISTRY/routine/logistic/dune-builder:a024eaf"
+  image: "$CI_REGISTRY/routine/logistic/dune-builder:aaa7e95"
 
 .ocaml-build:
   extends: .ocaml
