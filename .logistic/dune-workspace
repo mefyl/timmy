@@ -3,12 +3,3 @@
 (repository
  (name routine)
  (url git+ssh://git@gitlab.routine.co/routine/opam))
-
-(lock_dir
- (path dune.lock)
- (depopts schematic)
- (repositories routine overlay upstream))
-
-(lock_dir
- (path no-schematic.lock)
- (repositories routine overlay upstream))

@@ -5,6 +5,9 @@
  (url git+ssh://git@gitlab.routine.co/routine/opam))
 
 (lock_dir
- (path dune.lock)
- (depopts schematic)
+ (path no-schematic.lock)
  (repositories routine overlay upstream))
+
+(context
+ (default
+  (lock_dir no-schematic.lock)))
