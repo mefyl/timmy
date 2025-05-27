@@ -13,6 +13,12 @@ include Type_schema.WEEKDAY
     Base defaults to [Monday].*)
 val to_int : ?base:t -> t -> int
 
+(** [of_int n] is [n]-th weekday, starting from [0] for [Monday]. *)
+val of_int : int -> t option
+
+(** [increment weekday n] is the [n]-th weekday after [weekday]. *)
+val increment : t -> int -> t
+
 (** {2 Pretty-print} *)
 
 (** [pp f weekday] prints [weekday] to [f] as its english name. *)
