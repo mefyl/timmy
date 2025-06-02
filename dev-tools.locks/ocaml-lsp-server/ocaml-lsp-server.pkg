@@ -1,0 +1,14 @@
+(version
+ 1.22.0+binary-ocaml-5.3.0-built-2025-02-04.2-x86_64-unknown-linux-musl)
+
+(install
+ (progn
+  (run find . -type d -exec mkdir -p %{prefix}/{} ";")
+  (run find . -type f -exec cp {} %{prefix}/{} ";")))
+
+(source
+ (fetch
+  (url
+   https://github.com/ocaml-dune/ocaml-binary-packages/releases/download/2025-02-04.2/ocaml-lsp-server.1.22.0+binary-ocaml-5.3.0-built-2025-02-04.2-x86_64-unknown-linux-musl.tar.gz)
+  (checksum
+   sha256=f9a20a565c8407ea4c71076ffb18552e3b6350011f7bc66cddedeb2551e2bfc7)))
