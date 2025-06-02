@@ -15,6 +15,7 @@
   /**
     Extra arguments passed directly to `mkShell`
   */
+, ocamlVersion
 , extraArgs ? { }
 }:
 let
@@ -26,12 +27,13 @@ pkgs.mkShell
   ({
     packages = [
       # Base OCaml tooling
+      pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}".ocaml
       dune-preview
 
       # Dev tooling
-      pkgs."ocamlformat_${ocamlformatVersion}"
-      pkgs.ocamlPackages.ocaml-lsp
-      pkgs.ocamlPackages.merlin
+      pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}"."ocamlformat_${ocamlformatVersion}"
+      pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}".ocaml-lsp
+      pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}".merlin
 
       # System libraries
       pkgs.appimage-run

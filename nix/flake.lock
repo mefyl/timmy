@@ -1,5 +1,30 @@
 {
   "nodes": {
+    "dune": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "melange": "melange",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "ocaml-overlays": "ocaml-overlays"
+      },
+      "locked": {
+        "lastModified": 1748719426,
+        "narHash": "sha256-BwuQ4uTlNrDaf/TLGaGUBSB8r60bHYMNvu+PJQevk3c=",
+        "owner": "ocaml",
+        "repo": "dune",
+        "rev": "443e01975dcc74ca1e2b5d7eb4246b53197536d7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ocaml",
+        "repo": "dune",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -34,6 +59,51 @@
         "type": "github"
       }
     },
+    "melange": {
+      "inputs": {
+        "melange-compiler-libs": "melange-compiler-libs",
+        "nixpkgs": [
+          "dune",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1742771785,
+        "narHash": "sha256-Ihd2b1B/GnRTd0yk63kQ3ryLhgT3hp+Md0BYwOKP+YA=",
+        "owner": "melange-re",
+        "repo": "melange",
+        "rev": "2432b02d9c1990ae62fd44fad8bb53ea35b1e6b0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "melange-re",
+        "ref": "refs/tags/5.1.0-53",
+        "repo": "melange",
+        "type": "github"
+      }
+    },
+    "melange-compiler-libs": {
+      "inputs": {
+        "nixpkgs": [
+          "dune",
+          "melange",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1742165088,
+        "narHash": "sha256-N5IZA13/RAd6uYJEn12UlfPpPxyBOuVw4am0qadtUms=",
+        "owner": "melange-re",
+        "repo": "melange-compiler-libs",
+        "rev": "e914cab0ec7d53130d5f1e283283628c98a3583c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "melange-re",
+        "repo": "melange-compiler-libs",
+        "type": "github"
+      }
+    },
     "mirage-opam-overlays": {
       "flake": false,
       "locked": {
@@ -63,6 +133,27 @@
         "owner": "nixos",
         "ref": "nixos-unstable",
         "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "ocaml-overlays": {
+      "inputs": {
+        "nixpkgs": [
+          "dune",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1747540066,
+        "narHash": "sha256-DCWk9sOhzP8D1QZ9l1nK8GDIeLJwCPjoC4KKkqEotiI=",
+        "owner": "nix-ocaml",
+        "repo": "nix-overlays",
+        "rev": "79b9094ce1b828860ce64bd1914f994905527212",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-ocaml",
+        "repo": "nix-overlays",
         "type": "github"
       }
     },
@@ -117,11 +208,11 @@
     "opam-repository": {
       "flake": false,
       "locked": {
-        "lastModified": 1745411808,
-        "narHash": "sha256-VuBUGgvP5Nok2mrxhBbH9wCCWHp1YM2VUNmvFLclsOc=",
+        "lastModified": 1747644099,
+        "narHash": "sha256-9cT9VnPKDv8XaafUs0IdRyY7rC3RV+Taa+3m95aPgYE=",
         "owner": "ocaml",
         "repo": "opam-repository",
-        "rev": "8106bcf57fc33218275bbf0d02e725f4e9fcd0f6",
+        "rev": "55711315d054c8d83610afaedab4b5cbd30de09d",
         "type": "github"
       },
       "original": {
@@ -153,6 +244,7 @@
     },
     "root": {
       "inputs": {
+        "dune": "dune",
         "flake-compat": "flake-compat",
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs",
@@ -164,11 +256,11 @@
     "routine-opam-repository": {
       "flake": false,
       "locked": {
-        "lastModified": 1745770182,
-        "narHash": "sha256-aSj1IXIK1p80Ig/5aLr1ht5urCw4Amz1STIOmmCtvPM=",
+        "lastModified": 1747299403,
+        "narHash": "sha256-b5Vlvb+wZcC1l1HJcNP1UP07lgVs91FQukUKKIu9k3k=",
         "ref": "refs/heads/master",
-        "rev": "13da8cf8d660d8cbdedf37451ba078b191c86df4",
-        "revCount": 524,
+        "rev": "5f678cef0cc08bebeccb9be2233eb4e30ab9d3c6",
+        "revCount": 531,
         "type": "git",
         "url": "ssh://git@gitlab.routine.co/routine/opam.git"
       },

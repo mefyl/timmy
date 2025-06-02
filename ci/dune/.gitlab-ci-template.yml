@@ -12,14 +12,12 @@ before_script:
 
 variables:
   BRANCH: "$CI_COMMIT_REF_NAME"
-  IMAGE_CI: "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/ci:$CI_COMMIT_REF_SLUG"
-  IMAGE_CI_MASTER: "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/ci:master"
   IMAGE: "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME"
   SLUG: "$CI_COMMIT_REF_SLUG"
   DUNE_CACHE_STORAGE_MODE: "copy"
 
 .ocaml:
-  image: "$CI_REGISTRY/routine/logistic/dune-builder:a024eaf"
+  image: "$CI_REGISTRY/routine/logistic/dune-builder:bd1d76b"
 
 .ocaml-build:
   extends: .ocaml
