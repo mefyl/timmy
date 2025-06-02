@@ -5,10 +5,10 @@
         "homepage": "https://dune.build/",
         "owner": "ocaml",
         "repo": "dune",
-        "rev": "96ab1a5b7a3e7a8a0a2eb197cf9fd359d5928ae3",
-        "sha256": "0am2vimlqr23ym9n0f9s1awqq9g25qb5g2dyvm5cxn1dx0f868hp",
+        "rev": "443e01975dcc74ca1e2b5d7eb4246b53197536d7",
+        "sha256": "0xwkmw3jb3zgpq6q678vmnppq805jjhikjzlgzdb0dp5wki902q7",
         "type": "tarball",
-        "url": "https://github.com/ocaml/dune/archive/96ab1a5b7a3e7a8a0a2eb197cf9fd359d5928ae3.tar.gz",
+        "url": "https://github.com/ocaml/dune/archive/443e01975dcc74ca1e2b5d7eb4246b53197536d7.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "flake-compat": {
