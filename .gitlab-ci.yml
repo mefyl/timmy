@@ -1,6 +1,9 @@
 include:
   - local: '/.logistic/ci/dune/.gitlab-ci-template.yml'
 
+variables:
+  PACKAGES: 'zlib-dev zstd-dev'
+    
 build:
   extends: .ocaml-build
 
