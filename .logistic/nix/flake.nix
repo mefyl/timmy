@@ -31,7 +31,7 @@
     };
 
     dune = {
-      url = "github:ocaml/dune";
+      url = "github:ocaml/dune/5cbbf9ffedbc62c2f7f7eba185d30560eef1ca80";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-utils.follows = "flake-utils";
@@ -132,10 +132,23 @@
                 angstrom = "0.15.0";
               };
 
+            # Extend the base Opam repository with a (incorrect but not important) version of dune that does not yet exist, so that Opam resolver gives us a break (since we use an unreleased version of Dune)
+            opam-repository-extended = let version = "3.20.0"; in pkgs.stdenv.mkDerivation
+              {
+                name = "opam-repository";
+                inherit version;
+                src = opam-repository;
+                installPhase = ''
+                  cp -r $src $out
+                  chmod -R u+w $out
+                  cp -r $out/packages/dune/dune.3.18.1 $out/packages/dune/dune.${version}
+                '';
+              };
+
             scope =
               on.buildOpamProject'
                 (resolveArgsOverride {
-                  repos = [ opam-repository routine-opam-repository ] ++ extraRepos;
+                  repos = [ opam-repository-extended routine-opam-repository ] ++ extraRepos;
                   resolveArgs.with-test = true;
                   resolveArgs.criteria = "-removed,-count[avoid-version:,true],-count[version-lag:,true],-changed,-count[version-lag:,false],-count[missing-depexts:,true],-new";
                 })
@@ -187,8 +200,14 @@
                 doCheck = false;
               });
 
-              dune = prev.dune.overrideAttrs (a: {
+              # We at Routine must use a very recent, not yet released version of Dune because we use `dune pkg`...
+              dune = dune.packages.${system}.dune-experimental;
+              dune-configurator = prev.dune-configurator.overrideAttrs (a: {
                 src = dune.packages.${system}.dune-experimental.src;
+                nativeBuildInputs = a.nativeBuildInputs or [ ] ++ [ pkgs.git ];
+                preBuild = ''
+                  git init
+                '';
               });
 
               gapi = prev.gapi.overrideAttrs (a: {
@@ -226,6 +245,12 @@
 
               mrou = prev.mrou.overrideAttrs (a: {
                 doCheck = false;
+              });
+
+              nofuture = prev.nofuture.overrideAttrs (a: {
+                buildInputs = a.nativeBuildInputs or [ ] ++ [
+                  prev.ocaml
+                ];
               });
 
               ocaml-compiler = prev.ocaml-compiler.overrideAttrs (a: {
@@ -270,7 +295,7 @@
                 doCheck = false;
               });
 
-              timmy-jsoo = prev.timmy-jsoo.overrideAttrs (a: { buildInputs = a.nativeBuildInputs or [ ] ++ [ prev.logs ]; });
+              timmy-jsoo = if prev ? timmy-jsoo then prev.timmy-jsoo.overrideAttrs (a: { buildInputs = a.nativeBuildInputs or [ ] ++ [ prev.logs ]; }) else null;
               timmy-lwt = prev.timmy-lwt.overrideAttrs (a: {
                 doCheck = false;
                 buildInputs = a.buildInputs or [ ] ++ [ prev.logs ];

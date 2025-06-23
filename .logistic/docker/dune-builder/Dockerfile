@@ -10,8 +10,7 @@ RUN ssh-keyscan gitlab.routine.co > /root/.ssh/known_hosts
 # Install the Dune Developer Preview version to be able to use `dune
 # pkg` instead of `opam`
 
-# A dummy beacon to force Docker to rebuild
-ENV MINIMAL_VERSION=488e968
-RUN curl -fsSL https://get.dune.build/install | sh
+# Stay on a predetermined dune version.
+RUN curl -fsSL https://get.dune.build/install | sed 's#^dune_tar_uri=.*#dune_tar_uri="https://get.dune.build/2025-05-30/$target/dune-2025-05-30-$target.tar.gz"#' | sh
 ADD dune-config /root/.config/dune/config
 ENV PATH="/root/.local/bin:$PATH"

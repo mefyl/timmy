@@ -372,6 +372,7 @@ let () =
                    pelem =
                      pin_depend "ocamlformat" "0.27.0"
                      :: { pelem = String "opam-file-format"; pos }
+                     :: { pelem = String "ocaml-index"; pos }
                      :: { pelem = String "sexplib"; pos }
                      :: { pelem = String "opam-dune-lint"; pos }
                      :: l;
