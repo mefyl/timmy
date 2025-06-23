@@ -7,7 +7,7 @@ license: "LGPL-3.0-or-later"
 homepage: "https://github.com/mefyl/timmy"
 bug-reports: "https://github.com/mefyl/timmy/issues"
 depends: [
-  "dune" {>= "3.0"}
+  "dune" {>= "3.20"}
   "timedesc-ios" {>= "3.0"}
   "ppx_here"
   "ppx_here-ios"
@@ -22,3 +22,4 @@ build: [
   ["dune" "build" "-x" "ios" "-p" "timmy-timezones" "-j" jobs "@install"]
 ]
 dev-repo: "git+https://github.com/mefyl/timmy.git"
+x-maintenance-intent: ["(latest)"]

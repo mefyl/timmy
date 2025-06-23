@@ -1,6 +1,6 @@
 (lang package 0.1)
 
-(dependency_hash 0c8049999389b0d3e27f8e22f11508a2)
+(dependency_hash 308ceea3e6bccc37f5e78def2ef4ff7d)
 
 (ocaml ocaml-base-compiler)
 
@@ -8,27 +8,46 @@
  (complete true)
  (used
   ((source
-    ssh://git@gitlab.routine.co/routine/opam#4479e5ff968d373e979b553b14147398cf4f3159))
-  ((source
     https://github.com/ocaml-dune/opam-overlays.git#2a9543286ff0e0656058fee5c0da7abc16b8717d))
   ((source
-    https://github.com/ocaml/opam-repository.git#0d013e603b5ebf0e9b404e10d5a6839f226e1739))))
+    https://github.com/ocaml/opam-repository.git#8c282ddb114131d3ac2b116d53954c7346be70c3))
+  ((source
+    ssh://git@gitlab.routine.co/routine/opam#10e6a83ef3d3cb2252e34321308cd40fd953a51f))))
 
-(expanded_solver_variable_bindings
- (variable_values
-  (with-doc false)
-  (with-dev-setup false)
-  (sys-ocaml-version 5.2.1)
-  (post true)
-  (os-distribution gentoo)
+(solved_for_platforms
+ ((arch x86_64)
   (os linux)
-  (opam-version 2.2.0~alpha-vendored)
-  (arch x86_64))
- (unset_variables
-  with-test
-  sys-ocaml-libc
-  sys-ocaml-cc
-  sys-ocaml-arch
-  enable-ocaml-beta-repository
-  dev
-  build))
+  (os-distribution ubuntu)
+  (os-family debian))
+ ((arch arm64)
+  (os linux)
+  (os-distribution ubuntu)
+  (os-family debian))
+ ((arch x86_64)
+  (os linux)
+  (os-distribution alpine)
+  (os-family alpine))
+ ((arch arm64)
+  (os linux)
+  (os-distribution alpine)
+  (os-family alpine))
+ ((arch x86_64)
+  (os linux))
+ ((arch arm64)
+  (os linux))
+ ((arch x86_64)
+  (os macos)
+  (os-distribution homebrew)
+  (os-family homebrew))
+ ((arch arm64)
+  (os macos)
+  (os-distribution homebrew)
+  (os-family homebrew))
+ ((arch x86_64)
+  (os win32)
+  (os-distribution cygwin)
+  (os-family windows))
+ ((arch arm64)
+  (os win32)
+  (os-distribution cygwin)
+  (os-family windows)))

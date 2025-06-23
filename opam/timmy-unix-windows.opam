@@ -7,7 +7,7 @@ license: "LGPL-3.0-or-later"
 homepage: "https://github.com/mefyl/timmy"
 bug-reports: "https://github.com/mefyl/timmy/issues"
 depends: [
-  "dune" {>= "3.0"}
+  "dune" {>= "3.20"}
   "ptime-windows"
   "base-windows"
   "fmt-windows"
@@ -20,3 +20,4 @@ build: [
   ["dune" "build" "-x" "windows" "-p" "timmy-unix" "-j" jobs "@install"]
 ]
 dev-repo: "git+https://github.com/mefyl/timmy.git"
+x-maintenance-intent: ["(latest)"]

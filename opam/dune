@@ -7,9 +7,7 @@
    %{target}
    (progn
     (cat %{opam})
-    (run
-     git
-     log
+    (run git log
      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
      -n1)))))
 
@@ -20,17 +18,10 @@
  (action
   (with-stdout-to
    %{target}
-   (run
-    %{dep:../.logistic/ci/dune/dune_sak.exe}
-    rewrite-ios
-    --input
-    %{dep:../timmy.opam}
-    --cross
+   (run %{dep:../.logistic/ci/dune/dune_sak.exe} rewrite-ios --input
+    %{dep:../timmy.opam} --cross
     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
-    --cross-both
-    timmy,ppx_here,ppx_deriving
-    --cross-exclude
-    ""))))
+    --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
 
 (rule
  (target timmy-ios.%{version:timmy}.opam)
@@ -41,9 +32,7 @@
    %{target}
    (progn
     (cat %{opam})
-    (run
-     git
-     log
+    (run git log
      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
      -n1)))))
 
@@ -54,17 +43,10 @@
  (action
   (with-stdout-to
    %{target}
-   (run
-    %{dep:../.logistic/ci/dune/dune_sak.exe}
-    rewrite-macos
-    --input
-    %{dep:../timmy.opam}
-    --cross
+   (run %{dep:../.logistic/ci/dune/dune_sak.exe} rewrite-macos --input
+    %{dep:../timmy.opam} --cross
     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
-    --cross-both
-    timmy,ppx_here,ppx_deriving
-    --cross-exclude
-    ""))))
+    --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
 
 (rule
  (target timmy-macos.%{version:timmy}.opam)
@@ -75,9 +57,7 @@
    %{target}
    (progn
     (cat %{opam})
-    (run
-     git
-     log
+    (run git log
      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
      -n1)))))
 
@@ -88,17 +68,10 @@
  (action
   (with-stdout-to
    %{target}
-   (run
-    %{dep:../.logistic/ci/dune/dune_sak.exe}
-    rewrite-windows
-    --input
-    %{dep:../timmy.opam}
-    --cross
+   (run %{dep:../.logistic/ci/dune/dune_sak.exe} rewrite-windows --input
+    %{dep:../timmy.opam} --cross
     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
-    --cross-both
-    timmy,ppx_here,ppx_deriving
-    --cross-exclude
-    ""))))
+    --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
 
 (rule
  (target timmy-windows.%{version:timmy}.opam)
@@ -109,9 +82,7 @@
    %{target}
    (progn
     (cat %{opam})
-    (run
-     git
-     log
+    (run git log
      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
      -n1)))))
 
@@ -122,17 +93,10 @@
  (action
   (with-stdout-to
    %{target}
-   (run
-    %{dep:../.logistic/ci/dune/dune_sak.exe}
-    rewrite-android
-    --input
-    %{dep:../timmy.opam}
-    --cross
+   (run %{dep:../.logistic/ci/dune/dune_sak.exe} rewrite-android --input
+    %{dep:../timmy.opam} --cross
     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
-    --cross-both
-    timmy,ppx_here,ppx_deriving
-    --cross-exclude
-    ""))))
+    --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
 
 (rule
  (target timmy-android.%{version:timmy}.opam)
@@ -143,9 +107,7 @@
    %{target}
    (progn
     (cat %{opam})
-    (run
-     git
-     log
+    (run git log
      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
      -n1)))))
 
@@ -158,9 +120,7 @@
    %{target}
    (progn
     (cat %{opam})
-    (run
-     git
-     log
+    (run git log
      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
      -n1)))))
 
@@ -171,17 +131,10 @@
  (action
   (with-stdout-to
    %{target}
-   (run
-    %{dep:../.logistic/ci/dune/dune_sak.exe}
-    rewrite-ios
-    --input
-    %{dep:../timmy-jsoo.opam}
-    --cross
+   (run %{dep:../.logistic/ci/dune/dune_sak.exe} rewrite-ios --input
+    %{dep:../timmy-jsoo.opam} --cross
     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
-    --cross-both
-    timmy,ppx_here,ppx_deriving
-    --cross-exclude
-    ""))))
+    --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
 
 (rule
  (target timmy-jsoo-ios.%{version:timmy-jsoo}.opam)
@@ -192,9 +145,7 @@
    %{target}
    (progn
     (cat %{opam})
-    (run
-     git
-     log
+    (run git log
      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
      -n1)))))
 
@@ -205,17 +156,10 @@
  (action
   (with-stdout-to
    %{target}
-   (run
-    %{dep:../.logistic/ci/dune/dune_sak.exe}
-    rewrite-macos
-    --input
-    %{dep:../timmy-jsoo.opam}
-    --cross
+   (run %{dep:../.logistic/ci/dune/dune_sak.exe} rewrite-macos --input
+    %{dep:../timmy-jsoo.opam} --cross
     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
-    --cross-both
-    timmy,ppx_here,ppx_deriving
-    --cross-exclude
-    ""))))
+    --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
 
 (rule
  (target timmy-jsoo-macos.%{version:timmy-jsoo}.opam)
@@ -226,9 +170,7 @@
    %{target}
    (progn
     (cat %{opam})
-    (run
-     git
-     log
+    (run git log
      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
      -n1)))))
 
@@ -239,17 +181,10 @@
  (action
   (with-stdout-to
    %{target}
-   (run
-    %{dep:../.logistic/ci/dune/dune_sak.exe}
-    rewrite-windows
-    --input
-    %{dep:../timmy-jsoo.opam}
-    --cross
+   (run %{dep:../.logistic/ci/dune/dune_sak.exe} rewrite-windows --input
+    %{dep:../timmy-jsoo.opam} --cross
     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
-    --cross-both
-    timmy,ppx_here,ppx_deriving
-    --cross-exclude
-    ""))))
+    --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
 
 (rule
  (target timmy-jsoo-windows.%{version:timmy-jsoo}.opam)
@@ -260,9 +195,7 @@
    %{target}
    (progn
     (cat %{opam})
-    (run
-     git
-     log
+    (run git log
      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
      -n1)))))
 
@@ -273,17 +206,10 @@
  (action
   (with-stdout-to
    %{target}
-   (run
-    %{dep:../.logistic/ci/dune/dune_sak.exe}
-    rewrite-android
-    --input
-    %{dep:../timmy-jsoo.opam}
-    --cross
+   (run %{dep:../.logistic/ci/dune/dune_sak.exe} rewrite-android --input
+    %{dep:../timmy-jsoo.opam} --cross
     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
-    --cross-both
-    timmy,ppx_here,ppx_deriving
-    --cross-exclude
-    ""))))
+    --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
 
 (rule
  (target timmy-jsoo-android.%{version:timmy-jsoo}.opam)
@@ -294,9 +220,7 @@
    %{target}
    (progn
     (cat %{opam})
-    (run
-     git
-     log
+    (run git log
      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
      -n1)))))
 
@@ -309,9 +233,7 @@
    %{target}
    (progn
     (cat %{opam})
-    (run
-     git
-     log
+    (run git log
      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
      -n1)))))
 
@@ -322,17 +244,10 @@
  (action
   (with-stdout-to
    %{target}
-   (run
-    %{dep:../.logistic/ci/dune/dune_sak.exe}
-    rewrite-ios
-    --input
-    %{dep:../timmy-lwt.opam}
-    --cross
+   (run %{dep:../.logistic/ci/dune/dune_sak.exe} rewrite-ios --input
+    %{dep:../timmy-lwt.opam} --cross
     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
-    --cross-both
-    timmy,ppx_here,ppx_deriving
-    --cross-exclude
-    ""))))
+    --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
 
 (rule
  (target timmy-lwt-ios.%{version:timmy-lwt}.opam)
@@ -343,9 +258,7 @@
    %{target}
    (progn
     (cat %{opam})
-    (run
-     git
-     log
+    (run git log
      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
      -n1)))))
 
@@ -356,17 +269,10 @@
  (action
   (with-stdout-to
    %{target}
-   (run
-    %{dep:../.logistic/ci/dune/dune_sak.exe}
-    rewrite-macos
-    --input
-    %{dep:../timmy-lwt.opam}
-    --cross
+   (run %{dep:../.logistic/ci/dune/dune_sak.exe} rewrite-macos --input
+    %{dep:../timmy-lwt.opam} --cross
     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
-    --cross-both
-    timmy,ppx_here,ppx_deriving
-    --cross-exclude
-    ""))))
+    --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
 
 (rule
  (target timmy-lwt-macos.%{version:timmy-lwt}.opam)
@@ -377,9 +283,7 @@
    %{target}
    (progn
     (cat %{opam})
-    (run
-     git
-     log
+    (run git log
      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
      -n1)))))
 
@@ -390,17 +294,10 @@
  (action
   (with-stdout-to
    %{target}
-   (run
-    %{dep:../.logistic/ci/dune/dune_sak.exe}
-    rewrite-windows
-    --input
-    %{dep:../timmy-lwt.opam}
-    --cross
+   (run %{dep:../.logistic/ci/dune/dune_sak.exe} rewrite-windows --input
+    %{dep:../timmy-lwt.opam} --cross
     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
-    --cross-both
-    timmy,ppx_here,ppx_deriving
-    --cross-exclude
-    ""))))
+    --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
 
 (rule
  (target timmy-lwt-windows.%{version:timmy-lwt}.opam)
@@ -411,9 +308,7 @@
    %{target}
    (progn
     (cat %{opam})
-    (run
-     git
-     log
+    (run git log
      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
      -n1)))))
 
@@ -424,17 +319,10 @@
  (action
   (with-stdout-to
    %{target}
-   (run
-    %{dep:../.logistic/ci/dune/dune_sak.exe}
-    rewrite-android
-    --input
-    %{dep:../timmy-lwt.opam}
-    --cross
+   (run %{dep:../.logistic/ci/dune/dune_sak.exe} rewrite-android --input
+    %{dep:../timmy-lwt.opam} --cross
     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
-    --cross-both
-    timmy,ppx_here,ppx_deriving
-    --cross-exclude
-    ""))))
+    --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
 
 (rule
  (target timmy-lwt-android.%{version:timmy-lwt}.opam)
@@ -445,9 +333,7 @@
    %{target}
    (progn
     (cat %{opam})
-    (run
-     git
-     log
+    (run git log
      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
      -n1)))))
 
@@ -460,9 +346,7 @@
    %{target}
    (progn
     (cat %{opam})
-    (run
-     git
-     log
+    (run git log
      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
      -n1)))))
 
@@ -473,17 +357,10 @@
  (action
   (with-stdout-to
    %{target}
-   (run
-    %{dep:../.logistic/ci/dune/dune_sak.exe}
-    rewrite-ios
-    --input
-    %{dep:../timmy-timezones.opam}
-    --cross
+   (run %{dep:../.logistic/ci/dune/dune_sak.exe} rewrite-ios --input
+    %{dep:../timmy-timezones.opam} --cross
     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
-    --cross-both
-    timmy,ppx_here,ppx_deriving
-    --cross-exclude
-    ""))))
+    --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
 
 (rule
  (target timmy-timezones-ios.%{version:timmy-timezones}.opam)
@@ -494,9 +371,7 @@
    %{target}
    (progn
     (cat %{opam})
-    (run
-     git
-     log
+    (run git log
      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
      -n1)))))
 
@@ -507,17 +382,10 @@
  (action
   (with-stdout-to
    %{target}
-   (run
-    %{dep:../.logistic/ci/dune/dune_sak.exe}
-    rewrite-macos
-    --input
-    %{dep:../timmy-timezones.opam}
-    --cross
+   (run %{dep:../.logistic/ci/dune/dune_sak.exe} rewrite-macos --input
+    %{dep:../timmy-timezones.opam} --cross
     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
-    --cross-both
-    timmy,ppx_here,ppx_deriving
-    --cross-exclude
-    ""))))
+    --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
 
 (rule
  (target timmy-timezones-macos.%{version:timmy-timezones}.opam)
@@ -528,9 +396,7 @@
    %{target}
    (progn
     (cat %{opam})
-    (run
-     git
-     log
+    (run git log
      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
      -n1)))))
 
@@ -541,17 +407,10 @@
  (action
   (with-stdout-to
    %{target}
-   (run
-    %{dep:../.logistic/ci/dune/dune_sak.exe}
-    rewrite-windows
-    --input
-    %{dep:../timmy-timezones.opam}
-    --cross
+   (run %{dep:../.logistic/ci/dune/dune_sak.exe} rewrite-windows --input
+    %{dep:../timmy-timezones.opam} --cross
     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
-    --cross-both
-    timmy,ppx_here,ppx_deriving
-    --cross-exclude
-    ""))))
+    --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
 
 (rule
  (target timmy-timezones-windows.%{version:timmy-timezones}.opam)
@@ -562,9 +421,7 @@
    %{target}
    (progn
     (cat %{opam})
-    (run
-     git
-     log
+    (run git log
      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
      -n1)))))
 
@@ -575,17 +432,10 @@
  (action
   (with-stdout-to
    %{target}
-   (run
-    %{dep:../.logistic/ci/dune/dune_sak.exe}
-    rewrite-android
-    --input
-    %{dep:../timmy-timezones.opam}
-    --cross
+   (run %{dep:../.logistic/ci/dune/dune_sak.exe} rewrite-android --input
+    %{dep:../timmy-timezones.opam} --cross
     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
-    --cross-both
-    timmy,ppx_here,ppx_deriving
-    --cross-exclude
-    ""))))
+    --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
 
 (rule
  (target timmy-timezones-android.%{version:timmy-timezones}.opam)
@@ -596,9 +446,7 @@
    %{target}
    (progn
     (cat %{opam})
-    (run
-     git
-     log
+    (run git log
      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
      -n1)))))
 
@@ -611,9 +459,7 @@
    %{target}
    (progn
     (cat %{opam})
-    (run
-     git
-     log
+    (run git log
      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
      -n1)))))
 
@@ -624,17 +470,10 @@
  (action
   (with-stdout-to
    %{target}
-   (run
-    %{dep:../.logistic/ci/dune/dune_sak.exe}
-    rewrite-ios
-    --input
-    %{dep:../timmy-unix.opam}
-    --cross
+   (run %{dep:../.logistic/ci/dune/dune_sak.exe} rewrite-ios --input
+    %{dep:../timmy-unix.opam} --cross
     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
-    --cross-both
-    timmy,ppx_here,ppx_deriving
-    --cross-exclude
-    ""))))
+    --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
 
 (rule
  (target timmy-unix-ios.%{version:timmy-unix}.opam)
@@ -645,9 +484,7 @@
    %{target}
    (progn
     (cat %{opam})
-    (run
-     git
-     log
+    (run git log
      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
      -n1)))))
 
@@ -658,17 +495,10 @@
  (action
   (with-stdout-to
    %{target}
-   (run
-    %{dep:../.logistic/ci/dune/dune_sak.exe}
-    rewrite-macos
-    --input
-    %{dep:../timmy-unix.opam}
-    --cross
+   (run %{dep:../.logistic/ci/dune/dune_sak.exe} rewrite-macos --input
+    %{dep:../timmy-unix.opam} --cross
     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
-    --cross-both
-    timmy,ppx_here,ppx_deriving
-    --cross-exclude
-    ""))))
+    --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
 
 (rule
  (target timmy-unix-macos.%{version:timmy-unix}.opam)
@@ -679,9 +509,7 @@
    %{target}
    (progn
     (cat %{opam})
-    (run
-     git
-     log
+    (run git log
      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
      -n1)))))
 
@@ -692,17 +520,10 @@
  (action
   (with-stdout-to
    %{target}
-   (run
-    %{dep:../.logistic/ci/dune/dune_sak.exe}
-    rewrite-windows
-    --input
-    %{dep:../timmy-unix.opam}
-    --cross
+   (run %{dep:../.logistic/ci/dune/dune_sak.exe} rewrite-windows --input
+    %{dep:../timmy-unix.opam} --cross
     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
-    --cross-both
-    timmy,ppx_here,ppx_deriving
-    --cross-exclude
-    ""))))
+    --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
 
 (rule
  (target timmy-unix-windows.%{version:timmy-unix}.opam)
@@ -713,9 +534,7 @@
    %{target}
    (progn
     (cat %{opam})
-    (run
-     git
-     log
+    (run git log
      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
      -n1)))))
 
@@ -726,17 +545,10 @@
  (action
   (with-stdout-to
    %{target}
-   (run
-    %{dep:../.logistic/ci/dune/dune_sak.exe}
-    rewrite-android
-    --input
-    %{dep:../timmy-unix.opam}
-    --cross
+   (run %{dep:../.logistic/ci/dune/dune_sak.exe} rewrite-android --input
+    %{dep:../timmy-unix.opam} --cross
     timmy,timmy-jsoo,timmy-lwt,timmy-timezones,timmy-unix,hlist,schematic,schematic-jsoo,base,fmt,lwt,ptime,timedesc,logs
-    --cross-both
-    timmy,ppx_here,ppx_deriving
-    --cross-exclude
-    ""))))
+    --cross-both timmy,ppx_here,ppx_deriving --cross-exclude ""))))
 
 (rule
  (target timmy-unix-android.%{version:timmy-unix}.opam)
@@ -747,8 +559,6 @@
    %{target}
    (progn
     (cat %{opam})
-    (run
-     git
-     log
+    (run git log
      "--pretty=url { src: \"git://git@gitlab.routine.co:routine/timmy#%H\" }"
      -n1)))))

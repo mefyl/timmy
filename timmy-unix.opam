@@ -8,7 +8,7 @@ license: "LGPL-3.0-or-later"
 homepage: "https://github.com/mefyl/timmy"
 bug-reports: "https://github.com/mefyl/timmy/issues"
 depends: [
-  "dune" {>= "3.0"}
+  "dune" {>= "3.20"}
   "ptime"
   "alcotest" {with-test & >= "1.4.0"}
   "ezjsonm" {= "1.3.0" & build}
@@ -34,3 +34,4 @@ build: [
   ]
 ]
 dev-repo: "git+https://github.com/mefyl/timmy.git"
+x-maintenance-intent: ["(latest)"]
