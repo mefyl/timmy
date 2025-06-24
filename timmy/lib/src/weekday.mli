@@ -16,8 +16,8 @@ val to_int : ?base:t -> t -> int
 (** [of_int n] is [n]-th weekday, starting from [0] for [Monday]. *)
 val of_int : int -> t option
 
-(** [increment weekday n] is the [n]-th weekday after [weekday]. *)
-val increment : t -> int -> t
+(** [add_days weekday n] is the [n]-th weekday after [weekday]. *)
+val add_days : t -> int -> t
 
 (** {2 Pretty-print} *)
 

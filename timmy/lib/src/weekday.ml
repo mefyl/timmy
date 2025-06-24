@@ -39,8 +39,8 @@ let of_int = function
   | 6 -> Some Sunday
   | _ -> None
 
-let increment wd n =
-  let k = (to_int wd + n) % 7 in
+let add_days weekday n =
+  let k = (to_int weekday + n) % 7 in
   let k = if k < 0 then k + 7 else k in
   Option.value_exn ~here:[%here] @@ of_int k
 
