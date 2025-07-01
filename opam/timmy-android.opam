@@ -19,7 +19,7 @@ depends: [
 ]
 depopts: ["schematic-android"]
 conflicts: [
-  "schematic" {< "0.18.2" | = "0.20.0" | >= "0.21.0"}
+  "schematic" {< "0.18.2" | = "0.20.0" | >= "0.22.0"}
 ]
 build: [
   ["dune" "subst"] {dev}

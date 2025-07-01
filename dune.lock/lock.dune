@@ -12,7 +12,7 @@
   ((source
     https://github.com/ocaml-dune/opam-overlays.git#2a9543286ff0e0656058fee5c0da7abc16b8717d))
   ((source
-    https://github.com/ocaml/opam-repository.git#70ed6dc3809eac914120062fdc7a82492f5c3ef9))))
+    https://github.com/ocaml/opam-repository.git#5af9fe17257c2e27ab45502c4757e02cfef63b8e))))
 
 (solved_for_platforms
  ((arch x86_64)
