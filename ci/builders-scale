@@ -1,0 +1,229 @@
+#!/usr/bin/env python3
+
+import os
+import requests
+import subprocess
+import sys
+import time
+
+TOKEN = subprocess.check_output(["pass", "digitalocean.com/mefyl@gruntech.org/tokens/routine"]).decode('utf-8').strip()
+
+BUILDER_IMAGE = "ubuntu-24-04-x64"
+BUILDER_PROJECT = {
+  "id": "fc4f5214-a963-4edc-992e-7273a196ef8b",
+  "owner_uuid": "10892777fab4eec8eb860faaf998486170449232",
+  "owner_id": 7316606,
+  "name": "Gitlab",
+  "description": "Gitlab and CI infrastructure",
+  "purpose": "Operational / Developer tooling",
+  "environment": "Development",
+  "is_default": False,
+  "created_at": "2020-04-03T01:24:13Z",
+  "updated_at": "2020-12-22T20:12:54Z",
+}
+BUILDER_REGION = "fra1"
+BUILDER_TAGS = ["ci", "builder", "gitlab"]
+BUILDER_VPC = "66bb90a2-f446-46d1-8861-ed69c8942139"
+
+PARAMS = {"home": os.environ["HOME"]}
+
+KNOWN_HOSTS = "{home}/.ssh/known_hosts_routine_ci_builders".format(**PARAMS)
+PARAMS["known_hosts"] = KNOWN_HOSTS
+
+
+def request(method, url, **kwargs):
+  resp = requests.request(
+    method,
+    "https://api.digitalocean.com/v2/{}".format(url),
+    headers={"Authorization": "Bearer {}".format(TOKEN)},
+    **kwargs
+  )
+  try:
+    return resp.json()
+  except:
+    return None
+
+
+def get(url, **kwargs):
+  return request("GET", url, **kwargs)
+
+
+def post(url, **kwargs):
+  return request("POST", url, **kwargs)
+
+
+def delete(url, **kwargs):
+  return request("DELETE", url, **kwargs)
+
+
+init = """#!/bin/bash -xe
+export DEBIAN_FRONTEND=noninteractive
+apt-get update
+apt-get dist-upgrade --yes
+
+# Install Docker
+curl -L https://get.docker.com/ | bash
+cat > /etc/docker/daemon.json <<EOF
+{"registry-mirrors":["https://mirror.gcr.io"]}
+EOF
+systemctl reload docker
+docker buildx create --name builder
+apt-get install --yes anacron
+cat > /etc/cron.hourly/docker-image-purge <<EOF
+#!/bin/sh
+
+docker image ls -q --filter reference='registry.gitlab.routine.co/routine/*/ci' --filter until=36h | xargs -r docker rmi
+docker image ls -q --filter reference='registry.gitlab.routine.co/routine/*' --filter until=168h | xargs -r docker rmi
+docker image prune -f
+docker system prune -f
+EOF
+chmod u+x /etc/cron.hourly/docker-image-purge
+
+# Configuration
+mkdir -p /root/.config/htop/
+echo 'hide_userland_threads=1' >> /root/.config/htop/htoprc
+
+# Install Gitlab runner (https://docs.gitlab.com/runner/install/)
+# Ubuntu 23 (mantic) is not supported, force focal for now
+curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh | os=ubuntu dist=focal bash
+apt-get install --yes gitlab-runner
+# Register runner
+gitlab-runner register --non-interactive --run-untagged --tag-list linux --url https://gitlab.routine.co --docker-volumes /var/cache/dune:/root/.cache/dune --docker-volumes /var/run/docker.sock:/var/run/docker.sock --docker-volumes /root/.docker/buildx/instances/builder:/root/.docker/buildx/instances/builder --registration-token b75PvgBYWXaSPnbeyX8_ --executor docker --docker-image alpine --docker-devices /dev/fuse --docker-cap-add SYS_ADMIN --docker-security-opt apparmor:unconfined
+"""
+
+
+class Droplet:
+  def __init__(self, json):
+    self.__json = json
+
+  def __repr__(self):
+    return "Droplet({!r})".format(self.name)
+
+  @property
+  def name(self):
+    return self.__json["name"]
+
+  @staticmethod
+  def create(name, project=None):
+    params = {
+      "name": name,
+      "region": BUILDER_REGION,
+      # "size": "c2-8vcpu-16gb",
+      "size": "c2-16vcpu-32gb",
+      "image": BUILDER_IMAGE,
+      "ssh_keys": ["cf:30:0a:1e:e7:b6:da:15:1c:af:8e:37:4e:5b:7a:e3"],
+      "backups": False,
+      "ipv6": True,
+      "user_data": init,
+      "tags": BUILDER_TAGS,
+    }
+    droplet = post("droplets", json=params)["droplet"]
+    if project is not None:
+      post(
+        "projects/{}/resources".format(project["id"]),
+        json={"resources": ["do:droplet:{}".format(droplet["id"])]},
+      )
+    return Droplet(droplet)
+
+  @staticmethod
+  def get(id):
+    return Droplet(get("droplets/{}".format(id))["droplet"])
+
+  def refresh(self):
+    return Droplet.get(self.id)
+
+  def delete(self):
+    delete("droplets/{}".format(self.__json["id"]))
+
+  @property
+  def id(self):
+    return self.__json["id"]
+
+  @property
+  def public_ip(self):
+    # FIXME: v6 too
+    try:
+      return next(
+        filter(lambda ip: ip["type"] == "public", self.__json["networks"]["v4"])
+      )["ip_address"]
+    except:
+      return None
+
+
+target = int(sys.argv[1])
+builders = list(
+  sorted(
+    map(Droplet, get("droplets?tag_name=builder")["droplets"]),
+    key=lambda d: d.name,
+    reverse=True,
+  ),
+)
+effective = len(builders)
+
+if target < effective:
+  n = effective - target
+  records = get("domains/gitlab.routine.co/records")["domain_records"]
+  for i in range(n):
+    builder_name = "{}.builder".format(effective - i - 1)
+    builder = builders[i]
+    try:
+      record = next(r for r in records if r["name"] == builder_name)
+      delete("domains/gitlab.routine.co/records/{}".format(record["id"]))
+    except StopIteration:
+      pass
+    os.system(
+      'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null root@{} "gitlab-runner unregister --all-runners"'.format(
+        builder.public_ip
+      )
+    )
+    os.system(
+      'sed -i "/{name}.gitlab.routine.co/d" {known_hosts}'.format(
+        name=builder_name, **PARAMS
+      )
+    )
+    builders[i].delete()
+  print("{} builders where removed".format(n))
+elif target > effective:
+  n = target - effective
+  for i in range(n):
+    builder_name = "{}.builder".format(effective + i)
+    print("Creating {}.gitlab.routine.co".format(builder_name))
+    droplet = Droplet.create(builder_name, project=BUILDER_PROJECT)
+    while droplet.public_ip is None:
+      droplet = droplet.refresh()
+      time.sleep(5)
+    post(
+      "domains/gitlab.routine.co/records",
+      json={
+        "type": "A",
+        "name": builder_name,
+        "data": droplet.public_ip,
+        "ttl": 600,
+      },
+    )
+    print(
+      "Waiting for {}.gitlab.routine.co ({}) to start up".format(
+        builder_name, droplet.public_ip
+      )
+    )
+    with open(os.devnull, "w") as devnull, open(KNOWN_HOSTS, "a+") as f:
+      while True:
+        try:
+          subprocess.run(
+            [
+              "ssh-keyscan",
+              "{} {}.gitlab.routine.co".format(droplet.public_ip, builder_name),
+            ],
+            check=True,
+            stderr=devnull,
+            stdout=f,
+          )
+          break
+        except subprocess.CalledProcessError:
+          pass
+  if n > 1:
+    print("{} builders where added".format(n))
+  else:
+    print("1 builder was added")
+else:
+  print("Already at {} builders".format(effective))

@@ -3,3 +3,10 @@
 (repository
  (name routine)
  (url git+ssh://git@gitlab.routine.co/routine/opam))
+
+; This forces a local build of the lsp server instead of using the
+; binary version, see https://github.com/ocaml/dune/issues/11229.
+
+(lock_dir
+ (path "dev-tools.locks/ocaml-lsp-server")
+ (repositories upstream overlay))

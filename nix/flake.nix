@@ -31,7 +31,7 @@
     };
 
     dune = {
-      url = "github:ocaml/dune/5cbbf9ffedbc62c2f7f7eba185d30560eef1ca80";
+      url = "github:ocaml/dune/55353da9f2982ce39558dd084166a90e83e3d3f5";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-utils.follows = "flake-utils";
@@ -141,7 +141,7 @@
                 installPhase = ''
                   cp -r $src $out
                   chmod -R u+w $out
-                  cp -r $out/packages/dune/dune.3.18.1 $out/packages/dune/dune.${version}
+                  cp -r $out/packages/dune/dune.3.18.2 $out/packages/dune/dune.${version}
                 '';
               };
 
@@ -155,164 +155,168 @@
                 opamFiles
                 query;
 
-            overlay = final: prev: {
-              # You can add overrides here or pass them from each individual `shell.nix` via `extraOCamlOverlay`.
-              # To add a local, development repo (e.g. your hacked `schematic` rather than the one from Routine's `opam` repo), you can `overrideAttrs` to replace the source like this:
-              #
-              # schematic = prev.schematic.overrideAttrs (a: {
-              #   buildInputs = a.buildInputs or [ ] ++ [ prev.logs ];
-              #   src = builtins.fetchGit /home/sir4ur0n/code/routine/schematic;
-              # });
-              #
-              # Remember to update your nix-shell (e.g. with `direnv reload`) after every change in the local repo.
-              acid = prev.acid.overrideAttrs (a: {
-                doCheck = false;
-              });
-              acid-jsoo = prev.acid-jsoo.overrideAttrs (a: { buildInputs = a.nativeBuildInputs or [ ] ++ [ final.acid-lwt ]; });
-              acid-lwt = prev.acid-lwt.overrideAttrs (a: {
-                doCheck = false;
-              });
+            overlay = final: prev:
+              let overrideIfExists = name: override: if prev ? "${name}" then prev."${name}".overrideAttrs override else null; in
+              {
+                # You can add overrides here or pass them from each individual `shell.nix` via `extraOCamlOverlay`.
+                # To add a local, development repo (e.g. your hacked `schematic` rather than the one from Routine's `opam` repo), you can `overrideAttrs` to replace the source like this:
+                #
+                # schematic = prev.schematic.overrideAttrs (a: {
+                #   buildInputs = a.buildInputs or [ ] ++ [ prev.logs ];
+                #   src = builtins.fetchGit /home/sir4ur0n/code/routine/schematic;
+                # });
+                #
+                # Remember to update your nix-shell (e.g. with `direnv reload`) after every change in the local repo.
+                acid = prev.acid.overrideAttrs (a: {
+                  doCheck = false;
+                });
+                acid-jsoo = prev.acid-jsoo.overrideAttrs (a: { buildInputs = a.nativeBuildInputs or [ ] ++ [ final.acid-lwt ]; });
+                acid-lwt = prev.acid-lwt.overrideAttrs (a: {
+                  doCheck = false;
+                });
 
-              cohttp = prev.cohttp.overrideAttrs (a: {
-                buildInputs = a.nativeBuildInputs or [ ] ++ [
-                  (final.http or null)
-                ];
-              });
-              cohttp-eio = prev.cohttp-eio.overrideAttrs (a: {
-                # Because of our pin of cohttp 6.0.0~beta2, which is weird
-                buildInputs = a.nativeBuildInputs or [ ] ++ [
-                  prev.uri
-                  prev.logs
-                  prev.fmt
+                cohttp = prev.cohttp.overrideAttrs (a: {
+                  buildInputs = a.nativeBuildInputs or [ ] ++ [
+                    (final.http or null)
+                  ];
+                });
+                cohttp-eio = prev.cohttp-eio.overrideAttrs (a: {
+                  # Because of our pin of cohttp 6.0.0~beta2, which is weird
+                  buildInputs = a.nativeBuildInputs or [ ] ++ [
+                    prev.uri
+                    prev.logs
+                    prev.fmt
 
-                  final.http
-                  final.cohttp
-                ];
-              });
-              cohttp-lwt-unix = prev.cohttp-lwt-unix.overrideAttrs (a: {
-                doCheck = false;
-              });
+                    final.http
+                    final.cohttp
+                  ];
+                });
+                cohttp-lwt-unix = prev.cohttp-lwt-unix.overrideAttrs (a: {
+                  doCheck = false;
+                });
 
-              # On NixOS, this looks for timezone files in a non-existent location.
-              conf-tzdata = null;
+                # On NixOS, this looks for timezone files in a non-existent location.
+                conf-tzdata = null;
 
-              crdt = prev.crdt.overrideAttrs (a: {
-                doCheck = false;
-              });
+                crdt = prev.crdt.overrideAttrs (a: {
+                  doCheck = false;
+                });
 
-              # We at Routine must use a very recent, not yet released version of Dune because we use `dune pkg`...
-              dune = dune.packages.${system}.dune-experimental;
-              dune-configurator = prev.dune-configurator.overrideAttrs (a: {
-                src = dune.packages.${system}.dune-experimental.src;
-                nativeBuildInputs = a.nativeBuildInputs or [ ] ++ [ pkgs.git ];
-                preBuild = ''
-                  git init
-                '';
-              });
+                # We at Routine must use a very recent, not yet released version of Dune because we use `dune pkg`...
+                dune = dune.packages.${system}.dune-experimental;
+                dune-configurator = prev.dune-configurator.overrideAttrs (a: {
+                  src = dune.packages.${system}.dune-experimental.src;
+                  nativeBuildInputs = a.nativeBuildInputs or [ ] ++ [ pkgs.git ];
+                  preBuild = ''
+                    git init
+                  '';
+                });
 
-              gapi = prev.gapi.overrideAttrs (a: {
-                doCheck = false;
-              });
+                gapi = prev.gapi.overrideAttrs (a: {
+                  doCheck = false;
+                });
 
-              landmarks = prev.landmarks.overrideAttrs (a: {
-                doCheck = false;
-              });
-              landmarks-ppx = prev.landmarks-ppx.overrideAttrs (a: {
-                doCheck = false;
-              });
+                landmarks = prev.landmarks.overrideAttrs (a: {
+                  doCheck = false;
+                });
+                landmarks-ppx = prev.landmarks-ppx.overrideAttrs (a: {
+                  doCheck = false;
+                });
 
-              lcs = prev.lcs.overrideAttrs (a: {
-                doCheck = false;
-              });
+                lcs = prev.lcs.overrideAttrs (a: {
+                  doCheck = false;
+                });
 
-              mandate = prev.mandate.overrideAttrs (a: {
-                doCheck = false;
-              });
+                mandate = prev.mandate.overrideAttrs (a: {
+                  doCheck = false;
+                });
 
-              mellifera = prev.mellifera.overrideAttrs (a: {
-                doCheck = false;
-              });
-              mellifera-cohttp = prev.mellifera-cohttp.overrideAttrs (a: {
-                doCheck = false;
-              });
-              mellifera-httpaf = prev.mellifera-httpaf.overrideAttrs (a: {
-                doCheck = false;
-              });
+                mellifera = prev.mellifera.overrideAttrs (a: {
+                  doCheck = false;
+                });
+                mellifera-cohttp = prev.mellifera-cohttp.overrideAttrs (a: {
+                  doCheck = false;
+                });
+                mellifera-httpaf = prev.mellifera-httpaf.overrideAttrs (a: {
+                  doCheck = false;
+                });
 
-              merlin = prev.merlin.overrideAttrs (a: {
-                doCheck = false;
-              });
+                merlin = prev.merlin.overrideAttrs (a: {
+                  doCheck = false;
+                });
 
-              mrou = prev.mrou.overrideAttrs (a: {
-                doCheck = false;
-              });
+                mrou = prev.mrou.overrideAttrs (a: {
+                  doCheck = false;
+                });
 
-              nofuture = prev.nofuture.overrideAttrs (a: {
-                buildInputs = a.nativeBuildInputs or [ ] ++ [
-                  prev.ocaml
-                ];
-              });
+                nofuture = prev.nofuture.overrideAttrs (a: {
+                  buildInputs = a.nativeBuildInputs or [ ] ++ [
+                    prev.ocaml
+                  ];
+                });
 
-              ocaml-compiler = prev.ocaml-compiler.overrideAttrs (a: {
-                buildInputs = a.buildInputs ++ [ pkgs.zstd ];
-              });
+                ocaml-compiler = prev.ocaml-compiler.overrideAttrs (a: {
+                  buildInputs = a.buildInputs ++ [ pkgs.zstd ];
+                });
 
-              rfc5545 = prev.rfc5545.overrideAttrs (a: {
-                doCheck = false;
-              });
+                rfc5545 = prev.rfc5545.overrideAttrs (a: {
+                  doCheck = false;
+                });
 
-              routine-crdt = prev.routine-crdt.overrideAttrs (a: {
-                doCheck = false;
-              });
-              routine-metrics = prev.routine-metrics.overrideAttrs (a: {
-                doCheck = false;
-              });
-              routine-schemas = prev.routine-schemas.overrideAttrs (a: {
-                doCheck = false;
-              });
+                routine-crdt = prev.routine-crdt.overrideAttrs (a: {
+                  doCheck = false;
+                });
+                routine-metrics = prev.routine-metrics.overrideAttrs (a: {
+                  doCheck = false;
+                });
+                routine-schemas = prev.routine-schemas.overrideAttrs (a: {
+                  doCheck = false;
+                });
 
-              schematic = prev.schematic.overrideAttrs (a: {
-                doCheck = false;
-              });
-              schematic-cohttp-eio = prev.schematic-cohttp-eio.overrideAttrs (a: {
-                doCheck = false;
-              });
-              schematic-http = prev.schematic-http.overrideAttrs (a: {
-                buildInputs = a.nativeBuildInputs or [ ] ++ [ prev.logs ];
-              });
-              schematic-jsoo = prev.schematic-jsoo.overrideAttrs (a: {
-                doCheck = false;
-              });
+                schematic = overrideIfExists "schematic" (a: {
+                  doCheck = false;
+                });
+                schematic-cohttp-eio = prev.schematic-cohttp-eio.overrideAttrs (a: {
+                  doCheck = false;
+                });
+                schematic-http = prev.schematic-http.overrideAttrs (a: {
+                  buildInputs = a.nativeBuildInputs or [ ] ++ [ prev.logs ];
+                });
+                schematic-jsoo = overrideIfExists "schematic-jsoo" (a: {
+                  doCheck = false;
+                });
 
-              sqml-caqti = prev.sqml-caqti.overrideAttrs (a: {
-                doCheck = false;
-              });
+                sqml-caqti = prev.sqml-caqti.overrideAttrs (a: {
+                  doCheck = false;
+                });
 
-              stripe = prev.stripe.overrideAttrs (a: {
-                doCheck = false;
-              });
-              stripe-schemas = prev.stripe-schemas.overrideAttrs (a: {
-                doCheck = false;
-              });
+                stripe = prev.stripe.overrideAttrs (a: {
+                  doCheck = false;
+                });
+                stripe-schemas = prev.stripe-schemas.overrideAttrs (a: {
+                  doCheck = false;
+                });
 
-              timmy-jsoo = if prev ? timmy-jsoo then prev.timmy-jsoo.overrideAttrs (a: { buildInputs = a.nativeBuildInputs or [ ] ++ [ prev.logs ]; }) else null;
-              timmy-lwt = prev.timmy-lwt.overrideAttrs (a: {
-                doCheck = false;
-                buildInputs = a.buildInputs or [ ] ++ [ prev.logs ];
-              });
-              timmy-timezones = prev.timmy-timezones.overrideAttrs (a: {
-                doCheck = false;
-              });
-              timmy-unix = prev.timmy-unix.overrideAttrs (a: {
-                doCheck = false;
-                buildInputs = a.buildInputs or [ ] ++ [ pkgs.tzdata prev.logs ];
-              });
+                timmy-jsoo = overrideIfExists "timmy-jsoo" (a: {
+                  buildInputs = a.nativeBuildInputs or [ ] ++ [ prev.logs ];
+                });
+                timmy-lwt = prev.timmy-lwt.overrideAttrs (a: {
+                  doCheck = false;
+                  buildInputs = a.buildInputs or [ ] ++ [ prev.logs ];
+                });
+                timmy-timezones = prev.timmy-timezones.overrideAttrs (a: {
+                  doCheck = false;
+                });
+                timmy-unix = prev.timmy-unix.overrideAttrs (a: {
+                  doCheck = false;
+                  buildInputs = a.buildInputs or [ ] ++ [ pkgs.tzdata prev.logs ];
+                });
 
-              utop = prev.utop.overrideAttrs (a: {
-                # Utop has multiple root directories and Nix only wants one
-                sourceRoot = ".";
-              });
-            };
+                utop = prev.utop.overrideAttrs (a: {
+                  # Utop has multiple root directories and Nix only wants one
+                  sourceRoot = ".";
+                });
+              };
 
             scope' = scope.overrideScope (pkgs.lib.composeExtensions overlay (extraOCamlOverlay pkgs));
 
@@ -355,7 +359,6 @@
                 exec "$executable" "$@"
               '';
 
-              TZ = "Europe/Paris";
 
             };
 
@@ -382,6 +385,7 @@
               let mkShell = if withSwift then pkgs.mkShell.override { stdenv = pkgs.clangStdenv; } else pkgs.mkShell; in
               mkShell {
                 NODE_OPTIONS = "--max_old_space_size=4096";
+                TZ = "Europe/Paris";
                 inputsFrom = builtins.attrValues packages;
                 buildInputs =
                   devPackages ++
