@@ -7,7 +7,7 @@
    (run dune subst))
   (run dune build -p %{pkg-self:name} -j %{jobs} @install)))
 
-(depends ocaml cmdliner csexp dune ocamlformat-lib re)
+(depends dune ocaml csexp)
 
 (source
  (fetch
