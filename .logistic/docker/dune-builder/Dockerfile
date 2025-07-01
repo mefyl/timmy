@@ -11,6 +11,6 @@ RUN ssh-keyscan gitlab.routine.co > /root/.ssh/known_hosts
 # pkg` instead of `opam`
 
 # Stay on a predetermined dune version.
-RUN curl -fsSL https://get.dune.build/install | sed 's#^dune_tar_uri=.*#dune_tar_uri="https://get.dune.build/2025-05-30/$target/dune-2025-05-30-$target.tar.gz"#' | sh
+RUN curl -fsSL https://get.dune.build/install | sed 's#^dune_tar_uri=.*#dune_tar_uri="https://get.dune.build/2025-06-21/$target/dune-2025-06-21-$target.tar.gz"#' | sh
 ADD dune-config /root/.config/dune/config
 ENV PATH="/root/.local/bin:$PATH"

@@ -29,6 +29,7 @@ pkgs.mkShell
       # Base OCaml tooling
       pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}".ocaml
       dune-preview
+      pkgs.opam
 
       # Dev tooling
       pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}"."ocamlformat_${ocamlformatVersion}"
