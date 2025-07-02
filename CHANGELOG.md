@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.9] - 2025-07-02
+
+### Added
+
+- `Weekday.of_int`
+- `Weekday.add_days`
+
+## [1.1.8] - 2025-01-11
+
+### Changed
+
+- Build system in favor of `dune pkg`.
+
 ## [1.1.5] - 2024-10-09
 
 ### Fixed
