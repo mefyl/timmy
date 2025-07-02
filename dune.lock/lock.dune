@@ -8,11 +8,11 @@
  (complete true)
  (used
   ((source
-    ssh://git@gitlab.routine.co/routine/opam#10e6a83ef3d3cb2252e34321308cd40fd953a51f))
+    ssh://git@gitlab.routine.co/routine/opam#c8f657db63313e69b279b356c36aa5e7cab4dac2))
   ((source
     https://github.com/ocaml-dune/opam-overlays.git#2a9543286ff0e0656058fee5c0da7abc16b8717d))
   ((source
-    https://github.com/ocaml/opam-repository.git#5af9fe17257c2e27ab45502c4757e02cfef63b8e))))
+    https://github.com/ocaml/opam-repository.git#3e4a334c6caed0798833ef331ef815eede191f03))))
 
 (solved_for_platforms
  ((arch x86_64)

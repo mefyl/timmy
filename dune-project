@@ -70,7 +70,7 @@
   (schematic-jsoo
    (or
     (< 0.18.2)
-    (>= 0.21.0)))))
+    (>= 0.22.0)))))
 
 (package
  (name timmy-unix)

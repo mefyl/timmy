@@ -21,7 +21,7 @@ depends: [
 ]
 depopts: ["schematic-jsoo"]
 conflicts: [
-  "schematic-jsoo" {< "0.18.2" | >= "0.21.0"}
+  "schematic-jsoo" {< "0.18.2" | >= "0.22.0"}
 ]
 build: [
   ["dune" "subst"] {dev}
