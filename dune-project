@@ -136,3 +136,12 @@
    (and
     :with-test
     (= :version)))))
+
+; WIP versioning
+
+(pin
+ (url
+  git+ssh://git@gitlab.routine.co/routine/schematic#620af6ee71b341a866643b133c96f3474b7c3b19)
+ (package
+  (name schematic)
+  (version 0.21.0)))

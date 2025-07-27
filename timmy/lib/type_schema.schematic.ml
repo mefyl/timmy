@@ -137,6 +137,7 @@ module Month = struct
         encoder;
         decoder;
         inline = false;
+        since = None;
       }
 
   let schema_versioned _ =
@@ -340,6 +341,7 @@ module Weekday = struct
         encoder;
         decoder;
         inline = false;
+        since = None;
       }
 
   let schema_versioned _ =
