@@ -99,9 +99,18 @@ let week () =
   in
   ()
 
+let timestamp () =
+  let () =
+    roundtrip ~here:[%here] time Timmy.Time.timestamp_schema
+      (Result.ok_or_failwith @@ Timmy.Time.of_string "2025-08-06T19:59:14+02:00")
+      (`Float 1754503154.)
+  in
+  ()
+
 let tests =
   [
     Alcotest.test_case "json" `Quick json;
     Alcotest.test_case "daytime" `Quick daytime;
     Alcotest.test_case "week" `Quick week;
+    Alcotest.test_case "timestamp" `Quick timestamp;
   ]

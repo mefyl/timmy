@@ -224,6 +224,16 @@ module type TIME = sig
 
   (** Time schema. *)
   val schema : t Schematic.Schema.t
+
+  (** An alias to ease schematic-coding times as timestamps. *)
+  type timestamp = t
+
+  (** Schema as a POSIX timestamp. *)
+  val timestamp_schema : t Schematic.Schema.t
+
+  (** Schema as a POSIX timestamp, versioned. *)
+  val timestamp_schema_versioned :
+    Schematic.Schema.version -> t Schematic.Schema.t
 end
 
 module Time = struct
@@ -234,6 +244,27 @@ module Time = struct
     { Schematic.Schemas.Ptime.schema with id = Some "time" }
 
   let schema = schema_versioned None
+
+  type timestamp = t
+
+  let timestamp_schema_versioned _ =
+    let open Ptime in
+    (* FIXME: We would like to rely on int64 to ensure it fits, but ptime does
+       not seem to support it. In the meantime such a case seems extremely
+       unlikely. *)
+    let decode timestamp =
+      match of_span @@ Span.of_int_s timestamp with
+      | None -> Result.Error (Fmt.str "timestamp out of bounds: %d" timestamp)
+      | Some ptime -> Result.Ok ptime
+    and encode time =
+      match time |> to_span |> Span.to_int_s with
+      | Some timestamp -> timestamp
+      | None -> Fmt.failwith "timestamp out of bounds"
+    in
+    Schematic.Schema.make ~id:"timestamp"
+    @@ Map { decode; encode; descriptor = Int }
+
+  let timestamp_schema = timestamp_schema_versioned None
 end
 
 module type WEEK = sig
