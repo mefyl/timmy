@@ -1,5 +1,16 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- `Timmy.Time.timestamp_schema` to code times as an Epoch-based
+  timestamp.
+
+### Fixed
+
+- `Clock.timezone_local` choking on null timestamp on windows.
+
 ## [1.1.9] - 2025-07-02
 
 ### Added
