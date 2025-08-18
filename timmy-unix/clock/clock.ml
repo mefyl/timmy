@@ -58,12 +58,13 @@ let timezone_local =
   let offset_timestamp_s ~unix_timestamp =
     match offset_timestamp_s unix_timestamp with
     | Some offset -> offset
-    | None when Int64.compare 0L unix_timestamp > 0 ->
+    | None when Int64.(unix_timestamp <= 0L) ->
       let () =
         Logs.warn (fun m ->
             m
-              "passing a negative timestamp %a to gmt_offset_seconds_at_time \
-               not supported on this platform, assuming an offset of 0"
+              "passing a negative or null timestamp %a to \
+               gmt_offset_seconds_at_time not supported on this platform, \
+               assuming an offset of 0"
               Int64.pp unix_timestamp)
       in
       0
