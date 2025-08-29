@@ -1,0 +1,12 @@
+(version 2.2.0)
+
+(build
+ (run dune build -p %{pkg-self:name} -j %{jobs}))
+
+(depends ocaml dune menhir)
+
+(source
+ (fetch
+  (url
+   https://github.com/ocaml/opam-file-format/releases/download/2.2.0/opam-file-format-2.2.0.tar.gz)
+  (checksum md5=5b65ea84fa2e60e89c2c9f2ca3203e31)))
