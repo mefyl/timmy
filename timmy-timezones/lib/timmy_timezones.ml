@@ -39,6 +39,15 @@ let of_timere timere_tz : Timmy.Timezone.t =
 
 let available_zones = Timedesc.Time_zone.available_time_zones
 
-let of_string tz_name =
-  let tz = Timedesc.Time_zone.make tz_name in
-  Option.map ~f:of_timere tz
+(** Normalize non-standard timezone names encountered in the wild to their IANA
+    name. *)
+let normalize_tz_name = function
+  | "Indiana/Indianapolis" -> "America/Indiana/Indianapolis"
+  | name -> name
+
+let of_string name =
+  match Timedesc.Time_zone.make @@ normalize_tz_name name with
+  | None ->
+    let () = Logs.err (fun m -> m "unknown timezone: %S" name) in
+    None
+  | Some tz -> Some (of_timere tz)
