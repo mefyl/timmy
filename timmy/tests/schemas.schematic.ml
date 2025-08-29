@@ -40,32 +40,27 @@ let daytime () =
            ("seconds", `Float 42.);
          ])
   and () =
-    try
-      let res =
-        Schematic.Json.decode Timmy.Daytime.schema
-          (`O
-             [
-               ("hours", `Float (-1.));
-               ("minutes", `Float 0.);
-               ("seconds", `Float 0.);
-             ])
-      in
-      Alcotest.(
-        check ~here:[%here]
-          (result daytime decoding_error)
-          "invalid daytime"
-          (Result.Error
-             Schematic.Error.
-               {
-                 schema = Some "daytime";
-                 path = [];
-                 reason = "invalid hours: -1";
-               })
-          res)
-    with
-    (* FIXME: because of schematic FFI limitations, this raises instead *)
-    | Failure "invalid hours: -1" ->
-      ()
+    let res =
+      Schematic.Json.decode Timmy.Daytime.schema
+        (`O
+           [
+             ("hours", `Float (-1.));
+             ("minutes", `Float 0.);
+             ("seconds", `Float 0.);
+           ])
+    in
+    Alcotest.(
+      check ~here:[%here]
+        (result daytime decoding_error)
+        "invalid daytime"
+        (Result.Error
+           Schematic.Error.
+             {
+               schema = Some "daytime";
+               path = [];
+               reason = "invalid hours: -1";
+             })
+        res)
   in
   ()
 
@@ -75,27 +70,22 @@ let week () =
       (Result.ok_or_failwith @@ Timmy.Week.make ~year:2022 42)
       (`O [ ("year", `Float 2022.); ("n", `Float 42.) ])
   and () =
-    try
-      let res =
-        Schematic.Json.decode Timmy.Week.schema
-          (`O [ ("year", `Float 2022.); ("n", `Float 53.) ])
-      in
-      Alcotest.(
-        check ~here:[%here]
-          (result week decoding_error)
-          "invalid daytime"
-          (Result.Error
-             Schematic.Error.
-               {
-                 schema = Some "week";
-                 path = [];
-                 reason = "year 2022 has no week 53";
-               })
-          res)
-    with
-    (* FIXME: because of schematic FFI limitations, this raises instead *)
-    | Failure "year 2022 has no week 53" ->
-      ()
+    let res =
+      Schematic.Json.decode Timmy.Week.schema
+        (`O [ ("year", `Float 2022.); ("n", `Float 53.) ])
+    in
+    Alcotest.(
+      check ~here:[%here]
+        (result week decoding_error)
+        "invalid daytime"
+        (Result.Error
+           Schematic.Error.
+             {
+               schema = Some "week";
+               path = [];
+               reason = "year 2022 has no week 53";
+             })
+        res)
   in
   ()
 

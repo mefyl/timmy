@@ -86,20 +86,10 @@ module Daytime = struct
                 };
           }
       in
-      if false then
-        (* FIXME: iOS makes the assumption Object schema map to the actual type
-           directly *)
-        Schema.Object
-          {
-            decode = (fun fields -> decode fields |> Result.ok_or_failwith);
-            encode;
-            fields;
-          }
-      else
-        let obj =
-          Schema.Object { decode = Base.Fn.id; encode = Base.Fn.id; fields }
-        in
-        Schema.Map { decode; encode; descriptor = obj }
+      let obj =
+        Schema.Object { decode = Base.Fn.id; encode = Base.Fn.id; fields }
+      in
+      Schema.Map { decode; encode; descriptor = obj }
     in
     Schema.make ~id:"daytime" descriptor
 
@@ -323,20 +313,10 @@ struct
                 };
           }
       in
-      if false then
-        (* FIXME: iOS makes the assumption Object schema map to the actual type
-           directly *)
-        Schema.Object
-          {
-            decode = Base.Fn.compose Result.ok_or_failwith decode;
-            encode;
-            fields;
-          }
-      else
-        let obj =
-          Schema.Object { decode = Base.Fn.id; encode = Base.Fn.id; fields }
-        in
-        Schema.Map { decode; encode; descriptor = obj }
+      let obj =
+        Schema.Object { decode = Base.Fn.id; encode = Base.Fn.id; fields }
+      in
+      Schema.Map { decode; encode; descriptor = obj }
     in
     Schema.make ~id:"week" descriptor
 
