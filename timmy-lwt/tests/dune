@@ -1,7 +1,15 @@
 (tests
  (names engine_virtual ticker)
  (package timmy-lwt)
- (libraries alcotest-lwt clock_virtual logs.fmt lwt lwt.unix timmy timmy-lwt
-  timmy-lwt.unix timmy-lwt.virtual)
+ (libraries
+  alcotest-lwt
+  clock_virtual
+  logs.fmt
+  lwt
+  lwt.unix
+  timmy
+  timmy-lwt
+  timmy-lwt.unix
+  timmy-lwt.virtual)
  (preprocess
   (pps ppx_here)))
