@@ -19,9 +19,7 @@
     (chdir
      ..
      (pipe-stdout
-      (run
-       %{dep:../.logistic/ci/dune/dune_sak.exe}
-       generate
+      (run %{workspace_root}/.logistic/ci/dune/dune_sak.exe generate
        %{read-strings:../cross.flags})
       (run dune format)))))
   (deps ../dune-project ../.logistic/dune.inc)))

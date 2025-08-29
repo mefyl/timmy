@@ -257,11 +257,11 @@
     "routine-opam-repository": {
       "flake": false,
       "locked": {
-        "lastModified": 1747754665,
-        "narHash": "sha256-iZCB5ilfEGOLjZIYgg1dpLxTev1s/mIHJ/KEzxewEFs=",
+        "lastModified": 1752063935,
+        "narHash": "sha256-bVdrSArFOt7uD+aCJ/49yBCdGwiucA5H/QkA5xn4Myg=",
         "ref": "refs/heads/master",
-        "rev": "10e6a83ef3d3cb2252e34321308cd40fd953a51f",
-        "revCount": 532,
+        "rev": "dde1d7e18162ffe9ff63bf9f95f220d170ca44f4",
+        "revCount": 555,
         "type": "git",
         "url": "ssh://git@gitlab.routine.co/routine/opam.git"
       },
