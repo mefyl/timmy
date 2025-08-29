@@ -41,11 +41,11 @@ val truncate_minutes : t -> t
 val of_time : timezone:Timezone.t -> Time.t -> t
 
 (** [to_time ~timezone date daytime] is the time at [daytime] on [date] in
-    [timezone]. When the [date] and [datetime] do not exist in [timezone]
-    because of a time transition (eg. daylight saving), the returned [time] will
-    be shifted to an existing hour. The manner in which the shift is applied is
-    system dependant. *)
-val to_time : timezone:Timezone.t -> Date.t -> t -> Time.t
+    [timezone].
+
+    An error is returned when the [date] and [datetime] do not exist in
+    [timezone] because of a time transition (eg. daylight saving). *)
+val to_time : timezone:Timezone.t -> Date.t -> t -> (Time.t, string) Result.t
 
 (** {2 Comparison} *)
 

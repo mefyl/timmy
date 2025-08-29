@@ -14,7 +14,11 @@ let daylight_savings ?(timezone = Clock.timezone_local) () =
   let test offset date time =
     let date_t = Timmy.Date.of_tuple_exn ~here:[%here] date
     and time_t = Timmy.Daytime.of_tuple_exn ~here:[%here] time in
-    let timestamp = Timmy.Daytime.to_time ~timezone date_t time_t in
+    let timestamp =
+      match Timmy.Daytime.to_time ~timezone date_t time_t with
+      | Result.Ok timestamp -> timestamp
+      | Result.Error e -> Alcotest.fail ~here:[%here] e
+    in
     let () =
       Alcotest.(check ~here:[%here] int)
         (Fmt.str "UTC offset at %a %a" Timmy.Date.pp date_t Timmy.Daytime.pp

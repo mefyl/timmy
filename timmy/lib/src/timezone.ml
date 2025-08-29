@@ -1,3 +1,7 @@
+(* FIXME: [tag:gmt_offset_seconds_at_datetime should return Result] because some
+   valid date + valid time combination yield a non valid point in time because
+   of DST. *)
+
 type t = {
   name : string;
   offset_calendar_time_s : date:int * int * int -> time:int * int * int -> int;
