@@ -1,6 +1,6 @@
 (** Backward compatibility versions *)
 
-module V1_1 = struct
+module V1_2 = struct
   (** {1 Data types} *)
 
   (** A day of a month of a year. *)
@@ -26,6 +26,19 @@ module V1_1 = struct
 
   (** A day of the week. *)
   module Weekday = Weekday
+end
+
+module V1_1 = struct
+  include V1_2
+
+  module Daytime = struct
+    include Daytime
+
+    let to_time ~timezone date t =
+      match to_time ~timezone date t with
+      | Result.Ok time -> time
+      | Result.Error error -> failwith error
+  end
 end
 
 module V1_0 = struct

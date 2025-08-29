@@ -74,16 +74,27 @@ let pp_opt ?(format = `_24) ?(precision = `Seconds) ?(size = `Short) () f
 include O
 
 let to_time ~timezone date t =
-  match
-    let date_tuple, time_tuple = (Date.to_tuple date, to_tuple t) in
-    let tz_offset_s =
+  let ( let* ) = Result.( >>= ) in
+  let date_tuple, time_tuple = (Date.to_tuple date, to_tuple t) in
+  let* tz_offset_s =
+    (* FIXME: [ref:gmt_offset_seconds_at_datetime should return Result] but this
+       would be too massive a change for Timmy 1, so we handle the error at this
+       level. It seems safe to assume no unrelated exception can escape. *)
+    try
       Timezone.gmt_offset_seconds_at_datetime timezone ~date:date_tuple
         ~time:time_tuple
-    in
-    Ptime.of_date_time (date_tuple, (time_tuple, tz_offset_s))
-  with
-  | Some time -> Time.of_ptime time
-  | None -> Fmt.failwith "invalid date + daytime: %a %a" Date.pp date pp t
+      |> Result.return
+    with _ ->
+      Result.fail
+      @@ Fmt.str "invalid datetime in timezone %a: %a %a" Timezone.pp timezone
+           Date.pp date pp t
+  in
+  match Ptime.of_date_time (date_tuple, (time_tuple, tz_offset_s)) with
+  | Some time -> Time.of_ptime time |> Result.return
+  | None ->
+    Result.fail
+    @@ Fmt.str "invalid datetime / timezone offset: %a %a / %d" Date.pp date pp
+         t tz_offset_s
 
 let of_tuple (hours, minutes, seconds) = make ~hours ~minutes ~seconds
 
