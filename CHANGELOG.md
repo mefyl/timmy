@@ -1,11 +1,16 @@
 # Changelog
 
-## [Unreleased]
+## [1.2.0] - 2025-08-29
 
 ### Added
 
 - `Timmy.Time.timestamp_schema` to code times as an Epoch-based
   timestamp.
+
+### Changed
+
+- `Timmy.Daytime.to_time` to return a `Result.Error` instead of
+  raising an exception in case of error.
 
 ### Fixed
 
