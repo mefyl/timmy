@@ -1,7 +1,7 @@
 (* These tests only make sense if run on a machine that is in CEST/CET timezone.
    Use `env TZ='Europe/Paris' node test.bc.js` *)
 
-module Timmy = Timmy.Versions.V1_1
+module Timmy = Timmy.Versions.V1_2
 
 module Alcotest = struct
   include Alcotest
