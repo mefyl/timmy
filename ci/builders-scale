@@ -23,7 +23,7 @@ BUILDER_PROJECT = {
 }
 BUILDER_REGION = "fra1"
 BUILDER_TAGS = ["ci", "builder", "gitlab"]
-BUILDER_VPC = "66bb90a2-f446-46d1-8861-ed69c8942139"
+BUILDER_VPC = "02fbdd99-61a1-491f-80d3-0840d3c86a4f"
 
 PARAMS = {"home": os.environ["HOME"]}
 
@@ -38,6 +38,7 @@ def request(method, url, **kwargs):
     headers={"Authorization": "Bearer {}".format(TOKEN)},
     **kwargs
   )
+  resp.raise_for_status()
   try:
     return resp.json()
   except:
@@ -116,6 +117,7 @@ class Droplet:
       "ipv6": True,
       "user_data": init,
       "tags": BUILDER_TAGS,
+      "vpc_uuid": BUILDER_VPC,
     }
     droplet = post("droplets", json=params)["droplet"]
     if project is not None:

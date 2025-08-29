@@ -62,7 +62,7 @@ let run command =
   | _ ->
     Result.fail
       (Stdlib.Format.asprintf "%a failed:@ @[%s@]"
-         Fmt.(array string)
+         Fmt.(array ~sep:sp string)
          command error)
 
 let promote_until_clean =

@@ -1,4 +1,4 @@
 (executable
  (name extdeps)
  (optional)
- (libraries cmdliner fmt opam-file-format sexplib stdio unix))
+ (libraries base cmdliner fmt opam-file-format sexplib stdio unix))
