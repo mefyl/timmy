@@ -1,4 +1,0 @@
-(version 1)
-
-(build
- (run test -d /usr/share/zoneinfo))

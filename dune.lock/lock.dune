@@ -8,27 +8,31 @@
  (complete true)
  (used
   ((source
-    ssh://git@gitlab.routine.co/routine/opam#c105812bee18fcdd0a160dc72726cfd8642d184c))
+    ssh://git@gitlab.routine.co/routine/opam#ddc63c4cae74e1977c4f65888647d68e0849fbad))
   ((source
     https://github.com/ocaml-dune/opam-overlays.git#2a9543286ff0e0656058fee5c0da7abc16b8717d))
   ((source
-    https://github.com/ocaml/opam-repository.git#f2cd184cfc6f3b25d3bda0873beb3e8b254806ec))))
+    https://github.com/ocaml/opam-repository.git#eb45f7ec868b0ffc828b9d59cccc72cfec100333))))
 
 (expanded_solver_variable_bindings
  (variable_values
   (with-doc false)
   (with-dev-setup false)
-  (sys-ocaml-version 4.14.2)
   (post true)
-  (os-distribution gentoo)
-  (os linux)
-  (opam-version 2.2.0~alpha-vendored)
-  (arch x86_64))
+  (opam-version 2.2.0))
  (unset_variables
   with-test
   sys-ocaml-libc
-  sys-ocaml-cc
-  sys-ocaml-arch
   enable-ocaml-beta-repository
   dev
   build))
+
+(solved_for_platforms
+ ((arch x86_64)
+  (os linux))
+ ((arch arm64)
+  (os linux))
+ ((arch x86_64)
+  (os macos))
+ ((arch arm64)
+  (os macos)))
