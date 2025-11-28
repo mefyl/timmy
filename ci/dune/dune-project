@@ -5,4 +5,4 @@
 (package
  (name dune-sak)
  (allow_empty)
- (depends cmdliner fmt ocaml ocaml-index opam-file-format sexplib stdio))
+ (depends base cmdliner fmt ocaml ocaml-index opam-file-format sexplib stdio))

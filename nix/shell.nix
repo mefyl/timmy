@@ -8,20 +8,33 @@
   */
 , extraPackages ? (pkgs: [ ])
   /**
-    The ocamlformat version (formatted as Nix wants it).
-    To keep in sync with the one in .ocamlformat
+    The path to a `.ocamlformat` file from which to extract the version.
   */
-, ocamlformatVersion ? "0_27_0"
+, dotOcamlformatPath ? null
+  /**
+    The ocamlformat version (formatted as Nix wants it).
+
+    Takes precedence over the one inferred from `dotOcamlformatPath`.
+  */
+, ocamlformatVersion ? null
   /**
     Extra arguments passed directly to `mkShell`
   */
 , ocamlVersion
 , extraArgs ? { }
-}:
+} @ args:
 let
   ci-packages = import ./ci-packages.nix { inherit pkgs; };
 
   dune-preview = (import srcs.flake-compat { src = srcs.dune; }).outputs.packages.${pkgs.system}.dune-experimental;
+  shared =
+    import ./shared.nix { inherit pkgs; };
+  ocamlformatVersion_ =
+    if ocamlformatVersion != null then args.ocamlformatVersion else
+    if dotOcamlformatPath != null then
+      builtins.replaceStrings [ "." ] [ "_" ]
+        (shared.ocamlformatVersionFromDotOcamlformat dotOcamlformatPath)
+    else throw "One of 'ocamlformatVersion' or 'dotOcamlformatPath' must be supplied";
 in
 pkgs.mkShell
   ({
@@ -32,9 +45,10 @@ pkgs.mkShell
       pkgs.opam
 
       # Dev tooling
-      pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}"."ocamlformat_${ocamlformatVersion}"
+      pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}"."ocamlformat_${ocamlformatVersion_}"
       pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}".ocaml-lsp
       pkgs.ocaml-ng."ocamlPackages_${ocamlVersion}".merlin
+      shared.routine_run
 
       # System libraries
       pkgs.appimage-run
