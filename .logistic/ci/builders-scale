@@ -73,8 +73,8 @@ apt-get install --yes anacron
 cat > /etc/cron.hourly/docker-image-purge <<EOF
 #!/bin/sh
 
-docker image ls -q --filter reference='registry.gitlab.routine.co/routine/*/ci' --filter until=36h | xargs -r docker rmi
-docker image ls -q --filter reference='registry.gitlab.routine.co/routine/*' --filter until=168h | xargs -r docker rmi
+docker image ls -q --filter reference='registry.gitlab.routine.co/routine/*/ci' --filter until=36h | xargs -r docker rmi -f
+docker image ls -q --filter reference='registry.gitlab.routine.co/routine/*' --filter until=168h | xargs -r docker rmi -f
 docker image prune -f
 docker system prune -f
 EOF

@@ -30,7 +30,7 @@ RUN apt-get update && apt-get install --no-install-recommends --yes \
     apt-get clean
 
 # Install Nix
-RUN curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install linux \
+RUN curl --proto '=https' --tlsv1.2 -sSf -L https://artifacts.nixos.org/experimental-installer | sh -s -- install linux \
 --extra-conf "sandbox = false" \
 --init none \
 --no-confirm

@@ -1,0 +1,42 @@
+(version 1)
+
+(build
+ (all_platforms ((action (run npm --version)))))
+
+(depexts
+ ((npm)
+  (= %{os_distribution} alpine))
+ ((npm)
+  (= %{os_distribution} arch))
+ ((npm epel-release)
+  (= %{os_distribution} centos))
+ ((npm)
+  (and_absorb_undefined_var
+   (= %{os_distribution} ol)
+   (>= %{os_version} 8)))
+ ((npm)
+  (= %{os_family} debian))
+ ((npm)
+  (= %{os_family} ubuntu))
+ ((npm)
+  (= %{os_family} fedora))
+ ((npm)
+  (= %{os} freebsd))
+ ((nodejs)
+  (= %{os_distribution} gentoo))
+ ((node)
+  (and_absorb_undefined_var
+   (= %{os_distribution} homebrew)
+   (= %{os} macos)))
+ ((npm9)
+  (and_absorb_undefined_var
+   (= %{os_distribution} macports)
+   (= %{os} macos)))
+ ((nodejs)
+  (= %{os} netbsd))
+ ((node)
+  (= %{os} openbsd))
+ ((npm-default)
+  (or_absorb_undefined_var
+   (= %{os_family} suse)
+   (= %{os_family} opensuse))))
