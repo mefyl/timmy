@@ -45,7 +45,7 @@
  (conflicts
   (schematic
    (or
-    (< 0.21.1)
+    (< 0.21.2)
     (>= 0.22.0)))))
 
 (package

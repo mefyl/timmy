@@ -20,7 +20,7 @@ depends: [
 ]
 depopts: ["schematic"]
 conflicts: [
-  "schematic" {< "0.21.1" | >= "0.22.0"}
+  "schematic" {< "0.21.2" | >= "0.22.0"}
 ]
 build: [
   ["dune" "subst"] {dev}

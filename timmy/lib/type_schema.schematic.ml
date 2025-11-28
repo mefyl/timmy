@@ -49,6 +49,7 @@ module Daytime = struct
                 omit = false;
                 requirement = Required;
                 schema = Outline int_schema;
+                since = None;
                 title = None;
               };
             rest =
@@ -64,6 +65,7 @@ module Daytime = struct
                       omit = false;
                       requirement = Default 0;
                       schema = Outline int_schema;
+                      since = None;
                       title = None;
                     };
                   rest =
@@ -79,6 +81,7 @@ module Daytime = struct
                             omit = false;
                             requirement = Default 0;
                             schema = Outline int_schema;
+                            since = None;
                             title = None;
                           };
                         rest = FieldEnd;
@@ -292,6 +295,7 @@ struct
                 omit = false;
                 requirement = Required;
                 schema = Outline int_schema;
+                since = None;
                 title = None;
               };
             rest =
@@ -307,6 +311,7 @@ struct
                       omit = false;
                       requirement = Required;
                       schema = Outline int_schema;
+                      since = None;
                       title = None;
                     };
                   rest = FieldEnd;
