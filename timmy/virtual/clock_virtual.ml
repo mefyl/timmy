@@ -7,3 +7,4 @@ let forward span =
   !cb !current
 
 let get () = !current
+let reset () = current := Timmy.Time.epoch
