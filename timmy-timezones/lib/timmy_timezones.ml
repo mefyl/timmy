@@ -43,7 +43,10 @@ let available_zones = Timedesc.Time_zone.available_time_zones
     name. *)
 let normalize_tz_name = function
   | "Indiana/Indianapolis" -> "America/Indiana/Indianapolis"
-  | name -> name
+  | name -> (
+    match String.chop_prefix ~prefix:"GMT" name with
+    | None -> name
+    | Some gmt -> "UTC" ^ gmt)
 
 let of_string name =
   match Timedesc.Time_zone.make @@ normalize_tz_name name with

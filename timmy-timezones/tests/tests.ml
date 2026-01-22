@@ -61,8 +61,8 @@ let () =
                  |> Option.value_exn));
         ] );
       ( "nonstandard",
-        [
-          Alcotest.test_case "Indiana/Indianapolis" `Quick
-          @@ nonstandard "Indiana/Indianapolis";
-        ] );
+        let test timezone =
+          Alcotest.test_case timezone `Quick @@ nonstandard timezone
+        in
+        [ test "Indiana/Indianapolis"; test "GMT+05:00"; test "GMT-05:00" ] );
     ]
