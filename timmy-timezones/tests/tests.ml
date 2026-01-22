@@ -36,6 +36,12 @@ let nonexistent_datetime () =
     (let+ time = Timmy.Daytime.to_time ~timezone date daytime in
      (Timmy.Date.of_time ~timezone time, Timmy.Daytime.of_time ~timezone time))
 
+let nonstandard repr () =
+  Alcotest.(
+    check bool (Fmt.str "non-standard timezone %S is recognized" repr) true
+    @@ Option.is_some
+    @@ Timmy_timezones.of_string repr)
+
 let () =
   Alcotest.run "timmy-timezones"
     [
@@ -53,5 +59,10 @@ let () =
                ~timezone:
                  (Timmy_timezones.of_string "Europe/Amsterdam"
                  |> Option.value_exn));
+        ] );
+      ( "nonstandard",
+        [
+          Alcotest.test_case "Indiana/Indianapolis" `Quick
+          @@ nonstandard "Indiana/Indianapolis";
         ] );
     ]
