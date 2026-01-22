@@ -1,6 +1,6 @@
-FROM alpine:3.21.0 AS opam-base
+FROM alpine:3.23.2 AS opam-base
 
-RUN apk add --no-cache autoconf bash curl docker-cli docker-cli-buildx gcc g++ git make npm openssh patch tzdata zlib-dev zstd-libs
+RUN apk add --no-cache autoconf bash curl docker-cli docker-cli-buildx gcc g++ git make npm opam openssh patch tzdata zlib-dev zstd-libs
 
 # Enable pushing to git@gitlab.routine.co:routine/opam
 ADD id_rsa* /root/.ssh/
@@ -10,7 +10,6 @@ RUN ssh-keyscan gitlab.routine.co > /root/.ssh/known_hosts
 # Install the Dune Developer Preview version to be able to use `dune
 # pkg` instead of `opam`
 
-# Stay on a predetermined dune version.
-RUN curl -fsSL https://get.dune.build/install | sed 's#^dune_tar_uri=.*#dune_tar_uri="https://get.dune.build/2025-08-28/$target/dune-2025-08-28-$target.tar.gz"#' | sh
-ADD dune-config /root/.config/dune/config
-ENV PATH="/root/.local/bin:$PATH"
+# Install a predetermined dune version.
+RUN opam init --disable-sandboxing --dot-profile=/etc/profile.d/opam.sh --shell-setup --verbose --yes && opam install dune.3.21.0
+ENV PATH=/root/.opam/default/bin:$PATH

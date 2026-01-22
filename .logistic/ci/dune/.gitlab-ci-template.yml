@@ -17,12 +17,13 @@ variables:
   DUNE_CACHE_STORAGE_MODE: "copy"
 
 .ocaml:
-  image: "$CI_REGISTRY/routine/logistic/dune-builder:dc1df56"
+  image: "$CI_REGISTRY/routine/logistic/dune-builder:3.21.0"
 
 .ocaml-build:
   extends: .ocaml
   stage: build
   script:
+    - dune tools exec ocamlformat -- --name dummy.ml - # FIXME: workaround needed by dune 3.21
     - make -f .logistic/ci/dune/Makefile lint
     - make -f .logistic/ci/dune/Makefile build
     - make -f .logistic/ci/dune/Makefile check

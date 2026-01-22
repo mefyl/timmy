@@ -1,1 +1,3 @@
 use nix .logistic/nix/shell.nix
+eval $(dune tools env)
+

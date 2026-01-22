@@ -34,7 +34,7 @@
       url = "github:ocaml/dune";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = "flake-utils";
+        oxcaml.inputs.flake-utils.follows = "flake-utils";
       };
     };
   };
@@ -234,9 +234,9 @@
                 });
 
                 # We at Routine must use a very recent, not yet released version of Dune because we use `dune pkg`...
-                dune = dune.packages.${system}.dune-experimental;
+                dune = dune.packages.${system}.dune;
                 dune-configurator = prev.dune-configurator.overrideAttrs (a: {
-                  src = dune.packages.${system}.dune-experimental.src;
+                  src = dune.packages.${system}.dune.src;
                   nativeBuildInputs = a.nativeBuildInputs or [ ] ++ [ pkgs.git ];
                   preBuild = ''
                     git init

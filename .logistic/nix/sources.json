@@ -5,10 +5,10 @@
         "homepage": "https://dune.build/",
         "owner": "ocaml",
         "repo": "dune",
-        "rev": "935e26cbcf5bcbaae68bd45ed83f37b62c03b521",
-        "sha256": "071qqqbz0jpgrkmdi2vib8q41jkx8q28j4mhm1lqc5c2fizqyfj7",
+        "rev": "1ba3c75cc9c9ef18bce1a4e1a2854cc424d0eafc",
+        "sha256": "0a0nbhrzmvr2vdkiji7d030ck37fmac5jpdfb0r2nardyyk75yfg",
         "type": "tarball",
-        "url": "https://github.com/ocaml/dune/archive/935e26cbcf5bcbaae68bd45ed83f37b62c03b521.tar.gz",
+        "url": "https://github.com/ocaml/dune/archive/1ba3c75cc9c9ef18bce1a4e1a2854cc424d0eafc.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "flake-compat": {
@@ -17,10 +17,10 @@
         "homepage": null,
         "owner": "edolstra",
         "repo": "flake-compat",
-        "rev": "ff81ac966bb2cae68946d5ed5fc4994f96d0ffec",
-        "sha256": "19d2z6xsvpxm184m41qrpi1bplilwipgnzv9jy17fgw421785q1m",
+        "rev": "5edf11c44bc78a0d334f6334cdaf7d60d732daab",
+        "sha256": "0yqfa6rx8md81bcn4szfp0hjq2f3h9i8zjzhqqyfqdkrj5559nmw",
         "type": "tarball",
-        "url": "https://github.com/edolstra/flake-compat/archive/ff81ac966bb2cae68946d5ed5fc4994f96d0ffec.tar.gz",
+        "url": "https://github.com/edolstra/flake-compat/archive/5edf11c44bc78a0d334f6334cdaf7d60d732daab.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs": {
@@ -29,10 +29,10 @@
         "homepage": null,
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "52faf482a3889b7619003c0daec593a1912fddc1",
-        "sha256": "04glsr88dhs9w61nyfpn17dphkmn2kssaf603ndhp7sizcppl6ga",
+        "rev": "c0b0e0fddf73fd517c3471e546c0df87a42d53f4",
+        "sha256": "0hqb404lk3c7sqcvgjd5dzf2632ikhv9lwshq5q3j5vdwg86x03j",
         "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs/archive/52faf482a3889b7619003c0daec593a1912fddc1.tar.gz",
+        "url": "https://github.com/NixOS/nixpkgs/archive/c0b0e0fddf73fd517c3471e546c0df87a42d53f4.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }

@@ -73,7 +73,28 @@ The default OCaml version is set in `flake.nix` but you can customize it by pass
 ```
 
 ## Shallow shell
-This shell provides `dune`, `opam`, etc., but you will need to run all the `opam` commands to install the OCaml packages, etc., for **each** repository, as well as re-run the right commands whenever the `.opam` files change.
+This shell provides `dune` (preview version) which then takes care of dependencies and tools (LSP, Merlin, Ocamlformat) via `dune pkg`.
+
+Create a `shell.nix`:
+
+```
+let
+  logisticPath =
+    if builtins.pathExists ./path-to-logistic.nix
+    then (import ./path-to-logistic.nix) else ./.logistic;
+
+  shell = import "${logisticPath}/nix/shell.nix" {
+    extraPackages = p: [
+      p.foo
+    ];
+  };
+in
+shell.overrideAttrs (a: {
+  # You can override stuff here, like shellHook
+})
+```
+
+Then create or symlink `.envrc`:
 
 ```shell
 ln --symbolic .logistic/nix/envrc-shallow .envrc
@@ -81,4 +102,12 @@ ln --symbolic .logistic/nix/envrc-shallow .envrc
 cp ../logistic/nix/envrc-shallow ../logistic/nix/envrc-custom
 # Edit the path to the `logistic` repo in `../logistic/nix/envrc-custom`, then:
 ln --symbolic ../logistic/nix/envrc-custom .envrc
+```
+
+Now you need to run these commands:
+```
+$ dune tools install ocamllsp
+$ dune tools install ocamlmerlin
+$ dune tools install ocamlformat
+$ direnv reload
 ```
