@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.2.2] - 2026-01-28
+
+### Added
+
+- Support for `GMT` timezone, interpreted as `UTC`.
+
 ## [1.2.0] - 2025-08-29
 
 ### Added

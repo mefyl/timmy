@@ -1,5 +1,5 @@
 opam-version: "2.0"
-version: "1.2.1"
+version: "1.2.2"
 synopsis: "Lwt utilities based on Timmy"
 maintainer: ["mefyl <mefyl@gruntech.org>"]
 authors: ["mefyl <mefyl@gruntech.org>"]
