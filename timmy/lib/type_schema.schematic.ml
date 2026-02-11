@@ -124,9 +124,7 @@ module Month = struct
       {
         name;
         raw_name;
-        schema =
-          Schema.
-            { descriptor = String_const name; id = None; parametric = None };
+        schema = Schema.make (String_const name);
         encoder;
         decoder;
         inline = false;
@@ -351,9 +349,7 @@ module Weekday = struct
       {
         name;
         raw_name;
-        schema =
-          Schema.
-            { descriptor = String_const name; id = None; parametric = None };
+        schema = Schema.make (String_const name);
         encoder;
         decoder;
         inline = false;
