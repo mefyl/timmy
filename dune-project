@@ -2,7 +2,7 @@
 
 (name timmy)
 
-(version 1.2.2)
+(version 1.2.3)
 
 (generate_opam_files true)
 
@@ -46,7 +46,7 @@
   (schematic
    (or
     (< 0.21.2)
-    (>= 0.22.0)))))
+    (>= 0.23.0)))))
 
 (package
  (name timmy-jsoo)
@@ -69,7 +69,7 @@
   (schematic-jsoo
    (or
     (< 0.18.2)
-    (>= 0.22.0)))))
+    (>= 0.23.0)))))
 
 (package
  (name timmy-unix)

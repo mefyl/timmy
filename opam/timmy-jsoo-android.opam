@@ -1,5 +1,5 @@
 opam-version: "2.0"
-version: "1.2.2"
+version: "1.2.3"
 synopsis: "Js_of_ocaml bindings for Timmy"
 maintainer: ["mefyl <mefyl@gruntech.org>"]
 authors: ["mefyl <mefyl@gruntech.org>"]
@@ -19,7 +19,7 @@ depends: [
 ]
 depopts: ["schematic-jsoo-android"]
 conflicts: [
-  "schematic-jsoo" {< "0.18.2" | >= "0.22.0"}
+  "schematic-jsoo" {< "0.18.2" | >= "0.23.0"}
 ]
 build: [
   ["dune" "subst"] {dev}

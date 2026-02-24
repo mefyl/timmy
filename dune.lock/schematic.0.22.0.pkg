@@ -1,0 +1,33 @@
+(version 0.22.0)
+
+(build
+ (all_platforms
+  ((action
+    (progn
+     (when %{pkg-self:dev} (run dune subst))
+     (run dune build -p %{pkg-self:name} -j %{jobs} @install))))))
+
+(depends
+ (all_platforms
+  (dune
+   base
+   base64
+   ezjsonm
+   fmt
+   hmap
+   hlist
+   logs
+   ocaml
+   ppxlib
+   ppx_deriving
+   ppx_here
+   ptime
+   semver2
+   uri)))
+
+(source
+ (fetch
+  (url
+   git+ssh://git@gitlab.routine.co/routine/schematic#ff29b0d4f94399f48fecc10aee7c276620a415de)))
+
+(dev)
