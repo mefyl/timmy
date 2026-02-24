@@ -1,3 +1,5 @@
+type Lwt_engine.engine_id += Timmy_lwt_virtual
+
 let virtual_engine actual : Lwt_engine.t =
   let in_, out = Unix.pipe () in
   let () =
@@ -7,6 +9,7 @@ let virtual_engine actual : Lwt_engine.t =
   let res =
     object (self)
       inherit Lwt_engine.abstract
+      method id = Timmy_lwt_virtual
 
       method register_writable fd f =
         let event = actual#on_writable fd (fun _ -> f ()) in

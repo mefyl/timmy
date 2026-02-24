@@ -13,7 +13,7 @@ depends: [
   "ppx_deriving" {>= "5.0"}
   "ppx_deriving-macos" {>= "5.0"}
   "logs-macos" {>= "0.7.0"}
-  "lwt-macos"
+  "lwt-macos" {>= "6.0.0" & < "7.0.0"}
   "timmy" {= version}
   "timmy-macos" {= version}
 ]

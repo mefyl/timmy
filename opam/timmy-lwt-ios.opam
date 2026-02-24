@@ -13,7 +13,7 @@ depends: [
   "ppx_deriving" {>= "5.0"}
   "ppx_deriving-ios" {>= "5.0"}
   "logs-ios" {>= "0.7.0"}
-  "lwt-ios"
+  "lwt-ios" {>= "6.0.0" & < "7.0.0"}
   "timmy" {= version}
   "timmy-ios" {= version}
 ]

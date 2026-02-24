@@ -109,7 +109,10 @@
     (>= 1.4.0)))
   (logs
    (>= 0.7.0))
-  lwt
+  (lwt
+   (and
+    (>= 6.0.0)
+    (< 7.0.0)))
   (timmy
    (= :version)))
  (depopts js_of_ocaml-lwt))
