@@ -13,7 +13,6 @@ depends: [
   "alcotest" {with-test & >= "1.4.0"}
   "ezjsonm" {= "1.3.0" & build}
   "base"
-  "conf-tzdata" {with-test}
   "fmt"
   "logs" {>= "0.7.0"}
   "timmy" {= version}

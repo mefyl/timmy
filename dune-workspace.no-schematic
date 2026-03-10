@@ -4,6 +4,8 @@
  (name routine)
  (url git+ssh://git@gitlab.routine.co/routine/opam))
 
+;; To regenerate, run
+;; dune pkg lock --workspace dune-workspace.no-schematic no-schematic.lock
 (lock_dir
  (path no-schematic.lock)
  (repositories routine overlay upstream))

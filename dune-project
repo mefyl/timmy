@@ -85,7 +85,6 @@
     (= 1.3.0)
     :build))
   base
-  (conf-tzdata :with-test)
   fmt
   (logs
    (>= 0.7.0))
