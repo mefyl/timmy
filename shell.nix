@@ -3,8 +3,10 @@ let
     if builtins.pathExists ./path-to-logistic.nix
     then (import ./path-to-logistic.nix) else ./.logistic;
 
-  logisticFullNixShell = import "${logisticPath}/nix/full-nix-shell.nix";
-
-  thisRoutineRepo = logisticFullNixShell.lib.mkRoutineRepo ./. { };
+  shell = import "${logisticPath}/nix/shell.nix" { };
 in
-thisRoutineRepo.devShells.${builtins.currentSystem}.default
+shell.overrideAttrs (a: {
+  shellHook = ''
+    export TZ=Europe/Paris
+  '';
+})
