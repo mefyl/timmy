@@ -1,0 +1,55 @@
+(version 0.3.0)
+
+(build
+ (all_platforms
+  ((action
+    (progn
+     (run
+      ocaml
+      pkg/pkg.ml
+      build
+      --dev-pkg
+      %{pkg-self:dev}
+      --with-cmdliner
+      %{pkg:cmdliner:installed}
+      --with-b0
+      %{pkg:b0:installed}
+      --with-conf-libblake3
+      %{pkg:conf-libblake3:installed}
+      --with-conf-mbedtls
+      %{pkg:conf-mbedtls:installed}
+      --with-conf-libmd
+      %{pkg:conf-libmd:installed}
+      --with-conf-xxhash
+      %{pkg:conf-xxhash:installed}
+      --with-conf-zlib
+      %{pkg:conf-zlib:installed}
+      --with-conf-zstd
+      %{pkg:conf-zstd:installed})
+     (when
+      (and_absorb_undefined_var
+       %{pkg:cmdliner:installed}
+       %{pkg:b0:installed}
+       %{pkg:conf-mbedtls:installed})
+      (run
+       cmdliner
+       install
+       tool-support
+       --update-opam-install=%{pkg-self:name}.install
+       (when
+        (catch_undefined_var %{pkg:ocaml:native} false)
+        _build/test/certown.native:certown)
+       (when
+        (catch_undefined_var (not %{pkg:ocaml:native}) false)
+        _build/test/certown.byte:certown)
+       _build/cmdliner-install)))))))
+
+(depends
+ (all_platforms
+  (ocaml ocamlfind ocamlbuild topkg conf-pkg-config cmdliner)))
+
+(source
+ (fetch
+  (url https://erratique.ch/software/bytesrw/releases/bytesrw-0.3.0.tbz)
+  (checksum
+   sha512=388858b0db210a62a16f56655746fdfadbc64b22c2abb5ed5a12b2872e4f8c34f045cdb953a5dda9b92f0003c7f9f34d70fa5b5bb19fd32fb6121bbaeb7ceba0)))

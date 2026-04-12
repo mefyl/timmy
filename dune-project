@@ -136,4 +136,14 @@
   (timmy-unix
    (and
     :with-test
-    (= :version)))))
+    (= :version)))
+  (wasm_of_ocaml-compiler :with-test)))
+
+; For Wasmoo support.
+
+(pin
+ (url
+  git+https://github.com/mefyl/alcotest#f0007cbfdffd868945dd7503160c8bce08d01113)
+ (package
+  (name alcotest)
+  (version 1.9.1)))

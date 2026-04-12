@@ -1,7 +1,9 @@
 (executable
  (name test)
  (modules test)
- (modes js)
+ (modes js wasm)
+ (wasm_of_ocaml
+  (wasm_files base.wat))
  (libraries alcotest clock_tests js_of_ocaml timmy-jsoo.clock)
  (preprocess
   (pps ppx_here js_of_ocaml-ppx)))
@@ -15,3 +17,13 @@
    TZ
    Europe/Amsterdam
    (run node %{dep:./test.bc.js}))))
+
+(rule
+ (alias runtest)
+ (package timmy-jsoo)
+ (enabled_if %{lib-available:js_of_ocaml})
+ (action
+  (setenv
+   TZ
+   Europe/Amsterdam
+   (run node %{dep:./test.bc.wasm.js}))))
