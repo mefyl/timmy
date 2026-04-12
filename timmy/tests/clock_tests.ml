@@ -64,6 +64,20 @@ let timezone_name () =
       (Fmt.list ~sep:(Fmt.const Fmt.string ", ") Fmt.string)
       expecteds
 
+let ancient_date_offset ?(timezone = Clock.timezone_local) () =
+  (* Regression test: getTimezoneOffset returns NaN for very old dates in some
+     browsers, which caused a bad cast in wasmoo. The offset for such dates is
+     unspecified, but the call must not crash. *)
+  let ptime =
+    match Ptime.of_float_s (-30472358961.0) with
+    | Some t -> t
+    | None ->
+      Alcotest.fail ~here:[%here] "Could not create ptime for year ~1004"
+  in
+  let offset = Timmy.Timezone.gmt_offset_seconds_at_time timezone ptime in
+  Alcotest.(check ~here:[%here] bool)
+    "offset is a whole number of minutes" true (offset >= 0)
+
 let v =
   [
     ( "timezone",
@@ -71,5 +85,6 @@ let v =
         [
           test_case "daylight saving" `Quick daylight_savings;
           test_case "timezone_name" `Quick timezone_name;
+          test_case "ancient date offset" `Quick ancient_date_offset;
         ] );
   ]
