@@ -27,3 +27,9 @@ build: [
 ]
 dev-repo: "git+https://github.com/mefyl/timmy.git"
 x-maintenance-intent: ["(latest)"]
+pin-depends: [
+  [
+    "alcotest.1.9.1"
+    "git+https://github.com/mefyl/alcotest#f0007cbfdffd868945dd7503160c8bce08d01113"
+  ]
+]

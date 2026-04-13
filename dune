@@ -1,1 +1,10 @@
 (include .logistic/dune.inc)
+
+(rule
+ (target timmy.opam.template)
+ (mode
+  (promote (until-clean)))
+ (action
+  (with-stdout-to
+   %{target}
+   (run %{dep:.logistic/dune/opam-pins/opam_pins.exe} %{dep:dune-project}))))
