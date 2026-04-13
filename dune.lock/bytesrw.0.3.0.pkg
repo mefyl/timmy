@@ -50,6 +50,7 @@
 
 (source
  (fetch
-  (url https://erratique.ch/software/bytesrw/releases/bytesrw-0.3.0.tbz)
-  (checksum
-   sha512=388858b0db210a62a16f56655746fdfadbc64b22c2abb5ed5a12b2872e4f8c34f045cdb953a5dda9b92f0003c7f9f34d70fa5b5bb19fd32fb6121bbaeb7ceba0)))
+  (url
+   git+https://github.com/dbuenzli/bytesrw#47bdebcbc527c264572fb5fbcc5ca606e67bcd32)))
+
+(dev)
