@@ -14,22 +14,22 @@ module Daytime = struct
     let () =
       Js.Unsafe.global##._Object##defineProperty
         res (Js.string "hours")
-        (object%js
-           val value = 0
-           val writable = false
-        end)
+        object%js
+          val value = 0
+          val writable = false
+        end
     and () =
       Js.Unsafe.global##._Object##defineProperty
         res (Js.string "minutes")
-        (object%js
-           method get = 0
-        end)
+        object%js
+          method get = 0
+        end
     and () =
       Js.Unsafe.global##._Object##defineProperty
         res (Js.string "seconds")
-        (object%js
-           method get = 0
-        end)
+        object%js
+          method get = 0
+        end
     in
     res
 
