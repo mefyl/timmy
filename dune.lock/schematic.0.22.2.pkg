@@ -1,4 +1,4 @@
-(version 0.22.0)
+(version 0.22.2)
 
 (build
  (all_platforms
@@ -12,10 +12,11 @@
   (dune
    base
    base64
+   bytesrw
    ezjsonm
    fmt
-   hmap
    hlist
+   hmap
    logs
    ocaml
    ppxlib
@@ -28,6 +29,6 @@
 (source
  (fetch
   (url
-   git+ssh://git@gitlab.routine.co/routine/schematic#ff29b0d4f94399f48fecc10aee7c276620a415de)))
+   git+ssh://git@gitlab.routine.co/routine/schematic#b832baad7f3a7c493f49e3a6fd8c0bb1721a8a38)))
 
 (dev)

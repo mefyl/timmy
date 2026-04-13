@@ -275,12 +275,12 @@ let () =
                     extdeps_rule None;
                   ]
                  :: List.map cross_toolchains ~f:(fun toolchain ->
-                        [
-                          cross_rule toolchain;
-                          opam_rule ("-" ^ toolchain);
-                          locked_rule ("-" ^ toolchain);
-                          extdeps_rule (Some toolchain);
-                        ])));
+                     [
+                       cross_rule toolchain;
+                       opam_rule ("-" ^ toolchain);
+                       locked_rule ("-" ^ toolchain);
+                       extdeps_rule (Some toolchain);
+                     ])));
         ]
       in
       List.map ~f:generate packages
@@ -370,7 +370,7 @@ let () =
                  {
                    value with
                    pelem =
-                     pin_depend "ocamlformat" "0.27.0"
+                     pin_depend "ocamlformat" "0.28.1"
                      :: { pelem = String "opam-file-format"; pos }
                      :: { pelem = String "ocaml-index"; pos }
                      :: { pelem = String "sexplib"; pos }
@@ -452,10 +452,10 @@ let () =
                   as pin ->
                   rewrite_dependency package
                   |> List.map ~f:(fun package ->
-                         {
-                           pin with
-                           pelem = List { args with pelem = [ package; url ] };
-                         })
+                      {
+                        pin with
+                        pelem = List { args with pelem = [ package; url ] };
+                      })
                   |> Result.return
                 | { pos; _ } ->
                   Result.fail (Some pos, "unrecognized pin_depends")
@@ -495,7 +495,7 @@ let () =
           | Option (value, options) ->
             rewrite_dependency value
             |> List.map ~f:(fun value ->
-                   { item with pelem = Option (value, options) })
+                { item with pelem = Option (value, options) })
           | _ -> [ item ]
         else []
       and rewrite_command = function

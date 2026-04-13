@@ -1,0 +1,4 @@
+(executable
+ (name opam_pins)
+ (optional)
+ (libraries base cmdliner sexplib stdio))

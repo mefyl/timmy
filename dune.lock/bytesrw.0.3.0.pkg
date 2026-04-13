@@ -1,0 +1,56 @@
+(version 0.3.0)
+
+(build
+ (all_platforms
+  ((action
+    (progn
+     (run
+      ocaml
+      pkg/pkg.ml
+      build
+      --dev-pkg
+      %{pkg-self:dev}
+      --with-cmdliner
+      %{pkg:cmdliner:installed}
+      --with-b0
+      %{pkg:b0:installed}
+      --with-conf-libblake3
+      %{pkg:conf-libblake3:installed}
+      --with-conf-mbedtls
+      %{pkg:conf-mbedtls:installed}
+      --with-conf-libmd
+      %{pkg:conf-libmd:installed}
+      --with-conf-xxhash
+      %{pkg:conf-xxhash:installed}
+      --with-conf-zlib
+      %{pkg:conf-zlib:installed}
+      --with-conf-zstd
+      %{pkg:conf-zstd:installed})
+     (when
+      (and_absorb_undefined_var
+       %{pkg:cmdliner:installed}
+       %{pkg:b0:installed}
+       %{pkg:conf-mbedtls:installed})
+      (run
+       cmdliner
+       install
+       tool-support
+       --update-opam-install=%{pkg-self:name}.install
+       (when
+        (catch_undefined_var %{pkg:ocaml:native} false)
+        _build/test/certown.native:certown)
+       (when
+        (catch_undefined_var (not %{pkg:ocaml:native}) false)
+        _build/test/certown.byte:certown)
+       _build/cmdliner-install)))))))
+
+(depends
+ (all_platforms
+  (ocaml ocamlfind ocamlbuild topkg conf-pkg-config cmdliner)))
+
+(source
+ (fetch
+  (url
+   git+https://github.com/dbuenzli/bytesrw#47bdebcbc527c264572fb5fbcc5ca606e67bcd32)))
+
+(dev)

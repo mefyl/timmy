@@ -16,6 +16,7 @@ depends: [
   "logs" {>= "0.7.0"}
   "timmy" {= version}
   "timmy-unix" {with-test & = version}
+  "wasm_of_ocaml-compiler" {with-test}
   "odoc" {with-doc}
 ]
 build: [

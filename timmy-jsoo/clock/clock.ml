@@ -5,6 +5,16 @@ module Js = Js_of_ocaml.Js
 
 let now () = Ptime_clock.now () |> Timmy.Time.of_ptime
 
+(** [get_timezone_offset date] is Date.getTimezoneOffset.
+
+    JSOO's binding of getTimezoneOffset does not account for NaN possibly being
+    returned, which causes missbehaviors in js and a hard crash in wasm. *)
+let get_timezone_offset (date : Js.date Js.t) : int =
+  let offset =
+    Js.float_of_number (Js.Unsafe.meth_call date "getTimezoneOffset" [||])
+  in
+  if Float.is_nan offset then 0 else Float.to_int offset
+
 (* JS Date's getTimezoneOffset is designed so that date + offset = GMT. Timmy
    computes the offset from GMT, date - offset = GMT. *)
 let timezone_local =
@@ -31,13 +41,13 @@ let timezone_local =
     let js_date =
       new%js Js.date_sec year (month - 1) day hours minutes seconds
     in
-    js_date##getTimezoneOffset * 60 * -1
+    get_timezone_offset js_date * 60 * -1
   and offset_timestamp_s ~unix_timestamp =
     let js_date =
       new%js Js.date_fromTimeValue
         (Js.float (Int64.to_float unix_timestamp *. 1000.0))
     in
-    js_date##getTimezoneOffset * 60 * -1
+    get_timezone_offset js_date * 60 * -1
   in
   of_implementation ~offset_calendar_time_s ~offset_timestamp_s name
 

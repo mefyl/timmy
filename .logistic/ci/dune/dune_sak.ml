@@ -378,10 +378,10 @@ let () =
                   as pin ->
                   rewrite_dependency package
                   |> List.map ~f:(fun package ->
-                         {
-                           pin with
-                           pelem = List { args with pelem = [ package; url ] };
-                         })
+                      {
+                        pin with
+                        pelem = List { args with pelem = [ package; url ] };
+                      })
                   |> Result.return
                 | { pos; _ } ->
                   Result.fail (Some pos, "unrecognized pin_depends")
@@ -421,7 +421,7 @@ let () =
           | Option (value, options) ->
             rewrite_dependency value
             |> List.map ~f:(fun value ->
-                   { item with pelem = Option (value, options) })
+                { item with pelem = Option (value, options) })
           | _ -> [ item ]
         else []
       and rewrite_command = function
