@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.2.4] - 2026-04-13
+
+### Fixed
+
+- Wasm support of very ancient timestamps with undetermined timezone.
+
 ## [1.2.3] - 2026-02-24
 
 ### Added
