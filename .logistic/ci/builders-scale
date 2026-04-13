@@ -1,29 +1,18 @@
 #!/usr/bin/env python3
 
+import json
 import os
-import requests
+import shlex
 import subprocess
 import sys
 import time
 
-TOKEN = subprocess.check_output(["pass", "digitalocean.com/mefyl@gruntech.org/tokens/routine"]).decode('utf-8').strip()
-
-BUILDER_IMAGE = "ubuntu-24-04-x64"
-BUILDER_PROJECT = {
-  "id": "fc4f5214-a963-4edc-992e-7273a196ef8b",
-  "owner_uuid": "10892777fab4eec8eb860faaf998486170449232",
-  "owner_id": 7316606,
-  "name": "Gitlab",
-  "description": "Gitlab and CI infrastructure",
-  "purpose": "Operational / Developer tooling",
-  "environment": "Development",
-  "is_default": False,
-  "created_at": "2020-04-03T01:24:13Z",
-  "updated_at": "2020-12-22T20:12:54Z",
-}
+BUILDER_PROJECT_ID = "fc4f5214-a963-4edc-992e-7273a196ef8b"
 BUILDER_REGION = "fra1"
-BUILDER_TAGS = ["ci", "builder", "gitlab"]
+BUILDER_TAGS = "ci,builder,gitlab"
 BUILDER_VPC = "02fbdd99-61a1-491f-80d3-0840d3c86a4f"
+BUILDER_SSH_KEY = "cf:30:0a:1e:e7:b6:da:15:1c:af:8e:37:4e:5b:7a:e3"
+BUILDER_VOLUME_SIZE_GB = 500
 
 PARAMS = {"home": os.environ["HOME"]}
 
@@ -31,41 +20,43 @@ KNOWN_HOSTS = "{home}/.ssh/known_hosts_routine_ci_builders".format(**PARAMS)
 PARAMS["known_hosts"] = KNOWN_HOSTS
 
 
-def request(method, url, **kwargs):
-  resp = requests.request(
-    method,
-    "https://api.digitalocean.com/v2/{}".format(url),
-    headers={"Authorization": "Bearer {}".format(TOKEN)},
-    **kwargs
+def doctl(*args):
+  cmd = ["doctl"] + list(args) + ["--output", "json"]
+  print("$", shlex.join(cmd))
+  result = subprocess.run(
+    cmd,
+    stdout=subprocess.PIPE, text=True,
   )
-  resp.raise_for_status()
   try:
-    return resp.json()
-  except:
+    result.check_returncode()
+    if result.stdout.strip():
+      return json.loads(result.stdout)
     return None
+  except Exception:
+    print(result.stdout)
+    raise
 
 
-def get(url, **kwargs):
-  return request("GET", url, **kwargs)
 
-
-def post(url, **kwargs):
-  return request("POST", url, **kwargs)
-
-
-def delete(url, **kwargs):
-  return request("DELETE", url, **kwargs)
-
-
-init = """#!/bin/bash -xe
+def make_init(volume_name):
+  device = "/dev/disk/by-id/scsi-0DO_Volume_{}".format(volume_name)
+  return """#!/bin/bash -xe
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
 apt-get dist-upgrade --yes
 
+# Format and mount Docker volume
+DOCKER_DEVICE="{device}"
+while [ ! -e "$DOCKER_DEVICE" ]; do sleep 1; done
+mkfs.ext4 -F "$DOCKER_DEVICE"
+mkdir -p /var/lib/docker
+mount "$DOCKER_DEVICE" /var/lib/docker
+echo "$DOCKER_DEVICE /var/lib/docker ext4 defaults,nofail 0 2" >> /etc/fstab
+
 # Install Docker
 curl -L https://get.docker.com/ | bash
 cat > /etc/docker/daemon.json <<EOF
-{"registry-mirrors":["https://mirror.gcr.io"]}
+{{"registry-mirrors":["https://mirror.gcr.io"]}}
 EOF
 systemctl reload docker
 docker buildx create --name builder
@@ -90,87 +81,138 @@ curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/sc
 apt-get install --yes gitlab-runner
 # Register runner
 gitlab-runner register --non-interactive --run-untagged --tag-list linux --url https://gitlab.routine.co --docker-volumes /var/cache/dune:/root/.cache/dune --docker-volumes /var/run/docker.sock:/var/run/docker.sock --docker-volumes /root/.docker/buildx/instances/builder:/root/.docker/buildx/instances/builder --registration-token b75PvgBYWXaSPnbeyX8_ --executor docker --docker-image alpine --docker-devices /dev/fuse --docker-cap-add SYS_ADMIN --docker-security-opt apparmor:unconfined
-"""
+""".format(device=device)
+
+
+class Volume:
+  def __init__(self, data):
+    self.__data = data
+
+  def __repr__(self):
+    return "Volume({!r})".format(self.name)
+
+  @property
+  def id(self):
+    return self.__data["id"]
+
+  @property
+  def name(self):
+    return self.__data["name"]
+
+  @staticmethod
+  def create(name):
+    result = doctl(
+      "compute", "volume", "create", name,
+      "--region", BUILDER_REGION,
+      "--size", "{}GiB".format(BUILDER_VOLUME_SIZE_GB),
+    )
+    return Volume(result[0])
+
+  @staticmethod
+  def find(name):
+    result = doctl("compute", "volume", "list") or []
+    for v in result:
+      if v["name"] == name:
+        return Volume(v)
+    return None
+
+  def delete(self):
+    while True:
+      try:
+        doctl("compute", "volume", "delete", self.id, "--force")
+        break
+      except subprocess.CalledProcessError:
+        time.sleep(5)
 
 
 class Droplet:
-  def __init__(self, json):
-    self.__json = json
+  def __init__(self, data):
+    self.__data = data
 
   def __repr__(self):
     return "Droplet({!r})".format(self.name)
 
   @property
   def name(self):
-    return self.__json["name"]
-
-  @staticmethod
-  def create(name, project=None):
-    params = {
-      "name": name,
-      "region": BUILDER_REGION,
-      # "size": "c2-8vcpu-16gb",
-      "size": "c2-16vcpu-32gb",
-      "image": BUILDER_IMAGE,
-      "ssh_keys": ["cf:30:0a:1e:e7:b6:da:15:1c:af:8e:37:4e:5b:7a:e3"],
-      "backups": False,
-      "ipv6": True,
-      "user_data": init,
-      "tags": BUILDER_TAGS,
-      "vpc_uuid": BUILDER_VPC,
-    }
-    droplet = post("droplets", json=params)["droplet"]
-    if project is not None:
-      post(
-        "projects/{}/resources".format(project["id"]),
-        json={"resources": ["do:droplet:{}".format(droplet["id"])]},
-      )
-    return Droplet(droplet)
-
-  @staticmethod
-  def get(id):
-    return Droplet(get("droplets/{}".format(id))["droplet"])
-
-  def refresh(self):
-    return Droplet.get(self.id)
-
-  def delete(self):
-    delete("droplets/{}".format(self.__json["id"]))
+    return self.__data["name"]
 
   @property
   def id(self):
-    return self.__json["id"]
+    return self.__data["id"]
 
   @property
   def public_ip(self):
     # FIXME: v6 too
     try:
       return next(
-        filter(lambda ip: ip["type"] == "public", self.__json["networks"]["v4"])
+        filter(lambda ip: ip["type"] == "public", self.__data["networks"]["v4"])
       )["ip_address"]
     except:
       return None
 
+  @staticmethod
+  def list():
+    result = doctl("compute", "droplet", "list", "--tag-name", "builder") or []
+    return list(sorted(map(Droplet, result), key=lambda d: d.name, reverse=True))
+
+  @staticmethod
+  def create(name, volume, project_id=None):
+    result = doctl(
+        "compute", "droplet", "create", name,
+        "--region", BUILDER_REGION,
+        # "--size", "c2-8vcpu-16gb",
+        # "--size", "c2-16vcpu-32gb-intel",
+        "--size", "s-8vcpu-32gb-640gb-intel",
+        "--image", "ubuntu-24-04-x64",
+        "--ssh-keys", BUILDER_SSH_KEY,
+        "--tag-names", BUILDER_TAGS,
+        "--vpc-uuid", BUILDER_VPC,
+        "--volumes", volume.id,
+        "--enable-ipv6",
+        "--user-data", make_init(volume.name),
+      )
+    droplet = Droplet(result[0])
+    if project_id is not None:
+      doctl(
+        "projects", "resources", "assign", project_id,
+        "--resource", "do:droplet:{}".format(droplet.id),
+      )
+    return droplet
+
+  def refresh(self):
+    result = doctl("compute", "droplet", "get", str(self.id))
+    return Droplet(result[0])
+
+  def delete(self):
+    doctl("compute", "droplet", "delete", str(self.id), "--force")
+    while True:
+      try:
+        doctl("compute", "droplet", "get", str(self.id))
+        time.sleep(5)
+      except subprocess.CalledProcessError:
+        break
+
+
+def names(index):
+  return "{}.builder".format(index), "builder-{}-docker".format(index)
+
 
 target = int(sys.argv[1])
-builders = list(
-  sorted(
-    map(Droplet, get("droplets?tag_name=builder")["droplets"]),
-    key=lambda d: d.name,
-    reverse=True,
-  ),
-)
+builders = Droplet.list()
 effective = len(builders)
 
 if target < effective:
   n = effective - target
-  records = get("domains/gitlab.routine.co/records")["domain_records"]
+  records = doctl("compute", "domain", "records", "list", "gitlab.routine.co") or []
   for i in range(n):
-    builder_name = "{}.builder".format(effective - i - 1)
+    builder_name, volume_name = names(effective - i - 1)
     builder = builders[i]
     try:
       record = next(r for r in records if r["name"] == builder_name)
-      delete("domains/gitlab.routine.co/records/{}".format(record["id"]))
+      doctl(
+        "compute", "domain", "records", "delete", "gitlab.routine.co",
+        str(record["id"]), "--force",
+      )
     except StopIteration:
       pass
     os.system(
@@ -183,25 +225,27 @@ if target < effective:
         name=builder_name, **PARAMS
       )
     )
-    builders[i].delete()
+    builder.delete()
+    volume = Volume.find(volume_name)
+    if volume is not None:
+      volume.delete()
   print("{} builders where removed".format(n))
 elif target > effective:
   n = target - effective
   for i in range(n):
-    builder_name = "{}.builder".format(effective + i)
+    builder_name, volume_name = names(effective + i)
     print("Creating {}.gitlab.routine.co".format(builder_name))
-    droplet = Droplet.create(builder_name, project=BUILDER_PROJECT)
+    volume = Volume.create(volume_name)
+    droplet = Droplet.create(builder_name, volume=volume, project_id=BUILDER_PROJECT_ID)
     while droplet.public_ip is None:
       droplet = droplet.refresh()
       time.sleep(5)
-    post(
-      "domains/gitlab.routine.co/records",
-      json={
-        "type": "A",
-        "name": builder_name,
-        "data": droplet.public_ip,
-        "ttl": 600,
-      },
+    doctl(
+      "compute", "domain", "records", "create", "gitlab.routine.co",
+      "--record-type", "A",
+      "--record-name", builder_name,
+      "--record-data", droplet.public_ip,
+      "--record-ttl", "600",
     )
     print(
       "Waiting for {}.gitlab.routine.co ({}) to start up".format(
