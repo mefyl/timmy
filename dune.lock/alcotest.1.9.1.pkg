@@ -10,6 +10,6 @@
 (source
  (fetch
   (url
-   git+https://github.com/mefyl/alcotest#f0007cbfdffd868945dd7503160c8bce08d01113)))
+   git+https://github.com/mefyl/alcotest#33daa1817c4c05536f0a9f5f3b817a5f3799b829)))
 
 (dev)

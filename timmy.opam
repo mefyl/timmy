@@ -39,6 +39,6 @@ build: [
 dev-repo: "git+https://github.com/mefyl/timmy.git"
 x-maintenance-intent: ["(latest)"]
 pin-depends: [
-  ["alcotest.1.9.1" "git+https://github.com/mefyl/alcotest#f0007cbfdffd868945dd7503160c8bce08d01113"]
+  ["alcotest.1.9.1" "git+https://github.com/mefyl/alcotest#33daa1817c4c05536f0a9f5f3b817a5f3799b829"]
   ["bytesrw.0.3.0" "git+https://github.com/dbuenzli/bytesrw#47bdebcbc527c264572fb5fbcc5ca606e67bcd32"]
 ]
