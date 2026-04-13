@@ -1,16 +1,28 @@
-(lang dune 3.0)
+(lang dune 3.20)
 
 (repository
  (name routine)
  (url git+ssh://git@gitlab.routine.co/routine/opam))
+
+(repository
+ (name upstream-pinned)
+ (url
+  git+https://github.com/ocaml/opam-repository.git#4f056bfedf536e66065c3783e694e6aa0b38261a))
+
+(repository
+ (name overlay-pinned)
+ (url
+  git+https://github.com/ocaml-dune/opam-overlays.git#2a9543286ff0e0656058fee5c0da7abc16b8717d))
 
 ; This forces a local build of the lsp server instead of using the
 ; binary version, see https://github.com/ocaml/dune/issues/11229.
 
 (lock_dir
  (path "dev-tools.locks/ocaml-lsp-server")
- (repositories upstream overlay))
+ (repositories upstream-pinned overlay-pinned))
 
 (lock_dir
  (path dune.lock)
- (repositories routine upstream overlay))
+ (repositories routine upstream-pinned overlay-pinned))
+
+(pkg enabled)
