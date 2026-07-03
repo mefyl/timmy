@@ -23,10 +23,10 @@ RUN opam update && \
     rm -rf /root/.cache/dune
 ENV OPAMSWITCH=/root
 
-ARG OPAM_PACKAGES OPAM_WITHOUT_PACKAGES
+ARG OPAM_PACKAGES OPAM_WITHOUT_PACKAGES ROUTINE_OPAM_VERSION=886647272f78afd0eebfa65324b86c44de369294
 ADD .exists *.opam /root/
 RUN --mount=type=ssh \
-    opam repository add --all routine git@gitlab.routine.co:routine/opam#50c915bdbaa6653a782f158675eeca10c9be89a9 && \
+    opam repository add --all routine "git@gitlab.routine.co:routine/opam#$ROUTINE_OPAM_VERSION" && \
     opam update && \
     opam install --confirm-level=unsafe-yes --deps-only --with-test /root && \
     (if test -n "$OPAM_PACKAGES"; then opam install --confirm-level=unsafe-yes $OPAM_PACKAGES; fi) && \

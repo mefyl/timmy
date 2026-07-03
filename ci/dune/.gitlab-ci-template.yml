@@ -15,9 +15,10 @@ variables:
   IMAGE: "$CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME"
   SLUG: "$CI_COMMIT_REF_SLUG"
   DUNE_CACHE_STORAGE_MODE: "copy"
+  GIT_DEPTH: 0
 
 .ocaml:
-  image: "$CI_REGISTRY/routine/logistic/dune-builder:3.22.2"
+  image: "$CI_REGISTRY/routine/logistic/dune-builder:3.23.0"
 
 .ocaml-build:
   extends: .ocaml

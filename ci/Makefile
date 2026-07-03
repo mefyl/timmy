@@ -70,7 +70,7 @@ toolchain/%:
 	        DOCKER_SSH="--ssh default"; \
 	fi ; \
 	if test -n "$(DOCKER_TARGET)"; then DOCKER_TARGET="--target $(DOCKER_TARGET)"; fi; \
-	docker buildx build $$DOCKER_SSH -f "$(DOCKER_FILE)$(SUFFIX)" "$(DOCKER_DIR)" $$DOCKER_TARGET --tag "$(or $(IMAGE_CI)$(VARIANT)$(SUFFIX),ci)" --build-arg OCAML_VERSION=$(OCAML_VERSION) --build-arg PACKAGES="$(PACKAGES)" --build-arg OPAM_PACKAGES="$(OPAM_PACKAGES)" --build-arg OPAM_WITHOUT_PACKAGES="$(OPAM_WITHOUT_PACKAGES)" --build-arg AWS_SECRET_ACCESS_KEY="$(AWS_SECRET_ACCESS_KEY)" --build-arg CI_VARIANT=$(subst -,,$(VARIANT)) --build-arg CI_IMAGE="$(CI_IMAGE)" --build-arg ARCH=$(ARCH) $$CACHE
+	docker buildx build $$DOCKER_SSH -f "$(DOCKER_FILE)$(SUFFIX)" "$(DOCKER_DIR)" $$DOCKER_TARGET --tag "$(or $(IMAGE_CI)$(VARIANT)$(SUFFIX),ci)" --build-arg OCAML_VERSION=$(OCAML_VERSION) --build-arg PACKAGES="$(PACKAGES)" --build-arg OPAM_PACKAGES="$(OPAM_PACKAGES)" --build-arg OPAM_WITHOUT_PACKAGES="$(OPAM_WITHOUT_PACKAGES)" --build-arg AWS_SECRET_ACCESS_KEY="$(AWS_SECRET_ACCESS_KEY)" --build-arg CI_VARIANT=$(subst -,,$(VARIANT)) --build-arg CI_IMAGE="$(CI_IMAGE)" --build-arg ARCH=$(ARCH) $(if $(ROUTINE_OPAM_VERSION),--build-arg ROUTINE_OPAM_VERSION=$(ROUTINE_OPAM_VERSION)) $$CACHE
 
 toolchain: toolchain/default
 
