@@ -39,6 +39,7 @@
    (and
     :with-test
     (>= 1.4.0)))
+  (ppx_yojson :with-test)
   ; Doc
   (odoc :with-doc))
  (depopts schematic)

@@ -33,21 +33,31 @@ let daytime () =
     roundtrip ~here:[%here] daytime Timmy.Daytime.schema
       (Result.ok_or_failwith
       @@ Timmy.Daytime.make ~hours:13 ~minutes:37 ~seconds:42)
-      (`O
-         [
-           ("hours", `Float 13.);
-           ("minutes", `Float 37.);
-           ("seconds", `Float 42.);
-         ])
+      [%ezjsonm { hours = 13; minutes = 37; seconds = 42 }]
+  and () =
+    Alcotest.(check ~here:[%here] (result daytime string))
+      "seconds are optional"
+      (Timmy.Daytime.make ~hours:13 ~minutes:37 ~seconds:0)
+    @@ Result.map_error ~f:Schematic.Error.decoding_to_string
+    @@ Schematic.Json.decode Timmy.Daytime.schema
+         [%ezjsonm { hours = 13; minutes = 37 }]
+  and () =
+    Alcotest.(check ~here:[%here] (result daytime string))
+      "minutes are optional"
+      (Timmy.Daytime.make ~hours:13 ~minutes:0 ~seconds:42)
+    @@ Result.map_error ~f:Schematic.Error.decoding_to_string
+    @@ Schematic.Json.decode Timmy.Daytime.schema
+         [%ezjsonm { hours = 13; seconds = 42 }]
+  and () =
+    Alcotest.(check ~here:[%here] (result daytime string))
+      "minutes and seconds are optional"
+      (Timmy.Daytime.make ~hours:13 ~minutes:0 ~seconds:0)
+    @@ Result.map_error ~f:Schematic.Error.decoding_to_string
+    @@ Schematic.Json.decode Timmy.Daytime.schema [%ezjsonm { hours = 13 }]
   and () =
     let res =
       Schematic.Json.decode Timmy.Daytime.schema
-        (`O
-           [
-             ("hours", `Float (-1.));
-             ("minutes", `Float 0.);
-             ("seconds", `Float 0.);
-           ])
+        [%ezjsonm { hours = -1; minutes = 0.; seconds = 0. }]
     in
     Alcotest.(
       check ~here:[%here]

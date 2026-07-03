@@ -11,7 +11,7 @@
    (!schematic -> schemas.noschematic.ml)))
  (modules schemas test testable)
  (preprocess
-  (pps ppx_here)))
+  (pps ppx_here ppx_yojson)))
 
 (rule
  (alias runtest)

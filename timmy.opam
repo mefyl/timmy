@@ -16,6 +16,7 @@ depends: [
   "ppx_deriving" {>= "5.0"}
   "ptime"
   "alcotest" {with-test & >= "1.4.0"}
+  "ppx_yojson" {with-test}
   "odoc" {with-doc}
 ]
 depopts: ["schematic"]

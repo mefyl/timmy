@@ -47,9 +47,9 @@ module Daytime = struct
            [
              field ~maximum:24 ~minimum:0 ~requirement:Required "hours"
                (Outline int_schema);
-             field ~maximum:60 ~minimum:0 ~requirement:Required "minutes"
+             field ~maximum:60 ~minimum:0 ~requirement:(Default 0) "minutes"
                (Outline int_schema);
-             field ~maximum:60 ~minimum:0 ~requirement:Required "seconds"
+             field ~maximum:60 ~minimum:0 ~requirement:(Default 0) "seconds"
                (Outline int_schema);
            ]
     in
