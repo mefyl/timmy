@@ -45,7 +45,7 @@
  (conflicts
   (schematic
    (or
-    (< 0.21.2)
+    (< 0.22.3)
     (>= 0.23.0)))))
 
 (package
@@ -68,7 +68,7 @@
  (conflicts
   (schematic-jsoo
    (or
-    (< 0.18.2)
+    (< 0.12.3)
     (>= 0.23.0)))))
 
 (package
