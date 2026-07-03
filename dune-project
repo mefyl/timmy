@@ -45,7 +45,7 @@
  (conflicts
   (schematic
    (or
-    (< 0.21.2)
+    (< 0.22.3)
     (>= 0.23.0)))))
 
 (package
@@ -68,7 +68,7 @@
  (conflicts
   (schematic-jsoo
    (or
-    (< 0.18.2)
+    (< 0.12.3)
     (>= 0.23.0)))))
 
 (package
@@ -164,3 +164,10 @@
  (package
   (name bytesrw)
   (version 0.3.0)))
+
+(pin
+ (url
+  git+ssh://git@gitlab.routine.co/routine/schematic#460567f30ea5f33df83992b47939275eb24b125e)
+ (package
+  (name schematic)
+  (version 0.22.3)))
