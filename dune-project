@@ -164,3 +164,10 @@
  (package
   (name bytesrw)
   (version 0.3.0)))
+
+(pin
+ (url
+  git+ssh://git@gitlab.routine.co/routine/schematic#460567f30ea5f33df83992b47939275eb24b125e)
+ (package
+  (name schematic)
+  (version 0.22.3)))

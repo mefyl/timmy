@@ -1,0 +1,29 @@
+(version 0.22.3)
+
+(build
+ (all_platforms ((dune))))
+
+(depends
+ (all_platforms
+  (base
+   base64
+   bytesrw
+   ezjsonm
+   fmt
+   hlist
+   hmap
+   logs
+   ocaml
+   ppxlib
+   ppx_deriving
+   ppx_here
+   ptime
+   semver2
+   uri)))
+
+(source
+ (fetch
+  (url
+   git+ssh://git@gitlab.routine.co/routine/schematic#460567f30ea5f33df83992b47939275eb24b125e)))
+
+(dev)

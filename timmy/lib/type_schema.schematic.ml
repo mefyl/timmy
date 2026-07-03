@@ -13,7 +13,8 @@ module Date = struct
 
   let schema_versioned _ =
     Schematic.Schema.make ~id:"date"
-    @@ Map { decode = of_tuple; encode = to_tuple; descriptor = Date }
+    @@ Schematic.Schema.Descriptor.map ~decode:of_tuple ~encode:to_tuple
+         Schematic.Schema.Descriptor.date
 
   let schema = schema_versioned None
 end
@@ -33,68 +34,24 @@ module Daytime = struct
   let schema_versioned _ =
     let open Schematic.Schemas in
     let descriptor =
-      let decode (* Reject invalid ranges *) Hlist.[ hours; minutes; seconds ] =
+      let decode Hlist.[ hours; minutes; seconds ] =
         make ~hours ~minutes ~seconds
-      and encode { hours; minutes; seconds } = Hlist.[ hours; minutes; seconds ]
-      and fields =
-        Schematic.Schema.Field
-          {
-            field =
-              {
-                description = None;
-                examples = [];
-                name = "hours";
-                maximum = Some 24;
-                minimum = Some 0;
-                omit = false;
-                requirement = Required;
-                schema = Outline int_schema;
-                since = None;
-                title = None;
-              };
-            rest =
-              Field
-                {
-                  field =
-                    {
-                      description = None;
-                      examples = [];
-                      name = "minutes";
-                      maximum = Some 60;
-                      minimum = Some 0;
-                      omit = false;
-                      requirement = Default 0;
-                      schema = Outline int_schema;
-                      since = None;
-                      title = None;
-                    };
-                  rest =
-                    Field
-                      {
-                        field =
-                          {
-                            description = None;
-                            examples = [];
-                            name = "seconds";
-                            maximum = Some 60;
-                            minimum = Some 0;
-                            omit = false;
-                            requirement = Default 0;
-                            schema = Outline int_schema;
-                            since = None;
-                            title = None;
-                          };
-                        rest = FieldEnd;
-                      };
-                };
-          }
+      and encode { hours; minutes; seconds } =
+        Hlist.[ hours; minutes; seconds ]
       in
-      let obj =
-        Schema.Object { decode = Base.Fn.id; encode = Base.Fn.id; fields }
-      in
-      Schema.Map { decode; encode; descriptor = obj }
+      let open Schematic.Schema.Descriptor in
+      map ~decode ~encode
+      @@ object' ~decode:Base.Fn.id ~encode:Base.Fn.id
+           [
+             field ~maximum:24 ~minimum:0 ~requirement:Required "hours"
+               (Outline int_schema);
+             field ~maximum:60 ~minimum:0 ~requirement:Required "minutes"
+               (Outline int_schema);
+             field ~maximum:60 ~minimum:0 ~requirement:Required "seconds"
+               (Outline int_schema);
+           ]
     in
-    Schema.make ~id:"daytime" descriptor
+    Schematic.Schema.make ~id:"daytime" descriptor
 
   let schema = schema_versioned None
 end
@@ -118,68 +75,52 @@ end
 module Month = struct
   include Types_bare.Month
 
-  let make_case name raw_name encoder decoder =
+  let make_case name encoder decoder =
     let open Schematic in
-    Schema.Case
-      {
-        name;
-        raw_name;
-        schema = Schema.make (String_const name);
-        encoder;
-        decoder;
-        inline = false;
-        since = None;
-      }
+    Schema.Descriptor.case ~encoder ~decoder name
+    @@ Schema.make (String_const name)
 
   let schema_versioned _ =
-    let open Schematic in
-    let descriptor =
-      Schema.Union
-        {
-          cases =
-            [
-              make_case "january" "January"
-                (function January -> Some () | _ -> None)
-                (function () -> January);
-              make_case "february" "February"
-                (function February -> Some () | _ -> None)
-                (function () -> February);
-              make_case "march" "March"
-                (function March -> Some () | _ -> None)
-                (function () -> March);
-              make_case "april" "April"
-                (function April -> Some () | _ -> None)
-                (function () -> April);
-              make_case "may" "May"
-                (function May -> Some () | _ -> None)
-                (function () -> May);
-              make_case "june" "June"
-                (function June -> Some () | _ -> None)
-                (function () -> June);
-              make_case "july" "July"
-                (function July -> Some () | _ -> None)
-                (function () -> July);
-              make_case "august" "August"
-                (function August -> Some () | _ -> None)
-                (function () -> August);
-              make_case "september" "September"
-                (function September -> Some () | _ -> None)
-                (function () -> September);
-              make_case "october" "October"
-                (function October -> Some () | _ -> None)
-                (function () -> October);
-              make_case "november" "November"
-                (function November -> Some () | _ -> None)
-                (function () -> November);
-              make_case "december" "December"
-                (function December -> Some () | _ -> None)
-                (function () -> December);
-            ];
-          key = None;
-          polymorphic = false;
-        }
-    in
-    Schematic.Schema.make ~id:"month" descriptor
+    Schematic.Schema.make ~id:"month"
+    @@ Schematic.Schema.Descriptor.union
+         [
+           make_case "january"
+             (function January -> Some () | _ -> None)
+             (function () -> January);
+           make_case "february"
+             (function February -> Some () | _ -> None)
+             (function () -> February);
+           make_case "march"
+             (function March -> Some () | _ -> None)
+             (function () -> March);
+           make_case "april"
+             (function April -> Some () | _ -> None)
+             (function () -> April);
+           make_case "may"
+             (function May -> Some () | _ -> None)
+             (function () -> May);
+           make_case "june"
+             (function June -> Some () | _ -> None)
+             (function () -> June);
+           make_case "july"
+             (function July -> Some () | _ -> None)
+             (function () -> July);
+           make_case "august"
+             (function August -> Some () | _ -> None)
+             (function () -> August);
+           make_case "september"
+             (function September -> Some () | _ -> None)
+             (function () -> September);
+           make_case "october"
+             (function October -> Some () | _ -> None)
+             (function () -> October);
+           make_case "november"
+             (function November -> Some () | _ -> None)
+             (function () -> November);
+           make_case "december"
+             (function December -> Some () | _ -> None)
+             (function () -> December);
+         ]
 
   let schema = schema_versioned None
   let schema_string = schema
@@ -277,51 +218,16 @@ struct
 
   let schema_versioned _ =
     let open Schematic.Schemas in
-    let descriptor =
-      let decode Hlist.[ year; n ] = Make.make ~year n
-      and encode { year; n } = Hlist.[ year; n ]
-      and fields =
-        Schematic.Schema.Field
-          {
-            field =
-              {
-                description = None;
-                examples = [];
-                name = "year";
-                maximum = None;
-                minimum = None;
-                omit = false;
-                requirement = Required;
-                schema = Outline int_schema;
-                since = None;
-                title = None;
-              };
-            rest =
-              Field
-                {
-                  field =
-                    {
-                      description = None;
-                      examples = [];
-                      name = "n";
-                      maximum = None;
-                      minimum = None;
-                      omit = false;
-                      requirement = Required;
-                      schema = Outline int_schema;
-                      since = None;
-                      title = None;
-                    };
-                  rest = FieldEnd;
-                };
-          }
-      in
-      let obj =
-        Schema.Object { decode = Base.Fn.id; encode = Base.Fn.id; fields }
-      in
-      Schema.Map { decode; encode; descriptor = obj }
-    in
-    Schema.make ~id:"week" descriptor
+    let decode Hlist.[ year; n ] = Make.make ~year n
+    and encode { year; n } = Hlist.[ year; n ] in
+    let open Schematic.Schema.Descriptor in
+    Schematic.Schema.make ~id:"week"
+    @@ map ~decode ~encode
+    @@ object' ~decode:Base.Fn.id ~encode:Base.Fn.id
+         [
+           field ~requirement:Required "year" @@ Outline int_schema;
+           field ~requirement:Required "n" @@ Outline int_schema;
+         ]
 
   let schema = schema_versioned None
 end
@@ -343,53 +249,36 @@ end
 module Weekday = struct
   include Types_bare.Weekday
 
-  let make_case name raw_name encoder decoder =
-    let open Schematic in
-    Schema.Case
-      {
-        name;
-        raw_name;
-        schema = Schema.make (String_const name);
-        encoder;
-        decoder;
-        inline = false;
-        since = None;
-      }
-
   let schema_versioned _ =
-    let open Schematic in
-    let descriptor =
-      Schema.Union
-        {
-          cases =
-            [
-              make_case "monday" "Monday"
-                (function Monday -> Some () | _ -> None)
-                (function () -> Monday);
-              make_case "tuesday" "Tuesday"
-                (function Tuesday -> Some () | _ -> None)
-                (function () -> Tuesday);
-              make_case "wednesday" "Wednesday"
-                (function Wednesday -> Some () | _ -> None)
-                (function () -> Wednesday);
-              make_case "thursday" "Thursday"
-                (function Thursday -> Some () | _ -> None)
-                (function () -> Thursday);
-              make_case "friday" "Friday"
-                (function Friday -> Some () | _ -> None)
-                (function () -> Friday);
-              make_case "saturday" "Saturday"
-                (function Saturday -> Some () | _ -> None)
-                (function () -> Saturday);
-              make_case "sunday" "Sunday"
-                (function Sunday -> Some () | _ -> None)
-                (function () -> Sunday);
-            ];
-          key = None;
-          polymorphic = false;
-        }
+    let open Schematic.Schema.Descriptor in
+    let case name encoder decoder =
+      case ~decoder ~encoder name @@ Schematic.Schema.make (String_const name)
     in
-    Schema.make ~id:"weekday" descriptor
+    Schematic.Schema.make ~id:"weekday"
+    @@ union
+         [
+           case "monday"
+             (function Monday -> Some () | _ -> None)
+             (function () -> Monday);
+           case "tuesday"
+             (function Tuesday -> Some () | _ -> None)
+             (function () -> Tuesday);
+           case "wednesday"
+             (function Wednesday -> Some () | _ -> None)
+             (function () -> Wednesday);
+           case "thursday"
+             (function Thursday -> Some () | _ -> None)
+             (function () -> Thursday);
+           case "friday"
+             (function Friday -> Some () | _ -> None)
+             (function () -> Friday);
+           case "saturday"
+             (function Saturday -> Some () | _ -> None)
+             (function () -> Saturday);
+           case "sunday"
+             (function Sunday -> Some () | _ -> None)
+             (function () -> Sunday);
+         ]
 
   let schema = schema_versioned None
   let schema_string = schema
