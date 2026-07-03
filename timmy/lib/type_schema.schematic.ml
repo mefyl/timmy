@@ -1,3 +1,5 @@
+module Schematic = Schematic.Versions.V0_22_3
+
 module type DATE = sig
   (** @inline *)
   include Types_bare.DATE with type t = Types_bare.Date.t
