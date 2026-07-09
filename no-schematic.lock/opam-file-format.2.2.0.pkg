@@ -11,4 +11,5 @@
  (fetch
   (url
    https://github.com/ocaml/opam-file-format/releases/download/2.2.0/opam-file-format-2.2.0.tar.gz)
-  (checksum md5=5b65ea84fa2e60e89c2c9f2ca3203e31)))
+  (checksum
+   sha512=87e1ddae79c47f48090b5e3205e0d2598e22838e065d0ea8924494ba225a4f8a8b4985a7eb3563652e9a9a5419741af7327035a01d446ebc7fedab468a8edb98)))
