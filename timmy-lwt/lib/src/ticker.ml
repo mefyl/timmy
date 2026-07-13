@@ -121,7 +121,8 @@ let make ?(immediate = true) ?(skip = true) ?start:start_time ~period f =
 
 let finalize ticker =
   Lwt.async @@ fun () ->
-  Lwt_mvar.put ticker.command (Finalize { gc_lock = Some ticker })
+  Lwt_mvar.put ticker.command
+    (Finalize { gc_lock = Some (Sys.opaque_identity ticker) })
 
 let start ?start ticker =
   Lwt.async @@ fun () ->
