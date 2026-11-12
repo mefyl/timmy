@@ -1,8 +1,8 @@
 {
   "supplemental": {
     "version": {
-      "_unicodeVersion": "15.1.0",
-      "_cldrVersion": "45"
+      "_unicodeVersion": "16.0.0",
+      "_cldrVersion": "49"
     },
     "windowsZones": {
       "mapTimezones": [
@@ -32,6 +32,20 @@
             "_other": "Alaskan Standard Time",
             "_type": "America/Anchorage America/Juneau America/Metlakatla America/Nome America/Sitka America/Yakutat",
             "_territory": "US"
+          }
+        },
+        {
+          "mapZone": {
+            "_other": "Alberta Standard Time",
+            "_type": "America/Edmonton",
+            "_territory": "001"
+          }
+        },
+        {
+          "mapZone": {
+            "_other": "Alberta Standard Time",
+            "_type": "America/Edmonton America/Inuvik",
+            "_territory": "CA"
           }
         },
         {
@@ -340,6 +354,20 @@
             "_other": "Bougainville Standard Time",
             "_type": "Pacific/Bougainville",
             "_territory": "PG"
+          }
+        },
+        {
+          "mapZone": {
+            "_other": "British Columbia Standard Time",
+            "_type": "America/Vancouver",
+            "_territory": "001"
+          }
+        },
+        {
+          "mapZone": {
+            "_other": "British Columbia Standard Time",
+            "_type": "America/Vancouver",
+            "_territory": "CA"
           }
         },
         {
@@ -674,7 +702,7 @@
         {
           "mapZone": {
             "_other": "Central Standard Time",
-            "_type": "America/Winnipeg America/Rankin_Inlet America/Resolute",
+            "_type": "America/Rankin_Inlet America/Resolute",
             "_territory": "CA"
           }
         },
@@ -690,13 +718,6 @@
             "_other": "Central Standard Time",
             "_type": "America/Chicago America/Indiana/Knox America/Indiana/Tell_City America/Menominee America/North_Dakota/Beulah America/North_Dakota/Center America/North_Dakota/New_Salem",
             "_territory": "US"
-          }
-        },
-        {
-          "mapZone": {
-            "_other": "Central Standard Time",
-            "_type": "CST6CDT",
-            "_territory": "ZZ"
           }
         },
         {
@@ -956,13 +977,6 @@
             "_other": "Eastern Standard Time",
             "_type": "America/New_York America/Detroit America/Indiana/Petersburg America/Indiana/Vincennes America/Indiana/Winamac America/Kentucky/Monticello America/Louisville",
             "_territory": "US"
-          }
-        },
-        {
-          "mapZone": {
-            "_other": "Eastern Standard Time",
-            "_type": "EST5EDT",
-            "_territory": "ZZ"
           }
         },
         {
@@ -1514,8 +1528,22 @@
         {
           "mapZone": {
             "_other": "Magallanes Standard Time",
-            "_type": "America/Punta_Arenas",
+            "_type": "America/Punta_Arenas America/Coyhaique",
             "_territory": "CL"
+          }
+        },
+        {
+          "mapZone": {
+            "_other": "Manitoba Standard Time",
+            "_type": "America/Winnipeg",
+            "_territory": "001"
+          }
+        },
+        {
+          "mapZone": {
+            "_other": "Manitoba Standard Time",
+            "_type": "America/Winnipeg",
+            "_territory": "CA"
           }
         },
         {
@@ -1619,7 +1647,7 @@
         {
           "mapZone": {
             "_other": "Mountain Standard Time",
-            "_type": "America/Edmonton America/Cambridge_Bay America/Inuvik",
+            "_type": "America/Cambridge_Bay",
             "_territory": "CA"
           }
         },
@@ -1635,13 +1663,6 @@
             "_other": "Mountain Standard Time",
             "_type": "America/Denver America/Boise",
             "_territory": "US"
-          }
-        },
-        {
-          "mapZone": {
-            "_other": "Mountain Standard Time",
-            "_type": "MST7MDT",
-            "_territory": "ZZ"
           }
         },
         {
@@ -1850,22 +1871,8 @@
         {
           "mapZone": {
             "_other": "Pacific Standard Time",
-            "_type": "America/Vancouver",
-            "_territory": "CA"
-          }
-        },
-        {
-          "mapZone": {
-            "_other": "Pacific Standard Time",
             "_type": "America/Los_Angeles",
             "_territory": "US"
-          }
-        },
-        {
-          "mapZone": {
-            "_other": "Pacific Standard Time",
-            "_type": "PST8PDT",
-            "_territory": "ZZ"
           }
         },
         {
@@ -2830,7 +2837,7 @@
         {
           "mapZone": {
             "_other": "Ulaanbaatar Standard Time",
-            "_type": "Asia/Ulaanbaatar Asia/Choibalsan",
+            "_type": "Asia/Ulaanbaatar",
             "_territory": "MN"
           }
         },
