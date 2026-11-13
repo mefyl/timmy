@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.2.6] - 2026-11-13
+
+### Fixed
+
+- Corrected Windows timezone mappings, including British Columbia.
+
 ## [1.2.4] - 2026-04-13
 
 ### Fixed
