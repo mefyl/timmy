@@ -15,13 +15,16 @@ and command =
 
 type t = {
   command : command Lwt_mvar.t;
+  finalized : unit Lwt.t;
+  finalize_done : unit Lwt.u;
+  mutable finalize_requested : bool;
   f : Timmy.Time.t -> bool;
   immediate : bool;
   period : Timmy.Span.t;
   skip : bool;
 }
 
-let _run ({ command; f; period; skip; _ } as ticker) =
+let _run ({ command; finalize_done; f; period; skip; _ } as ticker) =
   let finalized, finalize = Lwt.wait () in
   let () =
     Stdlib.Gc.finalise_last
@@ -95,7 +98,8 @@ let _run ({ command; f; period; skip; _ } as ticker) =
         if keep_going then tick_with_command command (Running { next_tick })
         else tick_with_command command Stopped)
   in
-  Lwt.async (fun () -> tick Stopped)
+  Lwt.async (fun () ->
+      tick Stopped >>| fun () -> Lwt.wakeup_later finalize_done ())
 
 let start_state ~immediate ~period start_time =
   let start_time =
@@ -105,6 +109,7 @@ let start_state ~immediate ~period start_time =
 
 let make ?(immediate = true) ?(skip = true) ?start:start_time ~period f =
   let ticker =
+    let finalized, finalize_done = Lwt.wait () in
     let initial_command =
       match start_time with
       | None -> Lwt_mvar.create (start_state ~immediate ~period @@ Clock.now ())
@@ -112,14 +117,29 @@ let make ?(immediate = true) ?(skip = true) ?start:start_time ~period f =
         Lwt_mvar.create (start_state ~immediate ~period start_time)
       | Some None -> Lwt_mvar.create_empty ()
     in
-    { command = initial_command; f; immediate; period; skip }
+    {
+      command = initial_command;
+      finalized;
+      finalize_done;
+      finalize_requested = false;
+      f;
+      immediate;
+      period;
+      skip;
+    }
   in
   let () = _run ticker in
   ticker
 
 let finalize ticker =
-  Lwt.async @@ fun () ->
-  Lwt_mvar.put ticker.command (Finalize { from_gc = false })
+  if not ticker.finalize_requested then (
+    ticker.finalize_requested <- true;
+    Lwt.async @@ fun () ->
+    Lwt_mvar.put ticker.command (Finalize { from_gc = false }))
+
+let finalize_and_wait ticker =
+  let () = finalize ticker in
+  ticker.finalized
 
 let start ?start ticker =
   Lwt.async @@ fun () ->

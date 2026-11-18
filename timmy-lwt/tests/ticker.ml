@@ -74,6 +74,22 @@ let stop_resume _ () =
   let () = Timmy_lwt.Ticker.finalize ticker in
   Lwt.return ()
 
+let finalize_and_wait _ () =
+  let count = ref 0 in
+  let ticker =
+    Timmy_lwt.Ticker.make ~immediate:false ~period:(Timmy.Span.minutes 1)
+      (fun _ ->
+        let () = count := !count + 1 in
+        true)
+  in
+  Lwt.bind (Timmy_lwt.Ticker.finalize_and_wait ticker) @@ fun () ->
+  let () = Clock_virtual.forward @@ Timmy.Span.minutes 1 in
+  let () =
+    Alcotest.(check ~here:[%here] int)
+      "ticker does not tick after finalizing" 0 !count
+  in
+  Lwt.return ()
+
 let forgotten_finalize _ () =
   match Sys.ocaml_version |> String.split ~on:'.' with
   | major :: minor :: _
@@ -104,6 +120,7 @@ let () =
                test_case "not immediate on start" `Quick immediate_on_start;
                test_case "skip" `Quick skip;
                test_case "stop / resume" `Quick stop_resume;
+               test_case "finalize and wait" `Quick finalize_and_wait;
                test_case "forgotten finalize" `Quick forgotten_finalize;
              ] );
          ])

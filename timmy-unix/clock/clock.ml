@@ -2,7 +2,6 @@ open Base
 module Timmy = Timmy.Versions.V1_1
 
 let logs_src = Logs.Src.create "timmy.unix"
-
 let now () = Ptime_clock.now () |> Timmy.Time.of_ptime
 
 external offset_calendar_time_s :
