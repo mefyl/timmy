@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0] - 2026-11-18
+
+### Added
+
+- Dedicated log sources for Timmy's Lwt, timezone, and Unix implementations.
+- `Timmy_lwt.Ticker.finalize_and_wait`.
+
 ## [1.2.6] - 2026-11-13
 
 ### Fixed
