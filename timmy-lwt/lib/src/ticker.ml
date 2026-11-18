@@ -1,5 +1,7 @@
 open Base
 
+let logs_src = Logs.Src.create "timmy.lwt"
+
 type state =
   | Stopped
   | Running of { next_tick : Timmy.Time.t }
@@ -31,7 +33,7 @@ let _run ({ command; f; period; skip; _ } as ticker) =
   let finalize from_gc =
     let () =
       if from_gc then
-        Logs.err (fun m ->
+        Logs.err ~src:logs_src (fun m ->
             m "@[<2>%a@]" Fmt.words
               "Timmy_lwt.Ticker.t was not finalized. While resources are freed \
                by this fallback upon garbage collection, it is not advised to \

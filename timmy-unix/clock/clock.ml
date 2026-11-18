@@ -1,6 +1,8 @@
 open Base
 module Timmy = Timmy.Versions.V1_1
 
+let logs_src = Logs.Src.create "timmy.unix"
+
 let now () = Ptime_clock.now () |> Timmy.Time.of_ptime
 
 external offset_calendar_time_s :
@@ -47,7 +49,7 @@ let timezone_local =
     | None ->
       let () =
         let (year, month, day), (hours, minutes, seconds) = (date, time) in
-        Logs.warn (fun m ->
+        Logs.warn ~src:logs_src (fun m ->
             m
               "determining timezone offset of %04d-%02d-%02d %02d:%02d:%02d \
                not supported on this platform, assuming an offset of [0]"
@@ -60,7 +62,7 @@ let timezone_local =
     | Some offset -> offset
     | None when Int64.(unix_timestamp <= 0L) ->
       let () =
-        Logs.warn (fun m ->
+        Logs.warn ~src:logs_src (fun m ->
             m
               "passing a negative or null timestamp %a to \
                gmt_offset_seconds_at_time not supported on this platform, \

@@ -1,5 +1,7 @@
 open! Base
 
+let logs_src = Logs.Src.create "timmy.timezones"
+
 let of_timere timere_tz : Timmy.Timezone.t =
   let offset_timestamp_s ~unix_timestamp =
     let timedesc =
@@ -51,6 +53,6 @@ let normalize_tz_name = function
 let of_string name =
   match Timedesc.Time_zone.make @@ normalize_tz_name name with
   | None ->
-    let () = Logs.err (fun m -> m "unknown timezone: %S" name) in
+    let () = Logs.err ~src:logs_src (fun m -> m "unknown timezone: %S" name) in
     None
   | Some tz -> Some (of_timere tz)
