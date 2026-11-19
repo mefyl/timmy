@@ -1,5 +1,8 @@
 (** Timezone database integration for Timmy *)
 
+(** Log source for timezone database events. *)
+val logs_src : Logs.src
+
 (** List of all the known timezone names (as IANA zone identifiers) *)
 val available_zones : string list
 
