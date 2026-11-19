@@ -1,5 +1,8 @@
 (** Tickers call a function periodically. *)
 
+(** Log source for ticker events. *)
+val logs_src : Logs.src
+
 (** A ticker *)
 type t
 
