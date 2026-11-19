@@ -61,5 +61,9 @@ val start : ?start:Timmy.Time.t -> t -> unit
     This must be called to disposes of all of [t]'s ressources. *)
 val finalize : t -> unit
 
+(** [finalize_and_wait t] finalizes [t] and waits until the finalize command has
+    been processed. *)
+val finalize_and_wait : t -> unit Lwt.t
+
 (** [skip t] is whether [t] was created with [skip]. *)
 val skip : t -> bool

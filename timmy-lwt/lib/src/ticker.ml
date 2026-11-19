@@ -1,12 +1,17 @@
 open Base
 
+let logs_src = Logs.Src.create "timmy.lwt"
+
 type state =
   | Stopped
   | Running of { next_tick : Timmy.Time.t }
   | Paused of { next_tick_at_pause : Timmy.Time.t }
 
 and command =
-  | Finalize of { from_gc : bool }
+  | Finalize of {
+      from_gc : bool;
+      wake : unit Lwt.u option;
+    }
   | Pause
   | Start of Timmy.Time.t option
   | Stop
@@ -23,20 +28,21 @@ let _run ({ command; f; period; skip; _ } as ticker) =
   let finalized, finalize = Lwt.wait () in
   let () =
     Stdlib.Gc.finalise_last
-      (fun () -> Lwt.wakeup finalize (Finalize { from_gc = true }))
+      (fun () -> Lwt.wakeup finalize (Finalize { from_gc = true; wake = None }))
       ticker
   in
   let ( >>= ) = Lwt.bind
   and ( >>| ) v f = Lwt.map f v in
-  let finalize from_gc =
+  let finalize from_gc wake =
     let () =
       if from_gc then
-        Logs.err (fun m ->
+        Logs.err ~src:logs_src (fun m ->
             m "@[<2>%a@]" Fmt.words
               "Timmy_lwt.Ticker.t was not finalized. While resources are freed \
                by this fallback upon garbage collection, it is not advised to \
                rely upon it.")
     in
+    let () = Option.iter wake ~f:(fun wake -> Lwt.wakeup wake ()) in
     Lwt.return ()
   in
   let rec tick state =
@@ -46,14 +52,14 @@ let _run ({ command; f; period; skip; _ } as ticker) =
     match state with
     | Paused { next_tick_at_pause } -> (
       command >>= function
-      | Finalize { from_gc } -> finalize from_gc
+      | Finalize { from_gc; wake } -> finalize from_gc wake
       | Stop -> tick Stopped
       | Pause -> tick state
       | Start (Some next_tick) -> tick (Running { next_tick })
       | Start None -> tick (Running { next_tick = next_tick_at_pause }))
     | Stopped -> (
       command >>= function
-      | Finalize { from_gc } -> finalize from_gc
+      | Finalize { from_gc; wake } -> finalize from_gc wake
       | Stop | Pause -> tick Stopped
       | Start next_tick ->
         let next_tick =
@@ -73,7 +79,7 @@ let _run ({ command; f; period; skip; _ } as ticker) =
           ]
       in
       wait >>= function
-      | Some (Finalize { from_gc }) -> finalize from_gc
+      | Some (Finalize { from_gc; wake }) -> finalize from_gc wake
       | Some (Start None) -> tick state
       | Some (Start (Some next_tick)) -> tick (Running { next_tick })
       | Some Pause -> tick (Paused { next_tick_at_pause = next_tick })
@@ -117,7 +123,15 @@ let make ?(immediate = true) ?(skip = true) ?start:start_time ~period f =
 
 let finalize ticker =
   Lwt.async @@ fun () ->
-  Lwt_mvar.put ticker.command (Finalize { from_gc = false })
+  Lwt_mvar.put ticker.command (Finalize { from_gc = false; wake = None })
+
+let finalize_and_wait ticker =
+  let finalized, wake = Lwt.wait () in
+  let () =
+    Lwt.async @@ fun () ->
+    Lwt_mvar.put ticker.command (Finalize { from_gc = false; wake = Some wake })
+  in
+  finalized
 
 let start ?start ticker =
   Lwt.async @@ fun () ->
